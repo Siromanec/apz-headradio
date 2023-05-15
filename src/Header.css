@@ -1,0 +1,24 @@
+.logo {
+    height: 50px;
+}
+.headerLinkWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+}
+.settingsIcon {
+    height: 25px;
+}
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.pretitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,3 @@
+npm install react-player
+npm install react-router-dom --save
+npm install --save react-audio-player
