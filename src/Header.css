@@ -5,20 +5,39 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-
+    /* gap: 10px; */
+    background-color: white;
+    height: 60px;
+    border: solid;
+    border-width: 1px;
 }
 .settingsIcon {
     height: 25px;
+}
+.headerLink {
+    border: solid;
+    border-width: 1px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    /* flex-grow: 1; */
 }
 .title {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 96px;
 
 }
 .pretitle {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 27px;
+
+}
+header input {
+    height: 50px
 }

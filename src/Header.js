@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 function SearchInput() {
-  return <input></input>;
+  return <input type="search" placeholder="Search"></input>;
 }
 export default function Header() {
   return (
