@@ -1,0 +1,38 @@
+.profileInfo{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.profilePicture{
+    width: 258px;
+    height: 258px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.profilePictureDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.headRadio{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.Stats {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Song{
+    height: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
