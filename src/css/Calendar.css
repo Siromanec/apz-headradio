@@ -193,10 +193,11 @@
 .react-calendar__tile--active {
   background-color: #755139;
 }
+
 .react-calendar__tile--now {
   background-color: #E8DDCA;
-  /* color: #755139; */
 }
+
 /* .react-calendar__tile--now.hoover {
   color: green;
 } */
