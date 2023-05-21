@@ -201,3 +201,13 @@
 /* .react-calendar__tile--now.hoover {
   color: green;
 } */
+
+.pvw-title span {
+  display: none;
+}
+.pvw-title:after {
+  content: 'whatever it is you want to add';
+}
+/* .react-calendar__month-view__weekdays__weekday {
+
+} */

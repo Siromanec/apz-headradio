@@ -33,6 +33,9 @@ function AddContent({ onClick }) {
     </button>
   );
 }
+const formatShortWeekday = (locale, date) => {
+  return date.toLocaleDateString(locale, { weekday: 'short' }).slice(0, 1);
+};
 // function Editor() {
 //   const loremIpsumHead = "Lorem ipsum";
 //   const loremIpsum =
@@ -104,7 +107,8 @@ export default function Profile() {
           maxDetail='month'
           showDoubleView
           locale="en"
-          minDetail="month" />
+          minDetail="month" 
+          formatShortWeekday={formatShortWeekday}/>
       </div>
       <p className='text-center'>
         <span className='bold'>Selected Date:</span>{' '}
