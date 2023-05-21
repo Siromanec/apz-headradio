@@ -1,6 +1,7 @@
 .profileInfo{
     display: flex;
     justify-content: space-evenly;
+    margin-bottom: 50px;
 }
 
 
@@ -9,33 +10,111 @@
     height: 258px;
     border-radius: 100%;
     object-fit: cover;
+    border: solid 1px #755139;
 }
 
 .profilePictureDiv{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
+.profileDescription{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.editText {
+    position: absolute;
+    top: 120px;
+    transform: translateX(-50%);
+    left: 50%;
+    font-size: 18px;
+    opacity: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+.profilePictureDiv:hover .editText{
+    opacity: 1;
+}
+
+.profilePictureDiv:hover .profilePicture{
+    opacity: 25%;
+}
+
 
 .headRadio{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+    border: solid 1px #755139;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px 30px;
+    padding-top: 20px;
+    background: rgb(232, 221, 202);
+    border-radius: 30px;
+    gap: 15px
 }
 
 .Stats {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: center;
+    gap: 175px;
+
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    text-align: center;
 }
 
 .Song{
     height: auto;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 50px;
+    border: solid 1px #755139;
+    padding: 30px 75px;
+    background: white;
+    border-radius: 20px;
 }
 main {
     margin: 0 10%;
+}
+
+.tag {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 25px;
+    line-height: 38px;
+    text-align: center;
+}
+
+.songName {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 40px;
+    text-align: center;
+}
+
+.numbers {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+}
+
+.Posts, .Friends{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

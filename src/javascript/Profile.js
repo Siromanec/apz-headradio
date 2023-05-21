@@ -4,7 +4,7 @@ import ReactPlayer from "react-player/lazy";
 import ReactAudioPlayer from "react-audio-player";
 import song from "../data/staying-alive.mp3";
 import PhotoChange from "./PhotoChange";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import EditorWrapper from "./Editor.js"
 import Calendar from 'react-calendar';
 import "../css/Profile.css"
@@ -54,43 +54,44 @@ function AddContent({ onClick }) {
 //   );
 // }
 export default function Profile() {
-  
+
   const [photo, setPhoto] = useState(ProfilePicture)
   const [show, setShow] = useState(false)
   const [date, setDate] = useState(new Date());
-  const songName = "Skryabin - В очах"
+  const songName = "В очах  •  Skryabin"
   const submitHandler = (file) => {
-      const formData = new FormData();
-		  formData.append('File', photo);
-      fetch('https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5', {method: "POST", body: formData, mode: 'no-cors'}).then((response)=>response.json()).then((result)=>{console.log(result)})
+    const formData = new FormData();
+    formData.append('File', photo);
+    fetch('https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5', { method: "POST", body: formData, mode: 'no-cors' }).then((response) => response.json()).then((result) => { console.log(result) })
   }
-  const handleClick = () => {window.location.replace("https://open.spotify.com/track/6yLOGWTvvVXyPBEJUkaFZG?si=6666fde48d6947a1")}
-  const handlePhoto = () => {setShow(show => !show)}
+  const handleClick = () => { window.location.replace("https://open.spotify.com/track/6yLOGWTvvVXyPBEJUkaFZG?si=6666fde48d6947a1") }
+  const handlePhoto = () => { setShow(show => !show) }
   return (
     <main>
       <section className="profileInfo">
-        <div className="profilePictureDiv" onClick={handlePhoto}>
-          <img src={photo} className="profilePicture" />
-          {show ? <PhotoChange onClick={submitHandler}/> : null}
-        <div className="tag">@beheni</div>
-        <div className="status">
-          <span>Feeling stable</span>
-        </div>
-        </div>
-      <div className="headRadio" onClick={handleClick}>
-        <div className="Song">
-          <img src={spotifyIcon} style={{ width: "50px" }}></img>
-          <div>{songName}</div>
-        </div>
-        <div className="Stats">
-          <div className="Posts">
-            <p>Posts</p>
-            <p>23</p>
+        <div className="profileDescription">
+          <div className="profilePictureDiv" onClick={handlePhoto}>
+            <span className="editText">Change Photo</span>
+            <img src={photo} className="profilePicture" />
+            {show ? <PhotoChange onClick={submitHandler} /> : null}
           </div>
-          <div className="Friends">
-            <p>Friends</p>
-            <p>10</p>
+          <span className="tag">@beheni</span>
+
+        </div>
+        <div className="headRadio" onClick={handleClick}>
+          <div className="Song">
+            <img src={spotifyIcon} style={{ width: "40px" }}></img>
+            <div className="songName">{songName}</div>
           </div>
+          <div className="Stats">
+            <div className="Posts">
+              <span>POSTS</span>
+              <span className="numbers">23</span>
+            </div>
+            <div className="Friends">
+              <span>FRIENDS</span>
+              <span className="numbers">10</span>
+            </div>
           </div>
         </div>
       </section>
@@ -98,7 +99,12 @@ export default function Profile() {
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
       <div className='calendar-container'>
-        <Calendar onChange={setDate} value={date} maxDetail='month'/>
+        <Calendar onChange={setDate}
+          value={date}
+          maxDetail='month'
+          showDoubleView
+          locale="en"
+          minDetail="month" />
       </div>
       <p className='text-center'>
         <span className='bold'>Selected Date:</span>{' '}
