@@ -120,9 +120,9 @@
   font-size: 0.75em;
   font-weight: bold;
 }
-.react-calendar__navigation button:disabled {
+/* .react-calendar__navigation button:disabled {
   background-color: white;
-}
+} */
 
 .react-calendar__month-view__days__day--neighboringMonth {
   color: #757575;
