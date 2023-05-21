@@ -67,7 +67,7 @@ async def fetch_add(request: Request, response: Response):
     items = list(item.values())
     username = items[0]
     password = items[-1]
-    token = str(hashlib.sha256(username.encode()+password.encode()))
+    token = str(int(hashlib.sha256((username.encode()+password.encode())).hexdigest(), 16))
     items[-1] = token
     is_in_db = select_query("user", f"`username`= '{username}'")
     if is_in_db == []:
@@ -194,7 +194,7 @@ async def fetch_login(request: Request, response: Response):
     except:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return
-    if login[-1] == hashlib.sha256(username.encode()+password.encode()):
+    if login[-1] == str(int(hashlib.sha256(username.encode()+password.encode())).hexdigest(), 16):
         response.status_code = status.HTTP_200_OK
         return {"token": login[-1]}
     else:
