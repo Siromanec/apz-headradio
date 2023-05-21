@@ -7,9 +7,11 @@ conn = sqlite3.connect("./database.db")
 cursor = conn.cursor()
 
 def get_columns(table):
-    cursor.execute(f"DESCRIBE {table}")
+    # cursor.execute(".header on")
+    # cursor.execute(".mode column")
+    cursor.execute(f"pragma table_info('{table}')")
     result = cursor.fetchall()
-    return "`" +"`, `".join([entry[0] for entry in result])+"`"
+    return result
     
 def select_query(table, arguments=None):
     if arguments:
@@ -18,7 +20,7 @@ def select_query(table, arguments=None):
         cursor.execute(f"SELECT * FROM {table}")
     result = cursor.fetchall()
 
-    return "<br>".join([",".join([str(el) for el in row]) for row in result])
+    return result
     
         
 def insert_query(table, values):
