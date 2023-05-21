@@ -1,6 +1,6 @@
-import logo from "./logo.svg";
-import settingsIcon from "./cogwheel.svg";
-import "./Header.css";
+import logo from "../data/logo.svg";
+import settingsIcon from "../data/cogwheel.svg";
+import "../css/Header.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 

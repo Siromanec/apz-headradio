@@ -1,8 +1,8 @@
-import logo from "./logo.svg";
-import "./App.css";
+import logo from "../data/logo.svg";
+import "../css/App.css";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
-import  Header from "./Header"
+import  Header from "./Header.js"
 function MyButton() {
   const [count, setCount] = useState(0);
 
@@ -41,7 +41,7 @@ export default function App() {
     <div>
       <Header></Header>
       <Outlet></Outlet>
-      <MyButton />
+      {/* <MyButton /> */}
     </div>
   );
 }

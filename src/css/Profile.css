@@ -36,3 +36,6 @@
     align-items: center;
     gap: 10px;
 }
+main {
+    margin: 0 10%;
+}

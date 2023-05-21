@@ -1,5 +1,5 @@
 import React from "react";
-import "./ClickCounter.css"
+import "../css/ClickCounter.css"
 export default class ClickCounter extends React.Component {
     constructor(props) {
         super(props)

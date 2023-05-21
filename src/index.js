@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import ClickCounter from "./ClickCounter";
-import reportWebVitals from "./reportWebVitals";
+import ClickCounter from "./javascript/ClickCounter";
+import reportWebVitals from "./javascript/reportWebVitals";
 import { BrowserRouter , createBrowserRouter, RouterProvider} from "react-router-dom";
-import Home from "./Home";
-import Profile from "./Profile";
-import About from "./About";
+import Home from "./javascript/Home";
+import Profile from "./javascript/Profile";
+import About from "./javascript/About";
 
-import App from "./App";
+import App from "./javascript/App";
 
 const router = createBrowserRouter([
   {

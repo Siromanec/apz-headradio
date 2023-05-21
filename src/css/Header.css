@@ -41,3 +41,6 @@
 header input {
     height: 50px
 }
+header {
+    margin-bottom: 40px;
+}
