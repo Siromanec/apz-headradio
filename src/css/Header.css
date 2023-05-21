@@ -1,11 +1,18 @@
-a:link, a:visited { text-decoration: none;
-    color: #755139}
+a:link,
+a:visited {
+    text-decoration: none;
+    color: #755139
+}
 
-a:hover, a:active { text-decoration: underline; }
+a:hover,
+a:active {
+    text-decoration: underline;
+}
 
 .logo {
     height: 50px;
 }
+
 .headerLinkWrapper {
     display: flex;
     justify-content: center;
@@ -16,9 +23,11 @@ a:hover, a:active { text-decoration: underline; }
     border-left: 0;
     border-right: 0;
 }
+
 .settingsIcon {
     height: 25px;
 }
+
 .headerLink {
     border-left: solid 1px #755139;
     height: 60px;
@@ -33,17 +42,20 @@ a:hover, a:active { text-decoration: underline; }
     font-size: 20px;
     line-height: 30px;
 }
+
 .titles {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+
 .title {
     margin-top: 20px;
     font-size: 96px;
     font-family: 'Playfair Display';
 }
+
 .pretitle {
     margin-bottom: 20px;
     font-size: 27px;
@@ -54,6 +66,7 @@ a:hover, a:active { text-decoration: underline; }
     text-align: center;
     letter-spacing: 0.3em;
 }
+
 header div input {
     padding-left: 15px;
     height: 50px;
@@ -67,7 +80,7 @@ header div input {
     width: 50%;
 }
 
-header div input::-webkit-search-cancel-button{
+header div input::-webkit-search-cancel-button {
     -webkit-appearance: none;
 }
 
@@ -86,10 +99,9 @@ header {
     margin-bottom: 40px;
 }
 
-.signOutButton{
+.signOutButton {
     border: none;
     background: none;
     margin-left: 120px;
     cursor: pointer;
 }
-

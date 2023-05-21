@@ -1,7 +1,13 @@
-a:link, a:visited { text-decoration: none;
-    color: #755139}
+a:link,
+a:visited {
+    text-decoration: none;
+    color: #755139
+}
 
-a:hover, a:active { text-decoration: underline; }
+a:hover,
+a:active {
+    text-decoration: underline;
+}
 
 footer {
     background-color: #E8DDCA;
