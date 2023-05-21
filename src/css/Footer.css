@@ -7,7 +7,8 @@ footer {
     background-color: #E8DDCA;
     border: 1px solid #755139;
     padding: 10px 40px;
-    margin-bottom: 1px;
+    border-right: 0;
+    border-left: 0;
 }
 
 .footerDiv {

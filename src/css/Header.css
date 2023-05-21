@@ -13,6 +13,8 @@ a:hover, a:active { text-decoration: underline; }
     background-color: white;
     height: 60px;
     border: solid 1px;
+    border-left: 0;
+    border-right: 0;
 }
 .settingsIcon {
     height: 25px;
