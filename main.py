@@ -42,7 +42,9 @@ def delete_query(table, arguments=None):
 
 def update_query(table, values, arguments=None):
     if arguments:
-        cursor.execute(f"UPDATE {table} SET {values} WHERE {arguments}")
+        q = f"UPDATE {table} SET {values} WHERE {arguments}"
+        print(q)
+        cursor.execute(q)
     else:
         cursor.execute(f"UPDATE {table} SET {values}")
     conn.commit()
@@ -81,53 +83,69 @@ async def fetch_show_profile(request: Request, response: Response):
     images = {post_id:[image[2] for image in val] for post_id, val in images.items()}
     friends = select_query("isfriend", f"`username1`= '{username}'")
     data = {"user": user_data[0][0], "posts": {"messages":post_ids, "images":images}, "friends":[friend[1] for friend in friends]}
+    response.status_code = status.HTTP_200_OK
     return data
-
-
 
 @app.post("/fetch-add-friend")
 async def fetch_friend(request: Request, response: Response):
     item = await request.json()
+    response.status_code = status.HTTP_200_OK
 
 @app.post("/fetch-remove-friend")
 async def fetch_no_friend(request: Request, response: Response):
     item = await request.json()
+    response.status_code = status.HTTP_200_OK
 
 @app.get("/fetch-show-friends")
 async def fetch_show_friends(request: Request, response: Response):
     item = await request.json()
+    response.status_code = status.HTTP_200_OK
 
 @app.post("/fetch-modify-profile-photo")
 async def fetch_photo(request: Request, response: Response):
     item = await request.json()
+    response.status_code = status.HTTP_200_OK
 
 @app.post("/fetch-modify-music")
 async def fetch_photo(request: Request, response: Response):
     item = await request.json()
+    response.status_code = status.HTTP_200_OK
 
 @app.post("/fetch-new-post")
 async def fetch_new_post(request: Request, response: Response):
     item = await request.json()
+    response.status_code = status.HTTP_200_OK
 
 @app.post("/fetch-edit-post")
 async def fetch_edit_post(request: Request, response: Response):
     item = await request.json()
+    response.status_code = status.HTTP_200_OK
 
 @app.post("/fetch-like")
 async def fetch_like(request:Request, response: Response):
     item = await request.json()
+    items = list(item.values())
+    post_id, username, add = items[0], items[1], items[2]
+    post = list(select_query("post", f"`idpost` = {post_id} AND `username`= '{username}'")[0])
+    print(post)
+    post[-1] =max(post[-1] + add, 0)
+    update_query("post", f"`nlikes`={post[-1]}", f"`idpost` = {post_id} AND `username`= '{username}'")
+    response.status_code = status.HTTP_200_OK
 
 @app.get("/fetch-show-likes")
 async def fetch_show_likes(request:Request, response: Response):
     item = await request.json()
+    response.status_code = status.HTTP_200_OK
 
 @app.get("/fetch-main-page")
 async def main(request:Request, response: Response):
     item = await request.json()
+    response.status_code = status.HTTP_200_OK
 
 @app.post("/fetch-login")
 async def fetch_login(request:Request, response: Response):
     item = await request.json()
+    response.status_code = status.HTTP_200_OK
 
 
 
