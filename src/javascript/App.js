@@ -3,6 +3,7 @@ import "../css/App.css";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import  Header from "./Header.js"
+import Footer from "./Footer.js"
 import { RequireAuth } from "react-auth-kit";
 import Login from "./Login.js"
 import { useNavigate } from "react-router-dom"
@@ -39,12 +40,8 @@ export default function App() {
   return (
     <div>
       <Header></Header>
-      
-      {/* <RequireAuth loginPath="/signin"> */}
-        <Outlet></Outlet>
-
-      {/* </RequireAuth> */}
-      {/* <MyButton /> */}
+      <Outlet></Outlet>
+      <Footer></Footer>
     </div>
   );
 }
