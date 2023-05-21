@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, Response, status
 import uvicorn
 import sqlite3
-import json
+from datetime import datetime
 import hashlib
 
 app = FastAPI()
@@ -99,12 +99,17 @@ async def fetch_show_profile(request: Request, response: Response):
 @app.post("/fetch-add-friend")
 async def fetch_friend(request: Request, response: Response):
     item = await request.json()
+    items = list(item.values())
+    insert_query('isfriend', items)
     response.status_code = status.HTTP_200_OK
 
 
 @app.post("/fetch-remove-friend")
 async def fetch_no_friend(request: Request, response: Response):
     item = await request.json()
+    user1, user2 = list(item.values())
+    delete_query(
+        'isfriend', f"`username1` = '{user1}' AND `username2` = '{user2}'")
     response.status_code = status.HTTP_200_OK
 
 
@@ -113,7 +118,8 @@ async def fetch_photo(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
     username, picturelink = items[0], items[1]
-    update_query("user", f"`profilePicture`='{picturelink}'", f"`username`='{username}'")
+    update_query(
+        "user", f"`profilePicture`='{picturelink}'", f"`username`='{username}'")
     response.status_code = status.HTTP_200_OK
 
 
@@ -129,12 +135,32 @@ async def fetch_photo(request: Request, response: Response):
 @app.post("/fetch-new-post")
 async def fetch_new_post(request: Request, response: Response):
     item = await request.json()
+    items = list(item.values)
+    username = items[1]
+    try:
+        new_id = select_query("post", f"`username`='{username}'")[-1][-1]
+    except:
+        new_id = 1
+    new_id += 1
+    items = [new_id] + items + [datetime.now(), datetime.now(), 0]
+    insert_query("post", items)
     response.status_code = status.HTTP_200_OK
 
 
 @app.post("/fetch-edit-post")
 async def fetch_edit_post(request: Request, response: Response):
     item = await request.json()
+    idpost, username, text = list(item.values())
+    update_query("post", f"`article`='{text}', `modified` = '{datetime.now()}'",
+                 f"`idpost` = {idpost} AND `username`= '{username}'")
+    response.status_code = status.HTTP_200_OK
+
+
+@app.post("/fetch-delete-post")
+async def fetch_delete_post(request: Request, response: Response):
+    item = await request.json()
+    idpost, username = list(item.values())
+    delete_query("post", f"`idpost`={idpost} AND `username` = '{username}'")
     response.status_code = status.HTTP_200_OK
 
 
@@ -161,7 +187,14 @@ async def main(request: Request, response: Response):
 @app.post("/fetch-login")
 async def fetch_login(request: Request, response: Response):
     item = await request.json()
-    response.status_code = status.HTTP_200_OK
+    items = list(item.values())
+    username, password = items[0], items[-1]
+    login = select_query("user", f"`username`= '{username}'")[0]
+    if login[-1] == hashlib.sha256(username.encode()+password.encode()):
+        response.status_code = status.HTTP_200_OK
+        return {"token": login[-1]}
+    else:
+        response.status_code = status.HTTP_403_FORBIDDEN
 
 
 if __name__ == "__main__":
