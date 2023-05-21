@@ -8,9 +8,9 @@
   width: 350px;
   max-width: 100%;
   background: white;
-  border: 1px solid #a0a096;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.125em;
+  border: none;
 }
 
 .react-calendar--doubleView {
@@ -73,10 +73,41 @@
   font-size: 0.75em;
 }
 
-.react-calendar__month-view__weekdays__weekday {
+.react-calendar__month-view__weekdays__weekday abbr{
   padding: 0.5em;
+  color: #755139;
+  font-family: "Playfair Display";
+  text-decoration: none;
 }
 
+.react-calendar__navigation__label {
+  color: #755139;
+  font-size: 33px;
+  font-family: 'Playfair Display';
+  font-weight: bold;
+}
+/* 
+.react-calendar__tile react-calendar__tile--now react-calendar__month-view__days__day react-calendar__month-view__days__day--weekend {
+} */
+.react-calendar__navigation__label__divider {
+  visibility: hidden;
+}
+.react-calendar__navigation__label__labelText react-calendar__navigation__label__labelText--to {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.react-calendar__tile react-calendar__month-view__days__day react-calendar__month-view__days__day--weekend {
+  color: black;
+}
+
+.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend {
+  font-family: "Playfair Display"
+}
+.react-calendar__tile.react-calendar__month-view__days__day {
+  font-family: "Playfair Display"
+}
 .react-calendar__month-view__weekNumbers .react-calendar__tile {
   display: flex;
   align-items: center;
@@ -84,9 +115,8 @@
   font-size: 0.75em;
   font-weight: bold;
 }
-
-.react-calendar__month-view__days__day--weekend {
-  color: #d10000;
+.react-calendar__navigation button:disabled {
+  background-color: white;
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
