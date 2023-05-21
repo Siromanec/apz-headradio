@@ -98,7 +98,12 @@ export default function Profile() {
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
       <div className='calendar-container'>
-        <Calendar onChange={setDate} value={date} maxDetail='month'/>
+        <Calendar onChange={setDate} 
+        value={date} 
+        maxDetail='month'
+        showDoubleView
+        locale="US"
+        minDetail="month"/>
       </div>
       <p className='text-center'>
         <span className='bold'>Selected Date:</span>{' '}
