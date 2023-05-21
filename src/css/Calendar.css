@@ -11,6 +11,7 @@
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.125em;
   border: none;
+  padding: 3%;
 }
 
 .react-calendar--doubleView {
@@ -86,6 +87,10 @@
   font-size: 33px;
   font-family: 'Playfair Display';
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 !important;
 }
 /* 
 .react-calendar__tile react-calendar__tile--now react-calendar__month-view__days__day react-calendar__month-view__days__day--weekend {
@@ -93,10 +98,11 @@
 .react-calendar__navigation__label__divider {
   visibility: hidden;
 }
-.react-calendar__navigation__label__labelText react-calendar__navigation__label__labelText--to {
+.react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--to {
   display: flex;
   align-items: center;
   justify-content: center;
+  
 }
 
 .react-calendar__tile react-calendar__month-view__days__day react-calendar__month-view__days__day--weekend {
@@ -202,12 +208,7 @@
   color: green;
 } */
 
-.pvw-title span {
-  display: none;
-}
-.pvw-title:after {
-  content: 'whatever it is you want to add';
-}
+
 /* .react-calendar__month-view__weekdays__weekday {
 
 } */
