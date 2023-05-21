@@ -60,7 +60,7 @@ TABLES = ["user", "post", "postimages", "userlikedpost", "isfriend"]
 COLUMNS = {table: get_columns(table) for table in TABLES}
 print(COLUMNS)
 
-
+#  r.post("http://localhost:8000/fetch-add-user", json={"username": "@redn1njaA", "email": "ostap.seryvko@ucu.edu.ua", "profilepicture": "None", "currmusic": "None", "password": "123"})
 @app.post("/fetch-add-user")
 async def fetch_add(request: Request, response: Response):
     item = await request.json()
@@ -189,7 +189,11 @@ async def fetch_login(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
     username, password = items[0], items[-1]
-    login = select_query("user", f"`username`= '{username}'")[0]
+    try:
+        login = select_query("user", f"`username`= '{username}'")[0]
+    except:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return
     if login[-1] == hashlib.sha256(username.encode()+password.encode()):
         response.status_code = status.HTTP_200_OK
         return {"token": login[-1]}
