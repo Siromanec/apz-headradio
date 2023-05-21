@@ -50,51 +50,51 @@ COLUMNS = {table:get_columns(table) for table in TABLES}
 
 @app.post("/fetch-add-user")
 async def fetch_add(request: Request):
-    pass
+    item = await request.json()
 
 @app.get("/fetch-show-user")
 async def fetch_show_profile(request: Request):
-    pass
+    item = await request.json()
 
 @app.post("/fetch-add-friend")
 async def fetch_friend(request: Request):
-    pass
+    item = await request.json()
 
 @app.post("/fetch-remove-friend")
 async def fetch_no_friend(request: Request):
-    pass
+    item = await request.json()
 
 @app.get("/fetch-show-friends")
 async def fetch_show_friends(request: Request):
-    pass
+    item = await request.json()
 
 @app.post("/fetch-modify-profile-photo")
 async def fetch_photo(request: Request):
-    pass
+    item = await request.json()
 
 @app.post("/fetch-modify-music")
 async def fetch_photo(request: Request):
-    pass
+    item = await request.json()
 
 @app.post("/fetch-new-post")
 async def fetch_new_post(request: Request):
-    pass
+    item = await request.json()
 
 @app.post("/fetch-edit-post")
 async def fetch_edit_post(request: Request):
-    pass
+    item = await request.json()
 
 @app.get("/fetch-show-posts")
 async def fetch_show_posts(request: Request):
-    pass
+    item = await request.json()
 
 @app.post("/fetch-like")
 async def fetch_like(request:Request):
-    pass
+    item = await request.json()
 
 @app.get("/fetch-show-likes")
 async def fetch_show_likes(request:Request):
-    pass
+    item = await request.json()
 
 
 
