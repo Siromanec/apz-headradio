@@ -1,7 +1,8 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response, status
 import uvicorn
 import sqlite3
 import json
+import hashlib
 
 app = FastAPI()
 conn = sqlite3.connect("./database.db")
@@ -53,22 +54,23 @@ COLUMNS = {table:get_columns(table) for table in TABLES}
 print(COLUMNS)
 
 @app.post("/fetch-add-user")
-async def fetch_add(request: Request):
+async def fetch_add(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
     username = items[0]
+    password = items[-1]
+    token = str(hashlib.sha256(username.encode()+password.encode()) )
+    items[-1] = token
     is_in_db = select_query("user", f"`username`= '{username}'")
     if is_in_db == []:
         insert_query("user", items)
-        print(0)
-        return {"status": 0}
+        response.status_code = status.HTTP_200_OK
     else:
-        print(1)
-        return {"status": 1}
+        response.status_code = status.HTTP_400_BAD_REQUEST
 
 
 @app.get("/fetch-show-user")
-async def fetch_show_profile(request: Request):
+async def fetch_show_profile(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
     username = items[0]
@@ -84,43 +86,47 @@ async def fetch_show_profile(request: Request):
 
 
 @app.post("/fetch-add-friend")
-async def fetch_friend(request: Request):
+async def fetch_friend(request: Request, response: Response):
     item = await request.json()
 
 @app.post("/fetch-remove-friend")
-async def fetch_no_friend(request: Request):
+async def fetch_no_friend(request: Request, response: Response):
     item = await request.json()
 
 @app.get("/fetch-show-friends")
-async def fetch_show_friends(request: Request):
+async def fetch_show_friends(request: Request, response: Response):
     item = await request.json()
 
 @app.post("/fetch-modify-profile-photo")
-async def fetch_photo(request: Request):
+async def fetch_photo(request: Request, response: Response):
     item = await request.json()
 
 @app.post("/fetch-modify-music")
-async def fetch_photo(request: Request):
+async def fetch_photo(request: Request, response: Response):
     item = await request.json()
 
 @app.post("/fetch-new-post")
-async def fetch_new_post(request: Request):
+async def fetch_new_post(request: Request, response: Response):
     item = await request.json()
 
 @app.post("/fetch-edit-post")
-async def fetch_edit_post(request: Request):
+async def fetch_edit_post(request: Request, response: Response):
     item = await request.json()
 
 @app.post("/fetch-like")
-async def fetch_like(request:Request):
+async def fetch_like(request:Request, response: Response):
     item = await request.json()
 
 @app.get("/fetch-show-likes")
-async def fetch_show_likes(request:Request):
+async def fetch_show_likes(request:Request, response: Response):
     item = await request.json()
 
 @app.get("/fetch-main-page")
-async def main(request:Request):
+async def main(request:Request, response: Response):
+    item = await request.json()
+
+@app.post("/fetch-login")
+async def fetch_login(request:Request, response: Response):
     item = await request.json()
 
 
