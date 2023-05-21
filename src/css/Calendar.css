@@ -102,6 +102,12 @@
   color: black;
 }
 
+.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend {
+  font-family: "Playfair Display"
+}
+.react-calendar__tile.react-calendar__month-view__days__day {
+  font-family: "Playfair Display"
+}
 .react-calendar__month-view__weekNumbers .react-calendar__tile {
   display: flex;
   align-items: center;
@@ -109,7 +115,9 @@
   font-size: 0.75em;
   font-weight: bold;
 }
-
+.react-calendar__navigation button:disabled {
+  background-color: white;
+}
 
 .react-calendar__month-view__days__day--neighboringMonth {
   color: #757575;
