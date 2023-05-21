@@ -1,3 +1,8 @@
+a:link, a:visited { text-decoration: none;
+    color: #755139}
+
+a:hover, a:active { text-decoration: underline; }
+
 .logo {
     height: 50px;
 }
@@ -5,42 +10,84 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* gap: 10px; */
     background-color: white;
     height: 60px;
-    border: solid;
-    border-width: 1px;
+    border: solid 1px;
 }
 .settingsIcon {
     height: 25px;
 }
 .headerLink {
-    border: solid;
-    border-width: 1px;
+    border: solid 1px #755139;
     height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 20%;
     /* flex-grow: 1; */
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 30px;
+}
+.titles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top: 20px;
     font-size: 96px;
-
+    font-family: 'Playfair Display';
 }
 .pretitle {
+    margin-bottom: 20px;
+    font-size: 27px;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 40px;
+    text-align: center;
+    letter-spacing: 0.3em;
+}
+header div input {
+    padding-left: 15px;
+    height: 50px;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    color: #755139;
+    width: 50%;
+}
+
+header div input::-webkit-search-cancel-button{
+    -webkit-appearance: none;
+}
+
+.search {
+    border: solid 1px #755139;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 27px;
+    justify-content: space-around;
+    /*gap: 10px;*/
+    height: 60px;
+    width: fit-content;
+}
 
-}
-header input {
-    height: 50px
-}
 header {
+    margin-top: 60px;
     margin-bottom: 40px;
 }
+
+.signOutButton{
+    border: none;
+    background: none;
+    margin-left: 120px;
+    cursor: pointer;
+}
+
