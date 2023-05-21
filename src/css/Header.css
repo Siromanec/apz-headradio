@@ -13,6 +13,10 @@ a:active {
     height: 50px;
 }
 
+.searchButton { 
+    cursor: pointer;
+}
+
 .headerLinkWrapper {
     display: flex;
     justify-content: center;

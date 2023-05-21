@@ -9,7 +9,7 @@ import SignOutImg from "../data/sign_out.svg"
 function SearchInput() {
   return <div class="search">
       <input type="search" placeholder="Search ..."/>
-      <img src={SearchInputImg}/>
+      <img className="searchButton" src={SearchInputImg}/>
         </div>;
 }
 export default function Header() {
