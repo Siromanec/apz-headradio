@@ -75,6 +75,7 @@
 
 .react-calendar__month-view__weekdays__weekday abbr{
   padding: 0.5em;
+  
   color: #755139;
   font-family: "Playfair Display";
   text-decoration: none;
@@ -103,10 +104,10 @@
 }
 
 .react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend {
-  font-family: "Playfair Display"
+  font-family: "Poppins"
 }
 .react-calendar__tile.react-calendar__month-view__days__day {
-  font-family: "Playfair Display"
+  font-family: "Poppins"
 }
 .react-calendar__month-view__weekNumbers .react-calendar__tile {
   display: flex;
@@ -178,3 +179,15 @@
   background-color: #e6e6e6;
 }
 
+.react-calendar__navigation__arrow.react-calendar__navigation__next2-button {
+  display: none;
+}
+.react-calendar__navigation__arrow.react-calendar__navigation__prev2-button {
+  display: none;
+}
+.react-calendar__navigation__arrow.react-calendar__navigation__next-button{
+  color: #755139;
+}
+.react-calendar__navigation__arrow.react-calendar__navigation__prev-button{
+  color: #755139;
+}
