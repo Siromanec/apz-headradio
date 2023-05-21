@@ -3,6 +3,7 @@ import "../css/App.css";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import  Header from "./Header.js"
+import Footer from "./Footer.js"
 function MyButton() {
   const [count, setCount] = useState(0);
 
@@ -41,6 +42,7 @@ export default function App() {
     <div>
       <Header></Header>
       <Outlet></Outlet>
+      <Footer></Footer>
       {/* <MyButton /> */}
     </div>
   );
