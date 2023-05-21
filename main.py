@@ -120,6 +120,9 @@ async def fetch_photo(request: Request, response: Response):
 @app.post("/fetch-modify-music")
 async def fetch_photo(request: Request, response: Response):
     item = await request.json()
+    items = list(item.values())
+    username, sond = items[0], items[1]
+    update_query("user", f"`currmusic`='{song}'", f"`username`='{username}'")
     response.status_code = status.HTTP_200_OK
 
 
