@@ -1,0 +1,33 @@
+.tox .tox-toolbar,
+.tox .tox-toolbar__overflow,
+.tox .tox-toolbar__primary {
+  background-color: #E8DDCA !important;
+}
+
+.tox:not(.tox-tinymce-inline) .tox-editor-header {
+    box-shadow: none !important;
+}
+
+.tox-tinymce {
+    border: 1px solid #755139 !important;
+}
+
+.tox:not(.tox-tinymce-inline) .tox-editor-header {
+    padding: 0px !important;
+}
+
+.tox .tox-toolbar__primary {
+    border-bottom: 1px solid #755139 !important;
+}
+
+.tox .tox-tbtn svg {
+    fill: #755139 !important;
+}
+
+.tox .tox-tbtn--bespoke {
+    background-color: white !important;
+}
+
+.tox .tox-tbtn__select-label {
+    font-family: "Poppins", sans-serif !important;
+}
