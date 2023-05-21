@@ -58,7 +58,7 @@ export default function Profile() {
   const [photo, setPhoto] = useState(ProfilePicture)
   const [show, setShow] = useState(false)
   const [date, setDate] = useState(new Date());
-  const songName = "Skryabin - В очах"
+  const songName = "В очах  •  Skryabin"
   const submitHandler = (file) => {
     const formData = new FormData();
     formData.append('File', photo);
@@ -80,17 +80,17 @@ export default function Profile() {
         </div>
         <div className="headRadio" onClick={handleClick}>
           <div className="Song">
-            <img src={spotifyIcon} style={{ width: "50px" }}></img>
-            <div>{songName}</div>
+            <img src={spotifyIcon} style={{ width: "40px" }}></img>
+            <div className="songName">{songName}</div>
           </div>
           <div className="Stats">
             <div className="Posts">
-              <p>Posts</p>
-              <p>23</p>
+              <span>POSTS</span>
+              <span className="numbers">23</span>
             </div>
             <div className="Friends">
-              <p>Friends</p>
-              <p>10</p>
+              <span>FRIENDS</span>
+              <span className="numbers">10</span>
             </div>
           </div>
         </div>
