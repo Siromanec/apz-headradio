@@ -9,6 +9,7 @@
     "@tinymce/tinymce-react": "^4.3.0",
     "react": "^18.2.0",
     "react-audio-player": "^0.17.0",
+    "react-auth-kit": "^2.12.2",
     "react-calendar": "^4.2.1",
     "react-dom": "^18.2.0",
     "react-player": "^2.12.0",

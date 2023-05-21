@@ -3,6 +3,9 @@ import "../css/App.css";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import  Header from "./Header.js"
+import { RequireAuth } from "react-auth-kit";
+import Login from "./Login.js"
+import { useNavigate } from "react-router-dom"
 function MyButton() {
   const [count, setCount] = useState(0);
 
@@ -13,34 +16,34 @@ function MyButton() {
   return <button onClick={handleClick}>Clicked {count} times</button>;
 }
 
+function setToken(userToken) {
+  sessionStorage.setItem('token', JSON.stringify(userToken));
+}
+
+function getToken() {
+  const tokenString = sessionStorage.getItem('token');
+  const userToken = JSON.parse(tokenString);
+  return userToken?.token
+}
 
 export default function App() {
-  const hello = "hello";
-  let i = 0;
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //         Learn React
-  //       </a>
-  //     </header>
-  //     {hello}
 
-  //   </div>
-  // );
+  const navigate = useNavigate();
+
+  let token = getToken();
+  if(!token) {
+    // navigate("/login")
+    return <><Login setToken={setToken} /></>
+  }
+
   return (
     <div>
       <Header></Header>
-      <Outlet></Outlet>
+      
+      {/* <RequireAuth loginPath="/signin"> */}
+        <Outlet></Outlet>
+
+      {/* </RequireAuth> */}
       {/* <MyButton /> */}
     </div>
   );
