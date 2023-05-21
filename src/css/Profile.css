@@ -12,11 +12,37 @@
 }
 
 .profilePictureDiv{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
+.profileDescription{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.editText {
+    position: absolute;
+    top: 120px;
+    transform: translateX(-50%);
+    left: 50%;
+    font-size: 18px;
+    opacity: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+.profilePictureDiv:hover .editText{
+    opacity: 1;
+}
+
+.profilePictureDiv:hover .profilePicture{
+    opacity: 25%;
+}
+
 
 .headRadio{
     display: flex;
@@ -38,4 +64,13 @@
 }
 main {
     margin: 0 10%;
+}
+
+.tag {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 25px;
+    line-height: 38px;
+    text-align: center;
 }

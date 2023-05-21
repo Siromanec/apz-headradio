@@ -69,14 +69,18 @@ export default function Profile() {
   return (
     <main>
       <section className="profileInfo">
+          <div className="profileDescription">
         <div className="profilePictureDiv" onClick={handlePhoto}>
+            <span className="editText">Change Photo</span>
+
           <img src={photo} className="profilePicture" />
-          {show ? <PhotoChange onClick={submitHandler}/> : null}
-        <div className="tag">@beheni</div>
-        <div className="status">
-          <span>Feeling stable</span>
+                {show ? <PhotoChange onClick={submitHandler}/> : null}
+
         </div>
-        </div>
+        <span className="tag">@beheni</span>
+              <span className="status">Feeling stable</span>
+
+          </div>
       <div className="headRadio" onClick={handleClick}>
         <div className="Song">
           <img src={spotifyIcon} style={{ width: "50px" }}></img>
