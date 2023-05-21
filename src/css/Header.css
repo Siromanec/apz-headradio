@@ -18,7 +18,7 @@ a:hover, a:active { text-decoration: underline; }
     height: 25px;
 }
 .headerLink {
-    border: solid 1px #755139;
+    border-left: solid 1px #755139;
     height: 60px;
     display: flex;
     align-items: center;
