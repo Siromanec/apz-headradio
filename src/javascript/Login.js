@@ -24,9 +24,11 @@ export default function Login({ setToken, setSavedUserName }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username) {
+      setUserName("")
       return;
     }
     if (!password) {
+      setPassword("")
       return;
     }
     const token = await loginUser({
