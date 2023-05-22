@@ -27,6 +27,7 @@ export default function Home() {
       ></FriendSongElement>
 
       <Post
+        id="1"
         headerType="lastPostElement"
         nickName="Beheni"
         avatar={ProfilePicture}
@@ -38,6 +39,7 @@ export default function Home() {
       ></Post>
 
       <Post
+        id="2"
         headerType="postHeader"
         nickName="Beheni"
         avatar={ProfilePicture}
