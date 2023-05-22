@@ -39,3 +39,25 @@
 .tox .tox-tbtn__select-label {
     font-family: "Poppins", sans-serif !important;
 }
+
+.EditorDiv {
+    position: relative;
+}
+
+.EditorSubmitButton {
+    position: absolute;
+    top: 6px;
+    z-index: 2;
+    right: 10px;
+    border:none;
+    background-color: transparent;
+}
+
+.EditorSubmitButton:hover {
+    background-color: white;
+    border-radius: 10%;
+}
+
+.EditorSubmitImg {
+    height: 24px;
+}

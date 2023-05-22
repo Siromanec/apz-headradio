@@ -1,3 +1,4 @@
+import SendIcon from "../data/send-icon.svg";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef } from "react";
 import "../css/Editor.css";
@@ -15,7 +16,7 @@ export default function EditorWrapper() {
     // }
   };
   return (
-    <div>
+    <div className="EditorDiv">
       <Editor
         apiKey={tinymceAPIKey}
         initialValue=""
@@ -25,6 +26,7 @@ export default function EditorWrapper() {
           statusbar: false,
           quickbars_insert_toolbar: false,
           quickbars_selection_toolbar: false,
+          quickbars_image_toolbar: false,
           plugins: ["quickbars"],
           toolbar: "blocks | bold italic strikethrough | quickimage",
           content_css: "../css/Editor.css",
@@ -40,7 +42,7 @@ export default function EditorWrapper() {
         }}
         //   onChange={onChange}
       />
-      <button onClick={save}>Submit</button>
+      <button className="EditorSubmitButton" onClick={save}><img className="EditorSubmitImg" src={SendIcon}></img></button>
     </div>
   );
 }
