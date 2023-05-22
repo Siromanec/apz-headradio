@@ -3,6 +3,7 @@ import openFullIcon from "../data/three-dots.svg"
 import likeIconEmpty from "../data/emptyHeart.svg"
 import likeIconFull from "../data/redHeart.svg"
 import { useEffect, useState } from "react";
+import parse from 'html-react-parser';
 
 async function setLikeHandler(data) {
     return fetch("http://localhost:8000/fetch-like", {
@@ -32,7 +33,7 @@ async function hasLikedHandler(data) {
 
 }
 
-export default function PostBase({ images, text, date, nlikes, idpost, username}) {
+export default function PostBase({ images, article, date, nlikes, idpost, username}) {
     const [hasLiked, setHasLiked] = useState(false);
     useEffect(()=>{setHasLiked(hasLikedHandler({"post": idpost , "username": username}));}, [])
     const [nLikes, setNLikes] = useState(nlikes);
@@ -55,7 +56,7 @@ export default function PostBase({ images, text, date, nlikes, idpost, username}
             <div className="textPart">
                 <div className="fullText">
                     <div className="postText">
-                        <p>{text}</p>
+                        {parse(article)}
                     </div>
                     <button className="openFullTextBtn"><img className="fullTextImg" src={openFullIcon}></img></button>
                 </div>

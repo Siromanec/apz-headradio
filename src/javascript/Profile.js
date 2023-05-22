@@ -25,6 +25,13 @@ function getSavedUserName() {
 //     </div>
 //   );
 // }
+function Posts({posts, postOrder}){
+  console.log(posts)
+  const listItems = postOrder.map((number) =>
+  <Post post={posts.data[number]} images={posts.images[number]}></Post>
+);
+return <>{listItems}</>
+}
 
 const formatShortWeekday = (locale, date) => {
   return date.toLocaleDateString(locale, { weekday: "short" }).slice(0, 1);
@@ -68,6 +75,7 @@ export default function Profile() {
   function handleShowFriends(){
     console.log(friends)
   }
+  console.log(currentPost)
   // posts.then(console.log(posts))
   // getUserPosts("user");
 
@@ -116,7 +124,7 @@ export default function Profile() {
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
-      <Post props={currentPost}></Post>
+      <Post post={currentPost} /*images={currentPost}*/ headerType="lastPostElement"></Post>
       <div className='calendar-container'>
         <Calendar onChange={setDate}
           value={date}
@@ -144,6 +152,7 @@ export default function Profile() {
       <p className="text-center">
         <span className="bold">Selected Date:</span> {date.toDateString()}
       </p>
+      <Posts posts={posts} postOrder={postOrder.slice(1, postOrder.length)}></Posts>
     </main>
   );
 }
