@@ -82,7 +82,7 @@ def update_query(table, values, arguments=None):
 
 TABLES = ["user", "post", "postimages", "userlikedpost", "isfriend"]
 COLUMNS = {table: get_columns(table) for table in TABLES}
-# print(COLUMNS)
+print(COLUMNS)
 
 #  r.post("http://localhost:8000/fetch-add-user", json={"username": "@redn1njaA", "email": "ostap.seryvko@ucu.edu.ua", "profilepicture": "None", "currmusic": "None", "password": "123"})
 @app.post("/fetch-add-user")
@@ -198,13 +198,34 @@ async def fetch_delete_post(request: Request, response: Response):
     response.status_code = status.HTTP_200_OK
 
 
+@app.post("/fetch-has-liked")
+async def fetch_has_liked(request: Request, response: Response):
+    item = await request.json()
+    username, post = item["username"], item["post"]
+    hasliked = select_query("userlikedpost", f"`username` = '{username}' and `idPost` = {post}")
+    response.status_code = status.HTTP_200_OK
+    if hasliked == []:
+        return JSONResponse(content={"liked": "0"})
+    else:
+        return JSONResponse(content={"liked": "1"})
+        
+
 @app.post("/fetch-like")
 async def fetch_like(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
-    post_id, username, add = items[0], items[1], items[2]
+    post_id, username= items[0], items[1]
+    hasliked = select_query("userlikedpost", f"`username` = '{username}' and `idPost` = {post_id}")
+    if hasliked == []:
+        add = 1
+    else:
+        add = -1
     post = list(select_query(
         "post", f"`idpost` = {post_id} AND `username`= '{username}'")[0])
+    if add == 1:
+        insert_query("userlikedpost", {"userUsername": username, "idPost": post_id, "authorUsername": post[1]})
+    else:
+        delete_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post_id}")
     print(post)
     post[-1] = max(post[-1] + add, 0)
     update_query(
