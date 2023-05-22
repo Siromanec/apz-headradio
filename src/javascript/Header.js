@@ -8,18 +8,20 @@ import SignOutImg from "../data/sign_out.svg"
 
 function SearchInput() {
   return <div class="search">
-      <input type="search" placeholder="Search ..."/>
-      <img className="searchButton" src={SearchInputImg}/>
-        </div>;
+    <input type="search" placeholder="Search ..." />
+    <img className="searchButton" src={SearchInputImg} />
+  </div>;
 }
 export default function Header() {
   return (
     <header>
-        <div className="titles">
-      <h3 className="pretitle">EVERYTHING IS PERSONAL. INCLUDING THIS BLOG.</h3>
-      <h1 className="title">HeadRadio</h1>
-        </div>
+      <div className="titles">
+        <h3 className="pretitle">EVERYTHING IS PERSONAL. INCLUDING THIS BLOG.</h3>
+        <h1 className="title">HeadRadio</h1>
+      </div>
       <div className="headerLinkWrapper">
+        <div className="emptyPart">
+        </div>
         <Link to="/home" className="headerLink">
           Home
         </Link>
@@ -30,9 +32,13 @@ export default function Header() {
           About
         </Link>
         <SearchInput />
-          <button className="signOutButton">
-            <img className="signOutImg" src={SignOutImg}/>
-          </button>
+        <div className="emptyPart">
+          <div className="getOut">
+            <button className="signOutButton">
+              <img className="signOutImg" src={SignOutImg} />
+            </button>
+          </div>
+        </div>
       </div>
     </header>
   );

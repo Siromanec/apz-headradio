@@ -13,7 +13,7 @@ a:active {
     height: 50px;
 }
 
-.searchButton { 
+.searchButton {
     cursor: pointer;
 }
 
@@ -26,6 +26,19 @@ a:active {
     border: solid 1px;
     border-left: 0;
     border-right: 0;
+    /* min-width: 20%; */
+
+
+}
+
+.getOut {
+    margin-left: 60%;
+    margin-right: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: right;
+    min-width: 50px;
+    max-width: 100px;
 }
 
 .settingsIcon {
@@ -39,6 +52,7 @@ a:active {
     align-items: center;
     justify-content: center;
     width: 20%;
+
     /* flex-grow: 1; */
     font-family: 'Poppins', sans-serif;
     font-style: normal;
@@ -96,6 +110,8 @@ header div input::-webkit-search-cancel-button {
     /*gap: 10px;*/
     height: 60px;
     width: fit-content;
+    min-width: 20%;
+
 }
 
 header {
@@ -106,6 +122,9 @@ header {
 .signOutButton {
     border: none;
     background: none;
-    margin-left: 120px;
     cursor: pointer;
+}
+
+.emptyPart {
+    width: 20%;
 }
