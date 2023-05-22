@@ -67,8 +67,8 @@ def delete_query(table, arguments=None):
 
 
 def update_query(table, values, arguments=None):
-    ordered_values = [values[el] if el in values.keys() else None for el in COLUMNS[table]]
-
+    ordered_values = ", ".join([f"`{key}`={val}" for key, val in values.items()])
+    print(ordered_values)
     if arguments:
         q = f"UPDATE {table} SET {ordered_values} WHERE {arguments}"
         print(q)
@@ -197,7 +197,7 @@ async def fetch_delete_post(request: Request, response: Response):
 async def fetch_has_liked(request: Request, response: Response):
     item = await request.json()
     username, post = item["username"], item["post"]
-    hasliked = select_query("userlikedpost", f"`username` = '{username}' and `idPost` = {post}")
+    hasliked = select_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post}")
     response.status_code = status.HTTP_200_OK
     if hasliked == []:
         return JSONResponse(content={"liked": "0"})
@@ -209,24 +209,28 @@ async def fetch_has_liked(request: Request, response: Response):
 async def fetch_like(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
+    print(items)
     post_id, username= items[0], items[1]
-    hasliked = select_query("userlikedpost", f"`username` = '{username}' and `idPost` = {post_id}")
+    hasliked = select_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post_id}")
     if hasliked == []:
         add = 1
     else:
         add = -1
     post = list(select_query(
         "post", f"`idpost` = {post_id} AND `username`= '{username}'")[0])
+    print(post)
     if add == 1:
         insert_query("userlikedpost", {"userUsername": username, "idPost": post_id, "authorUsername": post[1]})
+        res = JSONResponse(content={"liked": "1", "nlikes": max(post[-1] + add, 0)})
     else:
         delete_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post_id}")
+        res = JSONResponse(content={"liked": "0", "nlikes": max(post[-1] + add, 0)})
     print(post)
     post[-1] = max(post[-1] + add, 0)
     update_query(
-        "post", f"`nlikes`={post[-1]}", f"`idpost` = {post_id} AND `username`= '{username}'")
+        "post", {'nlikes':post[-1]}, f"`idpost` = {post_id} AND `username`= '{username}'")
     response.status_code = status.HTTP_200_OK
-
+    return res
 
 @app.get("/fetch-main-page")
 async def main(request: Request, response: Response):
