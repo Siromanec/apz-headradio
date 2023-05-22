@@ -12,21 +12,24 @@ a:active {
 footer {
     background-color: #E8DDCA;
     border-top: 1px solid #755139;
-    /* border-bottom: ; */
-    padding: 10px 40px;
+    padding: 10px 0px 10px 0px;
     border-right: 0;
     border-left: 0;
-    box-shadow: 0 50vh 0 50vh #E8DDCA;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
 .footerDiv {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .footerLinkWrapper {
     display: flex;
     gap: 100px;
+    margin-left: 70%;
+
 }
 
 .footerLink {

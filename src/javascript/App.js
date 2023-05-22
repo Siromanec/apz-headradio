@@ -40,7 +40,9 @@ export default function App() {
     !(
       location.pathname === "/login" ||
       location.pathname === "/about" ||
-      location.pathname === "/signup"
+      location.pathname === "/signup"||
+      location.pathname !== "/home" || // not working idk
+      !location.pathname.startsWith("/profile")
     )
   ) {
     navigate("/login");

@@ -15,7 +15,7 @@ import "../css/Calendar.css"
 // const loremIpsum = "asdc"
 
 async function getUserPosts(username) {
-  
+
   await fetch(`http://localhost:8000/fetch-show-user/{username}`, {
     method: "GET",
     headers: {
@@ -48,11 +48,26 @@ const formatShortWeekday = (locale, date) => {
   return date.toLocaleDateString(locale, { weekday: 'short' }).slice(0, 1);
 };
 
+const friendHandler = async () => {
+  return await fetch(`http://localhost:8000/fetch-show-user/${sessionStorage.getItem("username")}?username=${sessionStorage.getItem("username")}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((data)=>data.json())
+  .catch((data)=>data.json());
+}
+
 export default function Profile() {
 
   const [photo, setPhoto] = useState(ProfilePicture)
   const [show, setShow] = useState(false)
   const [date, setDate] = useState(new Date());
+  const [friends, setFriends] = useState();
+  const showFriendHandler = async () => {
+    const user = await friendHandler();
+    console.log(user["friends"]);
+  }
   const songName = "В очах  •  Skryabin"
   const submitHandler = (file) => {
     const formData = new FormData();
@@ -83,7 +98,7 @@ export default function Profile() {
               <span>POSTS</span>
               <span className="numbers">23</span>
             </div>
-            <div className="Friends">
+            <div className="Friends" onClick={showFriendHandler}>
               <span>FRIENDS</span>
               <span className="numbers">10</span>
             </div>

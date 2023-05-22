@@ -6,6 +6,7 @@ import { useState } from "react";
 import SearchInputImg from "../data/search_button.svg";
 import SignOutImg from "../data/sign_out.svg";
 
+
 function SearchInput() {
   return <div class="search">
     <input type="search" placeholder="Search..." />
@@ -21,6 +22,8 @@ function SearchInput() {
 //   );
 // }
 export default function Header({ onSignOut, isSignedOut }) {
+  const [search, setSearch] = useState();
+
   const lane = (
     <div className="headerLinkWrapper">
       <div className="emptyPart">
