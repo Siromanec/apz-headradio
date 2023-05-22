@@ -4,28 +4,12 @@ import PostBase from "./PostBase.js";
 import ProfilePicture from "../data/profile.jpg";
 import PostHeader from "./PostHeader.js";
 import Post from "./Post.js";
+import TripleFriendSong from "./TripleFriendSong.js";
 
 export default function Home() {
   return (
     <div>
-      {/* <PostHeader
-        headerType="lastPostElement"
-        nickName="Beheni"
-        avatar={ProfilePicture}
-      ></PostHeader>
-      <PostBase
-        numberLikes={22}
-        date={"2 MAY 2023"}
-        text={
-          "Alonso is greatest driver of all time. Everyone who thinks different — is wrong. He won championships in bad cars and always showed great results. Alonso FTW"
-        }
-      ></PostBase> */}
-
-      <FriendSongElement
-        songName="Окситоцин  •  Ницо Потворно"
-        avatar={ProfilePicture}
-      ></FriendSongElement>
-
+      <TripleFriendSong></TripleFriendSong>
       <Post
         headerType="lastPostElement"
         nickName="Beheni"

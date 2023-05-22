@@ -93,7 +93,6 @@ export default function Profile() {
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
-      <PostHeader headerType="lastPostElement" nickName="Beheni" avatar={ProfilePicture}></PostHeader>
       <div className='calendar-container'>
         <Calendar onChange={setDate}
           value={date}
