@@ -31,7 +31,7 @@ export default function Header({ onSignOut, isSignedOut }) {
       <Link to="/home" className="headerLink">
         Home
       </Link>
-      <Link to="/profile" className="headerLink">
+      <Link to={`/profile/${sessionStorage.getItem("username")}`}  className="headerLink">
         Profile
       </Link>
       <Link to="/about" className="headerLink">
