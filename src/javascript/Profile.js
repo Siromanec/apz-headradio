@@ -11,14 +11,10 @@ import Calendar from "react-calendar";
 import "../css/Profile.css";
 import "../css/Calendar.css";
 import { Await, useLoaderData, useParams } from "react-router-dom";
-// const loremIpsumHead = "Lorem ipsum"
-// // const loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-// const loremIpsum = "asdc"
 
-async function getUserPosts(username) {}
+
 function getSavedUserName() {
   return sessionStorage.getItem("username");
-}
 // function Posts({ posts }) {
 //   const listItems = posts.map((post) => (
 //     <Post text={post.text} header={post.header}></Post>
@@ -33,9 +29,12 @@ function getSavedUserName() {
 //     </div>
 //   );
 // }
+
 const formatShortWeekday = (locale, date) => {
   return date.toLocaleDateString(locale, { weekday: "short" }).slice(0, 1);
 };
+
+
 
 export default function Profile() {
   const [photo, setPhoto] = useState(ProfilePicture);
@@ -43,11 +42,8 @@ export default function Profile() {
   const [date, setDate] = useState(new Date());
   const {username, posts, friends} = useLoaderData();
   const postOrder = Object.keys(posts.data).sort((a, b) => b-a)
-  // const [userPosts, setUserPosts] = useState(new Date());
   let currentPost = postOrder[-1]
   const songName = "В очах  •  Skryabin";
-
-//  const { username } = useParams()
 
   const submitHandler = (file) => {
     const formData = new FormData();
@@ -71,7 +67,9 @@ export default function Profile() {
   };
   // console.log(posts);
   console.log(Object.keys(posts.data).sort((a, b) => b-a))
-  
+  function handleShowFriends(){
+    console.log(friends)
+  }
   // posts.then(console.log(posts))
   // getUserPosts("user");
 
@@ -104,7 +102,7 @@ export default function Profile() {
               <span>POSTS</span>
               <span className="numbers">23</span>
             </div>
-            <div className="Friends">
+            <div className="Friends" onClick={handleShowFriends}>
               <span>FRIENDS</span>
               <span className="numbers">10</span>
             </div>
@@ -114,14 +112,8 @@ export default function Profile() {
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
-      <PostHeader
-        headerType="lastPostElement"
-        nickName="Beheni"
-        avatar={ProfilePicture}
-      ></PostHeader>
-      <div className="calendar-container">
-        <Calendar
-          onChange={setDate}
+      <div className='calendar-container'>
+        <Calendar onChange={setDate}
           value={date}
           maxDetail="month"
           showDoubleView
