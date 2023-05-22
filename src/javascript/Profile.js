@@ -11,16 +11,12 @@ import Calendar from "react-calendar";
 import "../css/Profile.css";
 import "../css/Calendar.css";
 import { Await, useLoaderData, useParams } from "react-router-dom";
-
+import Post from "./Post.js"
 
 function getSavedUserName() {
   return sessionStorage.getItem("username");
-// function Posts({ posts }) {
-//   const listItems = posts.map((post) => (
-//     <Post text={post.text} header={post.header}></Post>
-//   ));
-//   return <div>{listItems}</div>;
-// }
+}
+
 // function Post({ text, header }) {
 //   return (
 //     <div className="post">
@@ -41,8 +37,10 @@ export default function Profile() {
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const {username, posts, friends} = useLoaderData();
+  // console.log(posts)
   const postOrder = Object.keys(posts.data).sort((a, b) => b-a)
-  let currentPost = postOrder[-1]
+  let currentPost = posts.data[postOrder[0]]
+  console.log(currentPost)
   const songName = "В очах  •  Skryabin";
 
   const submitHandler = (file) => {
@@ -74,6 +72,12 @@ export default function Profile() {
   // getUserPosts("user");
 
   // pop first, show other
+  // function Posts({ posts }) {
+//   const listItems = posts.map((post) => (
+//     <Post text={post.text} header={post.header}></Post>
+//   ));
+//   return <div>{listItems}</div>;
+// }
   return (
     <main>
       <section className="profileInfo">
@@ -83,7 +87,7 @@ export default function Profile() {
             <img src={photo} className="profilePicture" />
             {show ? <PhotoChange onClick={submitHandler} /> : null}
           </div>
-          <span className="tag">@beheni</span>
+          <span className="tag">@{username}</span>
         </div>
         <div className="headRadio">
           <div className="Song">
@@ -100,11 +104,11 @@ export default function Profile() {
           <div className="Stats">
             <div className="Posts">
               <span>POSTS</span>
-              <span className="numbers">23</span>
+              <span className="numbers">{postOrder.length}</span>
             </div>
             <div className="Friends" onClick={handleShowFriends}>
               <span>FRIENDS</span>
-              <span className="numbers">10</span>
+              <span className="numbers">{friends.length}</span>
             </div>
           </div>
         </div>
@@ -112,6 +116,7 @@ export default function Profile() {
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
+      <Post props={currentPost}></Post>
       <div className='calendar-container'>
         <Calendar onChange={setDate}
           value={date}

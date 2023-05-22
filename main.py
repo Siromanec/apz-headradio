@@ -113,7 +113,7 @@ async def fetch_add(request: Request, response: Response):
         return JSONResponse(content={"token": "500"})
 
 
-@app.post("/fetch-show-user/{username}")
+@app.get("/fetch-show-user/{username}")
 async def fetch_show_profile(username: str, response: Response):
     print(username)
     # item = await request.json()
@@ -156,8 +156,9 @@ async def fetch_no_friend(request: Request, response: Response):
 @app.post("/fetch-modify-profile-photo")
 async def fetch_photo(request: Request, response: Response):
     item = await request.json()
-    items = list(item.values())
-    username, picturelink = items[0], items[1]
+    # items = list(item.values())
+    print(item)
+    username, picturelink = item["username"], item[1]
     update_query(
         "user", f"`profilePicture`='{picturelink}'", f"`username`='{username}'")
     response.status_code = status.HTTP_200_OK

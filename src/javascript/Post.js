@@ -9,14 +9,14 @@ import "../css/Post.css";
 
 
 export default function Post({
-  id,
+  idpost,
   headerType,
-  nickName,
+  username,
   avatar,
-  photos,
+  images,
   text,
-  date,
-  numberLikes,
+  added,
+  nlikes,
 }) {
 
   return (
@@ -25,12 +25,12 @@ export default function Post({
         <PostHeader
           className="PostHeader"
           headerType={headerType}
-          nickName={nickName}
+          username={username}
           avatar={avatar}
         ></PostHeader>
       </div>
 
-      <PostBase numberLikes={numberLikes} date={date} text={text} id={id} username={nickName}></PostBase>
+      <PostBase nlikes={nlikes} date={added} text={text} id={idpost} username={username}></PostBase>
     </div>
   );
 }

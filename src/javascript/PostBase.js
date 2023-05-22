@@ -32,12 +32,12 @@ async function hasLikedHandler(data) {
 
 }
 
-export default function PostBase({ photos, text, date, numberLikes, id, username}) {
+export default function PostBase({ images, text, date, nlikes, idpost, username}) {
     const [hasLiked, setHasLiked] = useState(false);
-    useEffect(()=>{setHasLiked(hasLikedHandler({"post": id , "username": username}));}, [])
-    const [nLikes, setNLikes] = useState(numberLikes);
+    useEffect(()=>{setHasLiked(hasLikedHandler({"post": idpost , "username": username}));}, [])
+    const [nLikes, setNLikes] = useState(nlikes);
     const likeHandler = async () => {
-        const like = await setLikeHandler({"idpost": id , "username": username})
+        const like = await setLikeHandler({"idpost": idpost , "username": username})
             .then((data) => data.json())
             .catch((data) => data.json());
         if (like["liked"] === "0") {
@@ -62,7 +62,7 @@ export default function PostBase({ photos, text, date, numberLikes, id, username
                 <div className="postFooter">
                     <span className="postDate">{date}</span>
                     <div className="likes">
-                        <span className="numberLikes">{nLikes}</span>
+                        <span className="nlikes">{nLikes}</span>
                         <button className="likeBtn"><img className="heart" src={hasLiked ? likeIconFull : likeIconEmpty} onClick={likeHandler}></img></button>
                     </div>
                 </div>
