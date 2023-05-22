@@ -1,0 +1,37 @@
+.AboutGeneralDiv {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  font-family: "Poppins", sans-serif;
+}
+
+.AboutLabelPictureDiv {
+  position: relative;
+}
+
+.AboutLabelDiv {
+  border: 1px solid #755139;
+  background-color: #ffffff;
+  display: flex;
+  padding: 10px 70px;
+  width: fit-content;
+  position: absolute;
+  top: -20px;
+}
+
+.AboutLabel {
+  font-size: 18px;
+}
+
+.AboutPicture {
+  height: 450px;
+  border: 1px solid #755139;
+}
+
+.AboutText {
+  font-family: "Playfair Display";
+  font-weight: bold;
+  font-size: 30px;
+  text-align: right;
+  margin-top: 10px;
+}

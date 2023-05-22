@@ -1,0 +1,80 @@
+.post {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* margin: 5%; */
+    /* margin-left: 20%;
+    margin-right: 20%; */
+
+}
+.photoPart {
+    box-sizing: border-box;
+    background-color: #E8DDCA;
+    height: 300px;
+    width: 100%;
+    border: solid #755139 1px;
+    padding: 5%
+}
+
+.textPart {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    border: solid #755139 1px;
+    height: 300px;
+    width: 100%;
+    background-color: white;
+    border-top: 0;
+    padding: 3% 5%;
+}
+
+.postFooter {
+    /* border: solid red 1px; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    /* border: solid yellow 1px; */
+    font-family: "Poppins", sans-serif;
+    border-top: solid #755139 1px;
+    padding-top: 1%;
+}
+
+
+.postText {
+    height: 70%;
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    font-size: 20px;
+}
+
+.openFullTextBtn {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.fullTextImg {
+    width: 20px;
+    height: 20px;
+}
+
+.likeBtn {
+    background-color: white;
+    border: none;
+}
+
+.likes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.numberLikes {
+    font-size: 25px;
+}
+
+.postDate {
+    font-size: 20px;
+}

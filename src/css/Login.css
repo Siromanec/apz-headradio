@@ -1,0 +1,86 @@
+.login-wrapper {
+    border: solid 1px #755139;
+    width: fit-content;
+    padding: 20px 20px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #E8DDCA;
+    margin-bottom: 40px;
+    border-radius: 44px;
+}
+
+.login-wrapper h1 {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 47px;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.login-wrapper label {
+    display: flex;
+    flex-direction: column;
+    column-gap: 5px;
+}
+
+.login-wrapper label p {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.login-wrapper label input {
+    width: 300px;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 20px;
+    padding: 0.25em 0.5em 0.25em 1em;
+    color: #392619;
+}
+
+.login-wrapper div button {
+    background-color: #755139;
+    color: white;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 5px 90px;
+    border-radius: 25px;
+}
+
+.login-wrapper label input:focus {
+    outline: none;
+    border: solid 1px #755139;
+}
+
+.signup {
+    font-family: 'Poppins', sans-serif;
+}
+
+.login {
+    font-family: 'Poppins', sans-serif;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+}

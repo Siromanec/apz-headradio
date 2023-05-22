@@ -1,0 +1,38 @@
+a:link,
+a:visited {
+    text-decoration: none;
+    color: #755139
+}
+
+a:hover,
+a:active {
+    text-decoration: underline;
+}
+
+footer {
+    background-color: #E8DDCA;
+    border-top: 1px solid #755139;
+    padding: 10px 0px 10px 0px;
+    border-right: 0;
+    border-left: 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footerDiv {
+    display: flex;
+    justify-content: space-around;
+}
+
+.footerLinkWrapper {
+    display: flex;
+    gap: 100px;
+    margin-left: 70%;
+
+}
+
+.footerLink {
+    font-family: "Poppins", sans-serif;
+    color: #755139;
+}
