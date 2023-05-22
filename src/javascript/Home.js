@@ -1,4 +1,7 @@
 import React from "react"
+import FriendSongElement from "./FriendSongElement.js"
+import Avatar from "../data/profile.jpg"
+
 export default function Home (){
-    return <h1>Welcome home</h1>
+    return <FriendSongElement songName="Окситоцин  •  Ницо Потворно" avatar={Avatar}></FriendSongElement>
 }
