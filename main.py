@@ -95,12 +95,10 @@ async def fetch_add(request: Request, response: Response):
     item = await request.json()
     username = item["username"]
     password = item["password"]
-    # email = item["email"]
-
     token = str(int(hashlib.sha256((username.encode()+password.encode())).hexdigest(), 16))
     item["password"] = token
-    # is_in_db = select_query("user", f"`username`= '{username}'")
-    is_in_db = []
+    is_in_db = select_query("user", f"`username`= '{username}'")
+    # is_in_db = []
     if is_in_db == []:
         insert_query("user", item)
         response.status_code = status.HTTP_200_OK
@@ -130,8 +128,7 @@ async def fetch_show_profile(request: Request, response: Response):
 @app.post("/fetch-add-friend")
 async def fetch_friend(request: Request, response: Response):
     item = await request.json()
-    items = list(item.values())
-    insert_query('isfriend', items)
+    insert_query('isfriend', item)
     response.status_code = status.HTTP_200_OK
 
 
@@ -166,14 +163,13 @@ async def fetch_photo(request: Request, response: Response):
 @app.post("/fetch-new-post")
 async def fetch_new_post(request: Request, response: Response):
     item = await request.json()
-    items = list(item.values)
-    username = items[1]
+    username = item["username"]
     try:
-        new_id = select_query("post", f"`username`='{username}'")[-1][-1]
+        new_id = select_query("post", f"`username`='{username}'")[-1][0]
     except:
-        new_id = 1
+        new_id = 0
     new_id += 1
-    items = [new_id] + items + [datetime.now(), datetime.now(), 0]
+    items = {"idpost":new_id, "username": username, "article" : item["article"],  "added":datetime.now(), "modified":datetime.now(), "nlikes":0}
     insert_query("post", items)
     response.status_code = status.HTTP_200_OK
 
