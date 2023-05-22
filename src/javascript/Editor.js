@@ -4,12 +4,24 @@ import { useRef } from "react";
 import "../css/Editor.css";
 import { tinymceAPIKey } from "./APIKeys";
 // import { Global } from "@emotion/core";
+
+async function sendPostContents(credentials) {
+  return fetch("http://localhost:8000/fetch-new-post", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  }).then((data) => data.json());
+}
+
 export default function EditorWrapper() {
   const editorRef = useRef(null);
   const save = () => {
     // if (editorRef.current) {
     console.log(editorRef);
     const content = editorRef.current.getContent();
+    sendPostContents({content})
     editorRef.current.setContent("");
     // an application would save the editor content to the server here
     console.log(content);

@@ -24,6 +24,7 @@ export default function Login({ setToken, setSavedUserName }) {
       username,
       password,
     });
+    console.log(token);
     setToken(token);
     setSavedUserName(username);
     navigate("/home");
@@ -42,6 +43,9 @@ export default function Login({ setToken, setSavedUserName }) {
           <input
             type="password"
             onChange={(e) => setPassword(e.target.value)}
+            // minLength={8}
+            // maxLength={8}
+
           />
         </label>
         <div>
