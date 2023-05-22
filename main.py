@@ -47,13 +47,8 @@ def select_query(table, arguments=None):
 
 def insert_query(table, values):
     datacount = ("?, "*len(COLUMNS[table])).strip(", ")
-
     q = f"INSERT INTO {table} ({cols_to_string(COLUMNS[table])}) VALUES ({datacount})"
-    print(values)
-    print(COLUMNS[table])
-    print([values[el] if el in values.keys() else None for el in COLUMNS[table]])
     ordered_values = [values[el] if el in values.keys() else None for el in COLUMNS[table]]
-    print(q)
     cursor.execute(q, ordered_values)
     conn.commit()
     result = cursor.fetchall()
@@ -87,30 +82,40 @@ def update_query(table, values, arguments=None):
 
 TABLES = ["user", "post", "postimages", "userlikedpost", "isfriend"]
 COLUMNS = {table: get_columns(table) for table in TABLES}
-# print(COLUMNS)
+print(COLUMNS)
 
 #  r.post("http://localhost:8000/fetch-add-user", json={"username": "@redn1njaA", "email": "ostap.seryvko@ucu.edu.ua", "profilepicture": "None", "currmusic": "None", "password": "123"})
 @app.post("/fetch-add-user")
 async def fetch_add(request: Request, response: Response):
     item = await request.json()
-    username = item["username"]
-    password = item["password"]
-    token = str(int(hashlib.sha256((username.encode()+password.encode())).hexdigest(), 16))
-    item["password"] = token
-    is_in_db = select_query("user", f"`username`= '{username}'")
-    # is_in_db = []
-    if is_in_db == []:
-        insert_query("user", item)
-        response.status_code = status.HTTP_200_OK
-    else:
-        response.status_code = status.HTTP_400_BAD_REQUEST
+    try:
+        username = item["username"]
+        password = item["password"]
+        email = item["email"]
+        token = str(int(hashlib.sha256((username.encode()+password.encode())).hexdigest(), 16))
+        item["password"] = token
+        user_exists = select_query("user", f"`username`= '{username}'") 
+        email_exists = select_query("user", f"`email` = '{email}'")
+        
+        if user_exists == [] and email_exists == []:
+            insert_query("user", item)
+            print(token)
+            response.status_code = status.HTTP_200_OK
+            return JSONResponse(content={"token": token})
+        elif user_exists!= []:
+            response.status_code = status.HTTP_400_BAD_REQUEST
+            return JSONResponse(content={"token": "400"})
+        else:
+            response.status_code = status.HTTP_403_FORBIDDEN
+            return JSONResponse(content={"token": "403"})
+    except:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return JSONResponse(content={"token": "500"})
 
 
-@app.get("/fetch-show-user")
-async def fetch_show_profile(request: Request, response: Response):
-    item = await request.json()
-    items = list(item.values())
-    username = items[0]
+@app.get("/fetch-show-user/{username}")
+async def fetch_show_profile(username: str, response: Response):
+    # item = await request.json()
     user_data = select_query("user", f"`username`= '{username}'")
     posts = select_query("post", f"`username`= '{username}'")
     post_ids = {post[0]: post[2:] for post in posts}
@@ -164,10 +169,7 @@ async def fetch_photo(request: Request, response: Response):
 async def fetch_new_post(request: Request, response: Response):
     item = await request.json()
     username = item["username"]
-    try:
-        new_id = select_query("post", f"`username`='{username}'")[-1][0]
-    except:
-        new_id = 0
+    new_id = select_query("post")[-1][0]
     new_id += 1
     items = {"idpost":new_id, "username": username, "article" : item["article"],  "added":datetime.now(), "modified":datetime.now(), "nlikes":0}
     insert_query("post", items)
@@ -191,13 +193,34 @@ async def fetch_delete_post(request: Request, response: Response):
     response.status_code = status.HTTP_200_OK
 
 
+@app.post("/fetch-has-liked")
+async def fetch_has_liked(request: Request, response: Response):
+    item = await request.json()
+    username, post = item["username"], item["post"]
+    hasliked = select_query("userlikedpost", f"`username` = '{username}' and `idPost` = {post}")
+    response.status_code = status.HTTP_200_OK
+    if hasliked == []:
+        return JSONResponse(content={"liked": "0"})
+    else:
+        return JSONResponse(content={"liked": "1"})
+        
+
 @app.post("/fetch-like")
 async def fetch_like(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
-    post_id, username, add = items[0], items[1], items[2]
+    post_id, username= items[0], items[1]
+    hasliked = select_query("userlikedpost", f"`username` = '{username}' and `idPost` = {post_id}")
+    if hasliked == []:
+        add = 1
+    else:
+        add = -1
     post = list(select_query(
         "post", f"`idpost` = {post_id} AND `username`= '{username}'")[0])
+    if add == 1:
+        insert_query("userlikedpost", {"userUsername": username, "idPost": post_id, "authorUsername": post[1]})
+    else:
+        delete_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post_id}")
     print(post)
     post[-1] = max(post[-1] + add, 0)
     update_query(

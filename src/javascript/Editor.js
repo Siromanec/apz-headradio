@@ -4,15 +4,33 @@ import { useRef } from "react";
 import "../css/Editor.css";
 import { tinymceAPIKey } from "./APIKeys";
 // import { Global } from "@emotion/core";
+function getSavedUserName(username) {
+  return sessionStorage.getItem("username");
+}
+
+async function sendPostContents(articleData) {
+  return fetch("http://localhost:8000/fetch-new-post", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(articleData),
+  }).then((data) => data.json());
+}
+
 export default function EditorWrapper() {
   const editorRef = useRef(null);
-  const save = () => {
+  const save = async () => {
     // if (editorRef.current) {
-    console.log(editorRef);
+    // console.log(editorRef);
+    // console.log(content);
     const content = editorRef.current.getContent();
     editorRef.current.setContent("");
+
+    const response = await sendPostContents({article: content, username: getSavedUserName()})
+    console.log(response)
+
     // an application would save the editor content to the server here
-    console.log(content);
     // }
   };
   return (
@@ -36,7 +54,7 @@ export default function EditorWrapper() {
           hidden_input: true,
           setup: function (editor) {
             editor.on("submit", function (e) {
-              console.log("submit event", e);
+              // console.log("submit event", e);
             });
           },
         }}

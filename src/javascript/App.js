@@ -27,9 +27,7 @@ function getToken() {
   const userToken = JSON.parse(tokenString);
   return userToken?.token;
 }
-function getSavedUserName(username) {
-  return sessionStorage.getItem("username");
-}
+
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();

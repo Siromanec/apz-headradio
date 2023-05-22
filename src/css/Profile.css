@@ -108,6 +108,11 @@ main {
     font-size: 22px;
     line-height: 40px;
     text-align: center;
+    cursor: pointer;
+}
+
+.spotify-icon {
+    cursor: pointer;
 }
 
 .numbers {

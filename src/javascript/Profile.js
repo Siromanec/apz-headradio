@@ -13,6 +13,16 @@ import "../css/Calendar.css"
 // const loremIpsumHead = "Lorem ipsum"
 // // const loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 // const loremIpsum = "asdc"
+
+async function getUserPosts(username) {
+  
+  await fetch(`http://localhost:8000/fetch-show-user/{username}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((data) => data.json());
+}
 function Posts({ posts }) {
   const listItems = posts.map((post) => (
     <Post text={post.text} header={post.header}></Post>
@@ -37,26 +47,7 @@ function AddContent({ onClick }) {
 const formatShortWeekday = (locale, date) => {
   return date.toLocaleDateString(locale, { weekday: 'short' }).slice(0, 1);
 };
-// function Editor() {
-//   const loremIpsumHead = "Lorem ipsum";
-//   const loremIpsum =
-//     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-//   console.log(loremIpsumHead);
-//   const [posts, setPosts] = useState(
-//     Array({ text: loremIpsum, header: loremIpsumHead })
-//   );
-//   function handleClick() {
-//     const nextPosts = posts.slice();
-//     nextPosts.push({ text: loremIpsum, header: loremIpsumHead });
-//     setPosts(nextPosts);
-//   }
-//   return (
-//     <div>
-//       <Posts posts={posts}></Posts>
-//       <AddContent onClick={handleClick}></AddContent>
-//     </div>
-//   );
-// }
+
 export default function Profile() {
 
   const [photo, setPhoto] = useState(ProfilePicture)
@@ -82,10 +73,10 @@ export default function Profile() {
           <span className="tag">@beheni</span>
 
         </div>
-        <div className="headRadio" onClick={handleClick}>
+        <div className="headRadio">
           <div className="Song">
-            <img src={spotifyIcon} style={{ width: "40px" }}></img>
-            <div className="songName">{songName}</div>
+            <img className="spotify-icon" src={spotifyIcon} style={{ width: "40px" }} onClick={handleClick}></img>
+            <div className="songName" onClick={handleClick}>{songName}</div>
           </div>
           <div className="Stats">
             <div className="Posts">
@@ -111,18 +102,18 @@ export default function Profile() {
           locale="en"
           minDetail="month"
           tileClassName={({ date, view }) => {
-            console.log(date)
-            console.log(date.toDateString())
+            // console.log(date)
+            // console.log(date.toDateString())
             if (date.getDay() === 21 &&
-                date.getMonth() === 5 &&
-                date.getFullYear() === 2023) {
-                  return 'low'
-                }
+              date.getMonth() === 5 &&
+              date.getFullYear() === 2023) {
+              return 'low'
+            }
             // if(date.format("DD-MM-YYYY").toDateString()===("21-05-2023")){
             //  return  'low'
             // }
           }}
-          formatShortWeekday={formatShortWeekday}/>
+          formatShortWeekday={formatShortWeekday} />
       </div>
       <p className='text-center'>
         <span className='bold'>Selected Date:</span>{' '}
