@@ -3,26 +3,31 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin: 5%;
-    margin-left: 20%;
-    margin-right: 20%;
+    /* margin: 5%; */
+    /* margin-left: 20%;
+    margin-right: 20%; */
 
 }
 .photoPart {
+    box-sizing: border-box;
     background-color: #E8DDCA;
     height: 300px;
-    width: 110%;
+    width: 100%;
     border: solid #755139 1px;
-
+    padding: 5%
 }
 
 .textPart {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
     border: solid #755139 1px;
     height: 300px;
     width: 100%;
     background-color: white;
     border-top: 0;
-    padding: 5%
+    padding: 3% 5%;
 }
 
 .postFooter {
@@ -33,7 +38,6 @@
     width: 100%;
     /* border: solid yellow 1px; */
     font-family: "Poppins", sans-serif;
-    margin-top: 15%;
     border-top: solid #755139 1px;
     padding-top: 1%;
 }
