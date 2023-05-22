@@ -204,7 +204,13 @@ async def fetch_delete_post(request: Request, response: Response):
 @app.post("/fetch-has-liked")
 async def fetch_has_liked(request: Request, response: Response):
     item = await request.json()
-    username, post = item["username"], item["post"]
+    print(item)
+    try:
+        username, post = item["username"], item["post"]
+    except:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return
+
     hasliked = select_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post}")
     response.status_code = status.HTTP_200_OK
     if hasliked == []:
