@@ -122,7 +122,6 @@ export default function Profile() {
             //  return  'low'
             // }
           }}
-          
           formatShortWeekday={formatShortWeekday}/>
       </div>
       <p className='text-center'>

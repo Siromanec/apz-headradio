@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useResolvedPath } from "react-router-dom";
 
 async function signupUser(credentials) {
   return fetch("http://localhost:8000/fetch-add-user", {
@@ -9,7 +9,7 @@ async function signupUser(credentials) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
-  }).then((data) => data.json());
+  });
 }
 
 export default function Register({ setToken, setSavedUserName }) {
@@ -18,6 +18,8 @@ export default function Register({ setToken, setSavedUserName }) {
   const [password, setPassword] = useState();
   const [passwordAgain, setPasswordAgain] = useState();
   const [badPassword, setBadPassword] = useState(false);
+  const [badEmail, setBadEmail] = useState(false);
+  const [badUsername, setBadUsername] = useState(false);
 
   const navigate = useNavigate();
   // const location = useLocation();
@@ -30,19 +32,28 @@ export default function Register({ setToken, setSavedUserName }) {
         setBadPassword(true)
         return
     }
-
     setBadPassword(false)
-    // const result = await signupUser({
-    //   username,
-    //   email,
-    //   password,
-    // });
-    // setToken(token);
-    // setSavedUserName(username);
-    // navigate("/home");
+    const result = await signupUser({
+      "username":username,
+      "email":email,
+      "password": password,
+    }).then((data) => data.json());
+    if (result["token"]==="403"){
+      setBadEmail(true)
+    }
+    else if(result["token"]==="400"){
+      setBadUsername(true)
+    }
+    else{
+      navigate("/home")
+    }
+
+
   };
 
   const badPasswordElement =  <div className="passwords-no-match">Passwords do not match!</div>
+  const badEmailElement =  <div className="email-exists">Email already in use!</div>
+  const badUserElement =  <div className="user-exists">Username already exists!</div>
   return (
     <div className="login-wrapper">
       <h1>Sign Up</h1>
@@ -74,9 +85,14 @@ export default function Register({ setToken, setSavedUserName }) {
             minlength="8" maxlength="64"
           />
         </label> 
-        {badPassword && badPasswordElement}
+        {badPassword && badPasswordElement} 
+        {badEmail && badEmailElement}
+        {badUsername && badUserElement}
         <div>
-          <button type="submit">Sign Up</button>
+          <button type="submit" onClick={handleSubmit}>Sign Up</button>
+        </div>
+        <div className="login">
+        Already have an account? <Link to="/login"> Login here</Link>
         </div>
       </form>
     </div>
