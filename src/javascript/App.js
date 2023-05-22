@@ -2,8 +2,11 @@ import logo from "../data/logo.svg";
 import "../css/App.css";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
-import  Header from "./Header.js"
-import Footer from "./Footer.js"
+import Header from "./Header.js";
+import Footer from "./Footer.js";
+import { RequireAuth } from "react-auth-kit";
+import Login from "./Login.js";
+import { useNavigate, useLocation } from "react-router-dom";
 function MyButton() {
   const [count, setCount] = useState(0);
 
@@ -14,36 +17,48 @@ function MyButton() {
   return <button onClick={handleClick}>Clicked {count} times</button>;
 }
 
+function resetToken() {
+  sessionStorage.setItem("token", JSON.stringify(null));
+}
 
+function getToken() {
+  const tokenString = sessionStorage.getItem("token");
+  if (!tokenString) return undefined;
+  const userToken = JSON.parse(tokenString);
+  return userToken?.token;
+}
+function getSavedUserName(username) {
+  return sessionStorage.getItem("username");
+}
 export default function App() {
-  const hello = "hello";
-  let i = 0;
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //         Learn React
-  //       </a>
-  //     </header>
-  //     {hello}
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  //   </div>
-  // );
+  const token = getToken();
+  // console.log(token) ;
+  let currentElement;
+  if (
+    !token &&
+    !(
+      location.pathname === "/login" ||
+      location.pathname === "/about" ||
+      location.pathname === "/signup"
+    )
+  ) {
+    navigate("/login");
+  } else {
+  }
+
+  function onSignOut() {
+    resetToken();
+    navigate("/login");
+  }
+
   return (
     <div>
-      <Header></Header>
+      <Header onSignOut={onSignOut} isSignedOut={!token}></Header>
       <Outlet></Outlet>
-      <Footer></Footer>
-      {/* <MyButton /> */}
+      <Footer isSignedOut={!token}></Footer>
     </div>
   );
 }

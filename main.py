@@ -3,19 +3,39 @@ import uvicorn
 import sqlite3
 from datetime import datetime
 import hashlib
+import json
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 conn = sqlite3.connect("./database.db")
 cursor = conn.cursor()
-
+origins = [
+    "http://localhost",
+    "http://localhost:8000",
+    "http://localhost:3000",
+    "http://localhost:8080",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+@app.get("/")
+async def main():
+    return {"message": "Hello World"}
 
 def get_columns(table):
     cursor.execute(f"pragma table_info('{table}')")
     result = cursor.fetchall()
-    result = "'" + "', '".join([elem[1] for elem in result])+"'"
+    result = ([elem[1] for elem in result])
     return result
 
-
+def cols_to_string(cols):
+    return "'" + "', '".join([elem for elem in cols])+"'"
 def select_query(table, arguments=None):
     if arguments:
         cursor.execute(f"SELECT * FROM {table} WHERE {arguments}")
@@ -26,15 +46,22 @@ def select_query(table, arguments=None):
 
 
 def insert_query(table, values):
-    datacount = ("?, "*len(COLUMNS[table].split("', '"))).strip(", ")
-    q = f"INSERT INTO {table} ({COLUMNS[table]})VALUES ({datacount})"
-    cursor.execute(q, values)
+    datacount = ("?, "*len(COLUMNS[table])).strip(", ")
+
+    q = f"INSERT INTO {table} ({cols_to_string(COLUMNS[table])}) VALUES ({datacount})"
+    print(values)
+    print(COLUMNS[table])
+    print([values[el] if el in values.keys() else None for el in COLUMNS[table]])
+    ordered_values = [values[el] if el in values.keys() else None for el in COLUMNS[table]]
+    print(q)
+    cursor.execute(q, ordered_values)
     conn.commit()
     result = cursor.fetchall()
     return result
 
 
 def delete_query(table, arguments=None):
+
     if arguments:
         cursor.execute(f"DELETE FROM {table} WHERE {arguments}")
     else:
@@ -45,12 +72,14 @@ def delete_query(table, arguments=None):
 
 
 def update_query(table, values, arguments=None):
+    ordered_values = [values[el] if el in values.keys() else None for el in COLUMNS[table]]
+
     if arguments:
-        q = f"UPDATE {table} SET {values} WHERE {arguments}"
+        q = f"UPDATE {table} SET {ordered_values} WHERE {arguments}"
         print(q)
         cursor.execute(q)
     else:
-        cursor.execute(f"UPDATE {table} SET {values}")
+        cursor.execute(f"UPDATE {table} SET {ordered_values}")
     conn.commit()
     result = cursor.fetchall()
     return result
@@ -58,20 +87,20 @@ def update_query(table, values, arguments=None):
 
 TABLES = ["user", "post", "postimages", "userlikedpost", "isfriend"]
 COLUMNS = {table: get_columns(table) for table in TABLES}
-print(COLUMNS)
+# print(COLUMNS)
 
 #  r.post("http://localhost:8000/fetch-add-user", json={"username": "@redn1njaA", "email": "ostap.seryvko@ucu.edu.ua", "profilepicture": "None", "currmusic": "None", "password": "123"})
 @app.post("/fetch-add-user")
 async def fetch_add(request: Request, response: Response):
     item = await request.json()
-    items = list(item.values())
-    username = items[0]
-    password = items[-1]
+    username = item["username"]
+    password = item["password"]
     token = str(int(hashlib.sha256((username.encode()+password.encode())).hexdigest(), 16))
-    items[-1] = token
+    item["password"] = token
     is_in_db = select_query("user", f"`username`= '{username}'")
+    # is_in_db = []
     if is_in_db == []:
-        insert_query("user", items)
+        insert_query("user", item)
         response.status_code = status.HTTP_200_OK
     else:
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -99,8 +128,7 @@ async def fetch_show_profile(request: Request, response: Response):
 @app.post("/fetch-add-friend")
 async def fetch_friend(request: Request, response: Response):
     item = await request.json()
-    items = list(item.values())
-    insert_query('isfriend', items)
+    insert_query('isfriend', item)
     response.status_code = status.HTTP_200_OK
 
 
@@ -135,14 +163,13 @@ async def fetch_photo(request: Request, response: Response):
 @app.post("/fetch-new-post")
 async def fetch_new_post(request: Request, response: Response):
     item = await request.json()
-    items = list(item.values)
-    username = items[1]
+    username = item["username"]
     try:
-        new_id = select_query("post", f"`username`='{username}'")[-1][-1]
+        new_id = select_query("post", f"`username`='{username}'")[-1][0]
     except:
-        new_id = 1
+        new_id = 0
     new_id += 1
-    items = [new_id] + items + [datetime.now(), datetime.now(), 0]
+    items = {"idpost":new_id, "username": username, "article" : item["article"],  "added":datetime.now(), "modified":datetime.now(), "nlikes":0}
     insert_query("post", items)
     response.status_code = status.HTTP_200_OK
 
@@ -187,16 +214,19 @@ async def main(request: Request, response: Response):
 @app.post("/fetch-login")
 async def fetch_login(request: Request, response: Response):
     item = await request.json()
-    items = list(item.values())
-    username, password = items[0], items[-1]
+    # items = list(item.values())
+    print(item)
+    username, password = item["username"], item["password"]
     try:
         login = select_query("user", f"`username`= '{username}'")[0]
     except:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return
-    if login[-1] == str(int(hashlib.sha256(username.encode()+password.encode())).hexdigest(), 16):
+    if login[-1] == str(int(hashlib.sha256((username.encode()+password.encode())).hexdigest(), 16)):
         response.status_code = status.HTTP_200_OK
-        return {"token": login[-1]}
+        return  JSONResponse(
+            content={"token": login[-1]}
+        )
     else:
         response.status_code = status.HTTP_403_FORBIDDEN
 

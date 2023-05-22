@@ -11,10 +11,12 @@ a:active {
 
 footer {
     background-color: #E8DDCA;
-    border: 1px solid #755139;
+    border-top: 1px solid #755139;
+    /* border-bottom: ; */
     padding: 10px 40px;
     border-right: 0;
     border-left: 0;
+    box-shadow: 0 50vh 0 50vh #E8DDCA;
 }
 
 .footerDiv {

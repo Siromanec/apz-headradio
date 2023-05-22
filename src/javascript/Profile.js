@@ -6,6 +6,7 @@ import song from "../data/staying-alive.mp3";
 import PhotoChange from "./PhotoChange";
 import React, { useState } from "react";
 import EditorWrapper from "./Editor.js"
+import PostHeader from "./PostHeader.js"
 import Calendar from 'react-calendar';
 import "../css/Profile.css"
 import "../css/Calendar.css"
@@ -101,6 +102,7 @@ export default function Profile() {
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
+      <PostHeader headerType="lastPostElement" nickName="Beheni" avatar={ProfilePicture}></PostHeader>
       <div className='calendar-container'>
         <Calendar onChange={setDate}
           value={date}
@@ -108,7 +110,19 @@ export default function Profile() {
           showDoubleView
           locale="en"
           minDetail="month"
-          formatShortWeekday={formatShortWeekday} />
+          tileClassName={({ date, view }) => {
+            console.log(date)
+            console.log(date.toDateString())
+            if (date.getDay() === 21 &&
+                date.getMonth() === 5 &&
+                date.getFullYear() === 2023) {
+                  return 'low'
+                }
+            // if(date.format("DD-MM-YYYY").toDateString()===("21-05-2023")){
+            //  return  'low'
+            // }
+          }}
+          formatShortWeekday={formatShortWeekday}/>
       </div>
       <p className='text-center'>
         <span className='bold'>Selected Date:</span>{' '}

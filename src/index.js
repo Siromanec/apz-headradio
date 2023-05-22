@@ -3,12 +3,30 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import ClickCounter from "./javascript/ClickCounter";
 import reportWebVitals from "./javascript/reportWebVitals";
-import { BrowserRouter , createBrowserRouter, RouterProvider} from "react-router-dom";
+import {
+  BrowserRouter,
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import Home from "./javascript/Home";
 import Profile from "./javascript/Profile";
 import About from "./javascript/About";
 
 import App from "./javascript/App";
+
+
+import Login from "./javascript/Login";
+import Register from "./javascript/Register";
+
+import { AuthProvider, RequireAuth } from "react-auth-kit";
+
+function setToken(userToken) {
+  sessionStorage.setItem("token", JSON.stringify(userToken));
+}
+
+function setSavedUserName(username) {
+  sessionStorage.setItem("username", (username));
+}
 
 const router = createBrowserRouter([
   {
@@ -23,24 +41,31 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         index: true,
-        element: <Profile />
+        element: <Profile />,
       },
       {
         path: "/about",
         index: true,
-        element: <About />
+        element: <About />,
+      },
+      {
+        path: "/login",
+        index: true,
+        element: <Login setToken={setToken} setSavedUserName={setSavedUserName}/>,
+      },
+      {
+        path: "/signup",
+        index: true,
+        element: <Register setToken={setToken} setSavedUserName={setSavedUserName}/>,
       },
     ],
   },
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
