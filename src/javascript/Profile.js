@@ -6,6 +6,7 @@ import song from "../data/staying-alive.mp3";
 import PhotoChange from "./PhotoChange";
 import React, { useState } from "react";
 import EditorWrapper from "./Editor.js"
+import PostHeader from "./PostHeader.js"
 import Calendar from 'react-calendar';
 import "../css/Profile.css"
 import "../css/Calendar.css"
@@ -33,6 +34,9 @@ function AddContent({ onClick }) {
     </button>
   );
 }
+const formatShortWeekday = (locale, date) => {
+  return date.toLocaleDateString(locale, { weekday: 'short' }).slice(0, 1);
+};
 // function Editor() {
 //   const loremIpsumHead = "Lorem ipsum";
 //   const loremIpsum =
@@ -58,9 +62,7 @@ export default function Profile() {
   const [photo, setPhoto] = useState(ProfilePicture)
   const [show, setShow] = useState(false)
   const [date, setDate] = useState(new Date());
-
-  
-  const songName = "Skryabin - В очах"
+  const songName = "В очах  •  Skryabin"
   const submitHandler = (file) => {
     const formData = new FormData();
     formData.append('File', photo);
@@ -82,17 +84,17 @@ export default function Profile() {
         </div>
         <div className="headRadio" onClick={handleClick}>
           <div className="Song">
-            <img src={spotifyIcon} style={{ width: "50px" }}></img>
-            <div>{songName}</div>
+            <img src={spotifyIcon} style={{ width: "40px" }}></img>
+            <div className="songName">{songName}</div>
           </div>
           <div className="Stats">
             <div className="Posts">
-              <p>Posts</p>
-              <p>23</p>
+              <span>POSTS</span>
+              <span className="numbers">23</span>
             </div>
             <div className="Friends">
-              <p>Friends</p>
-              <p>10</p>
+              <span>FRIENDS</span>
+              <span className="numbers">10</span>
             </div>
           </div>
         </div>
@@ -100,6 +102,7 @@ export default function Profile() {
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
+      <PostHeader headerType="lastPostElement" nickName="Beheni" avatar={ProfilePicture}></PostHeader>
       <div className='calendar-container'>
         <Calendar onChange={setDate}
           value={date}
@@ -119,7 +122,8 @@ export default function Profile() {
             //  return  'low'
             // }
           }}
-          />
+          
+          formatShortWeekday={formatShortWeekday}/>
       </div>
       <p className='text-center'>
         <span className='bold'>Selected Date:</span>{' '}

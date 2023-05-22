@@ -1,11 +1,18 @@
-a:link, a:visited { text-decoration: none;
-    color: #755139}
+a:link,
+a:visited {
+    text-decoration: none;
+    color: #755139
+}
 
-a:hover, a:active { text-decoration: underline; }
+a:hover,
+a:active {
+    text-decoration: underline;
+}
 
 .logo {
     height: 50px;
 }
+
 .headerLinkWrapper {
     display: flex;
     justify-content: center;
@@ -13,17 +20,35 @@ a:hover, a:active { text-decoration: underline; }
     background-color: white;
     height: 60px;
     border: solid 1px;
+    border-left: 0;
+    border-right: 0;
+    /* min-width: 20%; */
+
+
 }
+
+.getOut {
+    margin-left: 60%;
+    margin-right: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: right;
+    min-width: 50px;
+    max-width: 100px;
+}
+
 .settingsIcon {
     height: 25px;
 }
+
 .headerLink {
-    border: solid 1px #755139;
+    border-left: solid 1px #755139;
     height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 20%;
+
     /* flex-grow: 1; */
     font-family: 'Poppins', sans-serif;
     font-style: normal;
@@ -31,17 +56,20 @@ a:hover, a:active { text-decoration: underline; }
     font-size: 20px;
     line-height: 30px;
 }
+
 .titles {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+
 .title {
     margin-top: 20px;
     font-size: 96px;
     font-family: 'Playfair Display';
 }
+
 .pretitle {
     margin-bottom: 20px;
     font-size: 27px;
@@ -52,6 +80,7 @@ a:hover, a:active { text-decoration: underline; }
     text-align: center;
     letter-spacing: 0.3em;
 }
+
 header div input {
     padding-left: 15px;
     height: 50px;
@@ -65,7 +94,7 @@ header div input {
     width: 50%;
 }
 
-header div input::-webkit-search-cancel-button{
+header div input::-webkit-search-cancel-button {
     -webkit-appearance: none;
 }
 
@@ -77,6 +106,8 @@ header div input::-webkit-search-cancel-button{
     /*gap: 10px;*/
     height: 60px;
     width: fit-content;
+    min-width: 20%;
+
 }
 
 header {
@@ -84,10 +115,12 @@ header {
     margin-bottom: 40px;
 }
 
-.signOutButton{
+.signOutButton {
     border: none;
     background: none;
-    margin-left: 120px;
     cursor: pointer;
 }
 
+.emptyPart {
+    width: 20%;
+}

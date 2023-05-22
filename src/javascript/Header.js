@@ -7,6 +7,12 @@ import SearchInputImg from "../data/search_button.svg";
 import SignOutImg from "../data/sign_out.svg";
 
 function SearchInput() {
+  return <div class="search">
+    <input type="search" placeholder="Search..." />
+    <img className="searchButton" src={SearchInputImg} />
+  </div>;
+}
+export default function Header() {
   return (
     <div className="search">
       <input type="search" placeholder="Search ..." />
@@ -17,6 +23,8 @@ function SearchInput() {
 export default function Header({ onSignOut, isSignedOut }) {
   const lane = (
     <div className="headerLinkWrapper">
+      <div className="emptyPart">
+        </div>
       <Link to="/home" className="headerLink">
         Home
       </Link>
@@ -27,17 +35,19 @@ export default function Header({ onSignOut, isSignedOut }) {
         About
       </Link>
       <SearchInput />
-      <button className="signOutButton" onClick={onSignOut}>
-        <img className="signOutImg" src={SignOutImg} />
-      </button>
+      <div className="emptyPart">
+          <div className="getOut">
+            <button className="signOutButton" onClick={onSignOut}>
+              <img className="signOutImg" src={SignOutImg} />
+            </button>
+          </div>
+        </div>
     </div>
   );
   return (
     <header>
       <div className="titles">
-        <h3 className="pretitle">
-          EVERYTHING IS PERSONAL. INCLUDING THIS BLOG.
-        </h3>
+        <h3 className="pretitle">EVERYTHING IS PERSONAL. INCLUDING THIS BLOG.</h3>
         <h1 className="title">HeadRadio</h1>
       </div>
       {!isSignedOut && lane}
