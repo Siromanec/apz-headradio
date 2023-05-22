@@ -97,6 +97,9 @@ export default function Register({ setToken, setSavedUserName }) {
         <div>
           <button type="submit" onClick={handleSubmit}>Sign Up</button>
         </div>
+        <div className="login">
+        Already have an account? <Link to="/login"> Login here</Link>
+        </div>
       </form>
     </div>
   );
