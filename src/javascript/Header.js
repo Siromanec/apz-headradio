@@ -7,7 +7,7 @@ import SearchInputImg from "../data/search_button.svg";
 import SignOutImg from "../data/sign_out.svg";
 
 function SearchInput() {
-  return <div class="search">
+  return <div className="search">
     <input type="search" placeholder="Search..." />
     <img className="searchButton" src={SearchInputImg} />
   </div>;

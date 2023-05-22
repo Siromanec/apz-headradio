@@ -4,7 +4,7 @@ import { useRef } from "react";
 import "../css/Editor.css";
 import { tinymceAPIKey } from "./APIKeys";
 // import { Global } from "@emotion/core";
-function getSavedUserName(username) {
+function getSavedUserName() {
   return sessionStorage.getItem("username");
 }
 
@@ -21,15 +21,10 @@ async function sendPostContents(articleData) {
 export default function EditorWrapper() {
   const editorRef = useRef(null);
   const save = async () => {
-    // if (editorRef.current) {
-    // console.log(editorRef);
-    // console.log(content);
     const content = editorRef.current.getContent();
     editorRef.current.setContent("");
-
     const response = await sendPostContents({article: content, username: getSavedUserName()})
     console.log(response)
-
     // an application would save the editor content to the server here
     // }
   };

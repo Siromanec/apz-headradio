@@ -4,6 +4,7 @@ import ProfilePicture from "../data/profile.jpg";
 import PostHeader from "./PostHeader.js";
 import "../css/Post.css";
 
+
 export default function Post({
   headerType,
   nickName,

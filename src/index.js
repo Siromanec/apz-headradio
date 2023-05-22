@@ -39,9 +39,15 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: "/profile",
+        path: "/profile/:username",
         index: true,
         element: <Profile />,
+        loader: async ({ params }) => {
+          const apiUrl = `http://localhost:8000/fetch-show-user/${params.username}`
+          const data = await (await fetch(apiUrl)).json();
+          return data
+        }
+      
       },
       {
         path: "/about",
