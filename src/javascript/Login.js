@@ -47,13 +47,13 @@ export default function Login({ setToken, setSavedUserName }) {
     navigate("/home");
   };
   const badInputElement = (
-    <div className="login-error">Incorrect username or password</div>
+    <div className="error">*Incorrect username or password</div>
   );
   const noUsernameElement = (
-    <div className="login-error">please enter username</div>
+    <div className="error">*please enter username</div>
   );
   const noPasswordElement = (
-    <div className="login-error">please enter password</div>
+    <div className="error">*please enter password</div>
   );
 
   return (
