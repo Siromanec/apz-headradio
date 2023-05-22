@@ -12,14 +12,14 @@ function SearchInput() {
     <img className="searchButton" src={SearchInputImg} />
   </div>;
 }
-export default function Header() {
-  return (
-    <div className="search">
-      <input type="search" placeholder="Search ..." />
-      <img src={SearchInputImg} />
-    </div>
-  );
-}
+// export default function Header() {
+//   return (
+//     <div className="search">
+//       <input type="search" placeholder="Search ..." />
+//       <img src={SearchInputImg} />
+//     </div>
+//   );
+// }
 export default function Header({ onSignOut, isSignedOut }) {
   const lane = (
     <div className="headerLinkWrapper">
