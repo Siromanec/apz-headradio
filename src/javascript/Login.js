@@ -15,39 +15,62 @@ async function loginUser(credentials) {
 export default function Login({ setToken, setSavedUserName }) {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
+  const [badInput, setBadInput] = useState(false);
+
   const navigate = useNavigate();
   // const location = useLocation();
   // console.log(location.state);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!username) {
+      return;
+    }
+    if (!password) {
+      return;
+    }
     const token = await loginUser({
       username,
       password,
     });
     console.log(token);
+    if (!token) {
+      setBadInput(true);
+      return;
+    }
+
+    setBadInput(false);
     setToken(token);
     setSavedUserName(username);
     navigate("/home");
   };
+  const badInputElement = (
+    <div className="login-error">Incorrect username or password</div>
+  );
+  const noUsernameElement = (
+    <div className="login-error">please enter username</div>
+  );
+  const noPasswordElement = (
+    <div className="login-error">please enter password</div>
+  );
 
   return (
     <div className="login-wrapper">
       <h1>Please Log In</h1>
       <form onSubmit={handleSubmit}>
+        {badInput && badInputElement}
         <label>
           <p>Username</p>
           <input type="text" onChange={(e) => setUserName(e.target.value)} />
         </label>
+        {username === "" && noUsernameElement}
         <label>
           <p>Password</p>
           <input
             type="password"
             onChange={(e) => setPassword(e.target.value)}
-            // minLength={8}
-            // maxLength={8}
-
           />
         </label>
+        {password === "" && noPasswordElement}
         <div>
           <button type="submit">Sign In</button>
         </div>

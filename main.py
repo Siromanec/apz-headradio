@@ -106,11 +106,9 @@ async def fetch_add(request: Request, response: Response):
         response.status_code = status.HTTP_400_BAD_REQUEST
 
 
-@app.get("/fetch-show-user")
-async def fetch_show_profile(request: Request, response: Response):
-    item = await request.json()
-    items = list(item.values())
-    username = items[0]
+@app.get("/fetch-show-user/{username}")
+async def fetch_show_profile(username: str, response: Response):
+    # item = await request.json()
     user_data = select_query("user", f"`username`= '{username}'")
     posts = select_query("post", f"`username`= '{username}'")
     post_ids = {post[0]: post[2:] for post in posts}
@@ -164,10 +162,7 @@ async def fetch_photo(request: Request, response: Response):
 async def fetch_new_post(request: Request, response: Response):
     item = await request.json()
     username = item["username"]
-    try:
-        new_id = select_query("post", f"`username`='{username}'")[-1][0]
-    except:
-        new_id = 0
+    new_id = select_query("post")[-1][0]
     new_id += 1
     items = {"idpost":new_id, "username": username, "article" : item["article"],  "added":datetime.now(), "modified":datetime.now(), "nlikes":0}
     insert_query("post", items)

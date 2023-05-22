@@ -13,6 +13,16 @@ import "../css/Calendar.css"
 // const loremIpsumHead = "Lorem ipsum"
 // // const loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 // const loremIpsum = "asdc"
+
+async function getUserPosts(username) {
+  
+  await fetch(`http://localhost:8000/fetch-show-user/{username}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((data) => data.json());
+}
 function Posts({ posts }) {
   const listItems = posts.map((post) => (
     <Post text={post.text} header={post.header}></Post>
@@ -92,8 +102,8 @@ export default function Profile() {
           locale="en"
           minDetail="month"
           tileClassName={({ date, view }) => {
-            console.log(date)
-            console.log(date.toDateString())
+            // console.log(date)
+            // console.log(date.toDateString())
             if (date.getDay() === 21 &&
                 date.getMonth() === 5 &&
                 date.getFullYear() === 2023) {
