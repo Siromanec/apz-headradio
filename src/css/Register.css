@@ -38,3 +38,7 @@
 input[type=checkbox]{
     accent-color:  #755139;
     }
+
+u {
+    cursor: pointer;
+}

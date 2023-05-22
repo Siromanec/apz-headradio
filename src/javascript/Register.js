@@ -122,7 +122,7 @@ export default function Register({ setToken, setSavedUserName }) {
           {noValue && badInputElement}
           <div className="t-of-s">
             <input type="checkbox" className="t-of-s" />
-            <span>I agree with the </span>
+            <span >I agree with the </span>
             <u onClick={handleClick}>terms of services</u>
             <span>.</span>
           </div>

@@ -37,6 +37,7 @@
     font-size: 18px;
     opacity: 0;
     font-family: "Poppins", sans-serif;
+    z-index: 1;
 }
 
 .profilePictureDiv:hover .editText {
