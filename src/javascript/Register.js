@@ -20,6 +20,7 @@ export default function Register({ setToken, setSavedUserName }) {
   const [badPassword, setBadPassword] = useState(false);
   const [badEmail, setBadEmail] = useState(false);
   const [badUsername, setBadUsername] = useState(false);
+  const [noValue, setNoValue] = useState(false)
 
   const navigate = useNavigate();
   // const location = useLocation();
@@ -44,6 +45,9 @@ export default function Register({ setToken, setSavedUserName }) {
     else if (result["token"] === "400") {
       setBadUsername(true)
     }
+    else if (result["token"] === "500") {
+      setNoValue(true)
+    }
     else {
       navigate("/home")
     }
@@ -54,6 +58,8 @@ export default function Register({ setToken, setSavedUserName }) {
   const badPasswordElement = <div className="error">*Passwords do not match!</div>
   const badEmailElement = <div className="error">*Email already in use!</div>
   const badUserElement = <div className="error">*Username already exists!</div>
+  const badInputElement = <div className="error">*Insert every value!</div>
+
   return (
     <div className="login-wrapper">
       <h1>Sign Up</h1>
@@ -88,6 +94,7 @@ export default function Register({ setToken, setSavedUserName }) {
         {badPassword && badPasswordElement}
         {badEmail && badEmailElement}
         {badUsername && badUserElement}
+        {noValue && badInputElement}
         <div>
           <button type="submit" onClick={handleSubmit}>Sign Up</button>
         </div>

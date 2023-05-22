@@ -47,13 +47,8 @@ def select_query(table, arguments=None):
 
 def insert_query(table, values):
     datacount = ("?, "*len(COLUMNS[table])).strip(", ")
-
     q = f"INSERT INTO {table} ({cols_to_string(COLUMNS[table])}) VALUES ({datacount})"
-    print(values)
-    print(COLUMNS[table])
-    print([values[el] if el in values.keys() else None for el in COLUMNS[table]])
     ordered_values = [values[el] if el in values.keys() else None for el in COLUMNS[table]]
-    print(q)
     cursor.execute(q, ordered_values)
     conn.commit()
     result = cursor.fetchall()
@@ -93,17 +88,29 @@ COLUMNS = {table: get_columns(table) for table in TABLES}
 @app.post("/fetch-add-user")
 async def fetch_add(request: Request, response: Response):
     item = await request.json()
-    username = item["username"]
-    password = item["password"]
-    token = str(int(hashlib.sha256((username.encode()+password.encode())).hexdigest(), 16))
-    item["password"] = token
-    is_in_db = select_query("user", f"`username`= '{username}'")
-    # is_in_db = []
-    if is_in_db == []:
-        insert_query("user", item)
-        response.status_code = status.HTTP_200_OK
-    else:
-        response.status_code = status.HTTP_400_BAD_REQUEST
+    try:
+        username = item["username"]
+        password = item["password"]
+        email = item["email"]
+        token = str(int(hashlib.sha256((username.encode()+password.encode())).hexdigest(), 16))
+        item["password"] = token
+        user_exists = select_query("user", f"`username`= '{username}'") 
+        email_exists = select_query("user", f"`email` = '{email}'")
+        
+        if user_exists == [] and email_exists == []:
+            insert_query("user", item)
+            print(token)
+            response.status_code = status.HTTP_200_OK
+            return JSONResponse(content={"token": token})
+        elif user_exists!= []:
+            response.status_code = status.HTTP_400_BAD_REQUEST
+            return JSONResponse(content={"token": "400"})
+        else:
+            response.status_code = status.HTTP_403_FORBIDDEN
+            return JSONResponse(content={"token": "403"})
+    except:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return JSONResponse(content={"token": "500"})
 
 
 @app.get("/fetch-show-user")
