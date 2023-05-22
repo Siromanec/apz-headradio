@@ -107,8 +107,8 @@ export default function Profile() {
           maxDetail='month'
           showDoubleView
           locale="en"
-          minDetail="month" 
-          formatShortWeekday={formatShortWeekday}/>
+          minDetail="month"
+          formatShortWeekday={formatShortWeekday} />
       </div>
       <p className='text-center'>
         <span className='bold'>Selected Date:</span>{' '}
