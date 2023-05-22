@@ -28,32 +28,32 @@ export default function Register({ setToken, setSavedUserName }) {
   //pipeline
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password!==passwordAgain){
-        setBadPassword(true)
-        return
+    if (password !== passwordAgain) {
+      setBadPassword(true)
+      return
     }
     setBadPassword(false)
     const result = await signupUser({
-      "username":username,
-      "email":email,
+      "username": username,
+      "email": email,
       "password": password,
     }).then((data) => data.json());
-    if (result["token"]==="403"){
+    if (result["token"] === "403") {
       setBadEmail(true)
     }
-    else if(result["token"]==="400"){
+    else if (result["token"] === "400") {
       setBadUsername(true)
     }
-    else{
+    else {
       navigate("/home")
     }
 
 
   };
 
-  const badPasswordElement =  <div className="passwords-no-match">Passwords do not match!</div>
-  const badEmailElement =  <div className="email-exists">Email already in use!</div>
-  const badUserElement =  <div className="user-exists">Username already exists!</div>
+  const badPasswordElement = <div className="error">*Passwords do not match!</div>
+  const badEmailElement = <div className="error">*Email already in use!</div>
+  const badUserElement = <div className="error">*Username already exists!</div>
   return (
     <div className="login-wrapper">
       <h1>Sign Up</h1>
@@ -84,15 +84,15 @@ export default function Register({ setToken, setSavedUserName }) {
             onChange={(e) => setPasswordAgain(e.target.value)}
             minlength="8" maxlength="64"
           />
-        </label> 
-        {badPassword && badPasswordElement} 
+        </label>
+        {badPassword && badPasswordElement}
         {badEmail && badEmailElement}
         {badUsername && badUserElement}
         <div>
           <button type="submit" onClick={handleSubmit}>Sign Up</button>
         </div>
         <div className="login">
-        Already have an account? <Link to="/login"> Login here</Link>
+          Already have an account? <Link to="/login"> Login here</Link>
         </div>
       </form>
     </div>
