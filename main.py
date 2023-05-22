@@ -113,8 +113,9 @@ async def fetch_add(request: Request, response: Response):
         return JSONResponse(content={"token": "500"})
 
 
-@app.get("/fetch-show-user/{username}")
+@app.post("/fetch-show-user/{username}")
 async def fetch_show_profile(username: str, response: Response):
+    print(username)
     # item = await request.json()
     user_data = select_query("user", f"`username`= '{username}'")
     posts = select_query("post", f"`username`= '{username}'")
