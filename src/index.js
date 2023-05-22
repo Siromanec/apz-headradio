@@ -14,8 +14,19 @@ import About from "./javascript/About";
 
 import App from "./javascript/App";
 
+
 import Login from "./javascript/Login";
+import Register from "./javascript/Register";
+
 import { AuthProvider, RequireAuth } from "react-auth-kit";
+
+function setToken(userToken) {
+  sessionStorage.setItem("token", JSON.stringify(userToken));
+}
+
+function setSavedUserName(username) {
+  sessionStorage.setItem("username", (username));
+}
 
 const router = createBrowserRouter([
   {
@@ -26,10 +37,6 @@ const router = createBrowserRouter([
         path: "/home",
         index: true,
         element: <Home />
-          // <RequireAuth loginPath="/signin">
-          // <Home />
-          // </RequireAuth>
-        ,
       },
       {
         path: "/profile",
@@ -44,7 +51,12 @@ const router = createBrowserRouter([
       {
         path: "/login",
         index: true,
-        element: <Login />,
+        element: <Login setToken={setToken} setSavedUserName={setSavedUserName}/>,
+      },
+      {
+        path: "/signup",
+        index: true,
+        element: <Register setToken={setToken} setSavedUserName={setSavedUserName}/>,
       },
     ],
   },

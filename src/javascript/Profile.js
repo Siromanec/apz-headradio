@@ -58,6 +58,8 @@ export default function Profile() {
   const [photo, setPhoto] = useState(ProfilePicture)
   const [show, setShow] = useState(false)
   const [date, setDate] = useState(new Date());
+
+  
   const songName = "Skryabin - В очах"
   const submitHandler = (file) => {
     const formData = new FormData();
@@ -104,7 +106,20 @@ export default function Profile() {
           maxDetail='month'
           showDoubleView
           locale="en"
-          minDetail="month" />
+          minDetail="month"
+          tileClassName={({ date, view }) => {
+            console.log(date)
+            console.log(date.toDateString())
+            if (date.getDay() === 21 &&
+                date.getMonth() === 5 &&
+                date.getFullYear() === 2023) {
+                  return 'low'
+                }
+            // if(date.format("DD-MM-YYYY").toDateString()===("21-05-2023")){
+            //  return  'low'
+            // }
+          }}
+          />
       </div>
       <p className='text-center'>
         <span className='bold'>Selected Date:</span>{' '}
