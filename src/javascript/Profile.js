@@ -82,10 +82,10 @@ export default function Profile() {
           <span className="tag">@beheni</span>
 
         </div>
-        <div className="headRadio" onClick={handleClick}>
+        <div className="headRadio">
           <div className="Song">
-            <img src={spotifyIcon} style={{ width: "40px" }}></img>
-            <div className="songName">{songName}</div>
+            <img className="spotify-icon" src={spotifyIcon} style={{ width: "40px" }} onClick={handleClick}></img>
+            <div className="songName" onClick={handleClick}>{songName}</div>
           </div>
           <div className="Stats">
             <div className="Posts">
@@ -114,15 +114,15 @@ export default function Profile() {
             console.log(date)
             console.log(date.toDateString())
             if (date.getDay() === 21 &&
-                date.getMonth() === 5 &&
-                date.getFullYear() === 2023) {
-                  return 'low'
-                }
+              date.getMonth() === 5 &&
+              date.getFullYear() === 2023) {
+              return 'low'
+            }
             // if(date.format("DD-MM-YYYY").toDateString()===("21-05-2023")){
             //  return  'low'
             // }
           }}
-          formatShortWeekday={formatShortWeekday}/>
+          formatShortWeekday={formatShortWeekday} />
       </div>
       <p className='text-center'>
         <span className='bold'>Selected Date:</span>{' '}
