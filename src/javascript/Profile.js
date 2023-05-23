@@ -48,7 +48,6 @@ export default function Profile() {
   const [date, setDate] = useState(new Date());
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a);
   let currentPost = posts.data[postOrder[0]];
-  const songName = "В очах  •  Skryabin";
 
   const submitHandler = async (event) => {
     const file = URL.createObjectURL(event.target.files[0]);
@@ -72,6 +71,13 @@ export default function Profile() {
   function handleShowFriends() {
     console.log(friends);
   }
+
+  async function handleSongClick() {
+    const songID = document.getElementById("song-id").value;
+    window.location.replace(songID)
+
+  }
+
   return (
     <main>
       <section className="profileInfo">
@@ -95,8 +101,9 @@ export default function Profile() {
                 className="spotify-icon"
                 src={spotifyIcon}
                 style={{ width: "40px" }}
+                onClick={handleSongClick}
               ></img>
-              <div className="songName">{songName}</div>
+              <span id="song-name" className="songName" onClick={handleSongClick}>No added song</span>
             </div>
             <div className="Stats">
               <div className="Posts">
