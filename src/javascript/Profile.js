@@ -35,9 +35,10 @@ const formatShortWeekday = (locale, date) => {
 
 export default function Profile() {
   const { username, avatar, posts, friends } = useLoaderData();
-  const [ours, setOurs] = useState(
-    username === sessionStorage.getItem("username")
-  );
+  const [ours, setOurs] = useState(false);
+  useEffect(() => {
+    setOurs(username === sessionStorage.getItem("username"));
+  }, []);
   const [isFriend, setIsFriend] = useState(
     !ours && friends.includes(sessionStorage.getItem("username")) ? true : false
   );
@@ -64,7 +65,7 @@ export default function Profile() {
       body: JSON.stringify(body),
     });
   };
-  
+
   const handlePhoto = () => {
     setShow((show) => !show);
   };
@@ -76,8 +77,13 @@ export default function Profile() {
       <section className="profileInfo">
         <div className="profileDescription">
           <div className="profilePictureDiv">
-            <span className="editText" onClick={handlePhoto}>Change Photo</span>
-            <img src={photo ?? false ? photo : DefaultProfile} className="profilePicture" />
+            <span className="editText" onClick={handlePhoto}>
+              Change Photo
+            </span>
+            <img
+              src={photo ?? false ? photo : DefaultProfile}
+              className="profilePicture"
+            />
             {show ? <PhotoChange changleHandler={submitHandler} /> : null}
           </div>
           <span className="tag">@{username}</span>
@@ -113,9 +119,13 @@ export default function Profile() {
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
-      <Post post={currentPost ?? false ? currentPost : {}} /*images={currentPost}*/ headerType="lastPostElement"></Post>
-      <div className='calendar-container'>
-        <Calendar onChange={setDate}
+      <Post
+        post={currentPost ?? false ? currentPost : {}}
+        /*images={currentPost}*/ headerType="lastPostElement"
+      ></Post>
+      <div className="calendar-container">
+        <Calendar
+          onChange={setDate}
           value={date}
           maxDetail="month"
           showDoubleView

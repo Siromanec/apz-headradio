@@ -14,7 +14,7 @@ function Posts({ posts, postOrder }) {
         added: post["added"],
         numberLikes: post["nlikes"],
       };
-      return <Post post={postWrap} images={null}></Post>;
+      return <Post headerType="postHeader" post={postWrap} images={null}></Post>;
     }
   }): null;
   return <>{listItems}</>;
@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <div>
       <TripleFriendSong></TripleFriendSong>
-      <Posts posts={posts} postOrder={postOrder ? postOrder.slice(1, postOrder.length) : []}/>
+      <Posts headerType="postHeader" posts={posts} postOrder={postOrder ? postOrder.slice(1, postOrder.length) : []}/>
     </div>
   );
 }
