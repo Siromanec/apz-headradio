@@ -68,10 +68,10 @@ export default function Profile() {
     <main>
       <section className="profileInfo">
         <div className="profileDescription">
-          <div className="profilePictureDiv" onClick={handlePhoto}>
-            <span className="editText">Change Photo</span>
+          <div className="profilePictureDiv">
+            <span className="editText" onClick={handlePhoto}>Change Photo</span>
             <img src={photo ?? false ? photo : DefaultProfile} className="profilePicture" />
-            <PhotoChange changleHandler={submitHandler} />
+            {show ? <PhotoChange changleHandler={submitHandler} /> : null}
           </div>
           <span className="tag">@{username}</span>
         </div>
@@ -102,7 +102,7 @@ export default function Profile() {
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
-      <Post post={currentPost??false? currentPost: {}} /*images={currentPost}*/ headerType="lastPostElement"></Post>
+      <Post post={currentPost ?? false ? currentPost : {}} /*images={currentPost}*/ headerType="lastPostElement"></Post>
       <div className='calendar-container'>
         <Calendar onChange={setDate}
           value={date}
