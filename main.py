@@ -116,7 +116,12 @@ async def fetch_add(request: Request, response: Response):
 @app.get("/fetch-show-user/{username}")
 async def fetch_show_profile(username: str, response: Response):
     print(username)
-    userdata = select_query("user", f"`username`= '{username}'")[0]
+    userdata = select_query("user", f"`username`= '{username}'")
+    if userdata == []:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {}
+    else:
+        userdata = userdata[0]
     avatar, song = userdata[2], userdata[3]
     posts = select_query("post", f"`username`= '{username}'")
     post_ids = {post[0]: dict(zip(COLUMNS["post"], post)) for post in posts}

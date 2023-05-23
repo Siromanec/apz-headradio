@@ -33,15 +33,12 @@ export default function Profile() {
   const { username, avatar, posts, friends } = useLoaderData();
   const [ours, setOurs] = useState(username === sessionStorage.getItem("username"));
   const [isFriend, setIsFriend] = useState((!ours && friends.includes(sessionStorage.getItem("username"))) ? true : false)
-
   const [photo, setPhoto] = useState(avatar);
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a)
   let currentPost = posts.data[postOrder[0]]
   const songName = "В очах  •  Skryabin";
-
-
   const submitHandler = async (event) => {
     const file = URL.createObjectURL(event.target.files[0]);
     setPhoto(file)
@@ -57,7 +54,7 @@ export default function Profile() {
       body: JSON.stringify(body)
     })
   };
-
+  
   const handlePhoto = () => {
     setShow((show) => !show);
   }

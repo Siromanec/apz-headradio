@@ -1,16 +1,34 @@
 import logo from "../data/logo.svg";
 import settingsIcon from "../data/cogwheel.svg";
 import "../css/Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import SearchInputImg from "../data/search_button.svg";
 import SignOutImg from "../data/sign_out.svg";
+import userEvent from "@testing-library/user-event";
 
 
 function SearchInput() {
+  const [exists, setExists] = useState(false)
+  const [text, setText] = useState("")
+  const navigate = useNavigate()
+  const searchHandler = async ()=>{
+    const data = await (await fetch(`http://localhost:8000/fetch-show-user/${text}`)).json();
+    console.log(data);
+    if (data["detail"]!=="Not Found"){
+      setExists(true);
+    }
+    else{
+      setExists(false);
+    }
+  }
+  const textHandler = (event) => {
+    setText(event.target.value)
+  }
   return <div className="search">
-    <input type="search" placeholder="Search..." />
+    <input type="search" name="input" placeholder="Search..." onClick={searchHandler} onChange={textHandler}/>
     <img className="searchButton" src={SearchInputImg} />
+    {exists? "user exists" : "No such user" }
   </div>;
 }
 // export default function Header() {
