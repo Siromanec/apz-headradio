@@ -115,13 +115,10 @@ async def fetch_add(request: Request, response: Response):
 
 @app.get("/fetch-show-user/{username}")
 async def fetch_show_profile(username: str, response: Response):
-    print(username)
-    # item = await request.json()
-    print(username)
-    user_data = select_query("user", f"`username`= '{username}'")
-    
+    # print(username)
+    userdata = select_query("user", f"`username`= '{username}'")[0]
+    avatar, song = userdata[2], userdata[3]
     posts = select_query("post", f"`username`= '{username}'")
-    print(posts)
     post_ids = {post[0]: dict(zip(COLUMNS["post"], post)) for post in posts}
 
     images = {post_id: select_query(
@@ -131,9 +128,10 @@ async def fetch_show_profile(username: str, response: Response):
     friends = select_query("isfriend", f"`username1`= '{username}'")
 
 
-    data = {"username": username, "posts": {
+    data = {"username": username, "avatar": avatar, "song": song, "posts": {
         "data": post_ids, "images": images}, "friends": [friend[1] for friend in friends]}
     response.status_code = status.HTTP_200_OK
+    print(data)
     return data
 
 

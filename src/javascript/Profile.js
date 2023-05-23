@@ -1,8 +1,6 @@
 import ProfilePicture from "../data/profile.jpg";
+import DefaultProfile from "../data/blank-profile-picture.svg"
 import spotifyIcon from "../data/spotify_icon.svg";
-import ReactPlayer from "react-player/lazy";
-import ReactAudioPlayer from "react-audio-player";
-import song from "../data/staying-alive.mp3";
 import PhotoChange from "./PhotoChange";
 import React, { useState, useEffect } from "react";
 import EditorWrapper from "./Editor.js";
@@ -13,26 +11,15 @@ import "../css/Calendar.css";
 import { Await, useLoaderData, useParams } from "react-router-dom";
 import Post from "./Post.js"
 
-function getSavedUserName() {
-  return sessionStorage.getItem("username");
-}
 
-// function Post({ text, header }) {
-//   return (
-//     <div className="post">
-//       <h3>{header}</h3>
-//       <p>{text}</p>
-//     </div>
-//   );
-// }
-function Posts({posts, postOrder}){
+function Posts({ posts, postOrder }) {
   const listItems = postOrder.map((number) => {
     const post = posts.data[number];
-    const postWrap = {id: post.idpost, username:post.username, text:post.article, added:post.added, numberLikes:post.nlikes}
+    const postWrap = { id: post.idpost, username: post.username, text: post.article, added: post.added, numberLikes: post.nlikes }
     return <Post post={postWrap} images={posts.images[number]}></Post>
   }
-);
-return <>{listItems}</>
+  );
+  return <>{listItems}</>
 }
 
 const formatShortWeekday = (locale, date) => {
@@ -42,60 +29,32 @@ const formatShortWeekday = (locale, date) => {
 
 
 export default function Profile() {
-  const [photo, setPhoto] = useState(ProfilePicture);
+  const [photo, setPhoto] = useState();
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
-  const {username, posts, friends} = useLoaderData();
-  // console.log(posts)
-  const postOrder = Object.keys(posts.data).sort((a, b) => b-a)
+  const { username, posts, friends } = useLoaderData();
+  const postOrder = Object.keys(posts.data).sort((a, b) => b - a)
   let currentPost = posts.data[postOrder[0]]
-  // console.log(currentPost)
   const songName = "В очах  •  Skryabin";
 
-  const submitHandler = (file) => {
-    const formData = new FormData();
-    formData.append("File", photo);
-    fetch(
-      "https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5",
-      { method: "POST", body: formData, mode: "no-cors" }
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        // console.log(result);
-      });
+  const submitHandler = (event) => {
+    setPhoto(event.target.files[0])
   };
-  const handleClick = () => {
-    window.location.replace(
-      "https://open.spotify.com/track/6yLOGWTvvVXyPBEJUkaFZG?si=6666fde48d6947a1"
-    );
-  };
+  console.log(photo);
   const handlePhoto = () => {
     setShow((show) => !show);
-  };
-  // console.log(posts);
-  console.log(Object.keys(posts.data).sort((a, b) => b-a))
-  function handleShowFriends(){
+  }
+  function handleShowFriends() {
     console.log(friends)
   }
-  // console.log(currentPost)
-  // posts.then(console.log(posts))
-  // getUserPosts("user");
-
-  // pop first, show other
-  // function Posts({ posts }) {
-//   const listItems = posts.map((post) => (
-//     <Post text={post.text} header={post.header}></Post>
-//   ));
-//   return <div>{listItems}</div>;
-// }
   return (
     <main>
       <section className="profileInfo">
         <div className="profileDescription">
           <div className="profilePictureDiv" onClick={handlePhoto}>
             <span className="editText">Change Photo</span>
-            <img src={photo} className="profilePicture" />
-            {show ? <PhotoChange onClick={submitHandler} /> : null}
+            <img src={photo??false ?URL.createObjectURL(photo): DefaultProfile} className="profilePicture" />
+            <PhotoChange changleHandler={submitHandler} />
           </div>
           <span className="tag">@{username}</span>
         </div>
@@ -105,9 +64,8 @@ export default function Profile() {
               className="spotify-icon"
               src={spotifyIcon}
               style={{ width: "40px" }}
-              onClick={handleClick}
             ></img>
-            <div className="songName" onClick={handleClick}>
+            <div className="songName">
               {songName}
             </div>
           </div>
