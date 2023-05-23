@@ -78,3 +78,8 @@
 .postDate {
     font-size: 20px;
 }
+
+.fullText {
+    overflow: auto;
+    height: 200px;
+}
