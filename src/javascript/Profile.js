@@ -1,4 +1,4 @@
-import DefaultProfile from "../data/blank-profile-picture.svg"
+import DefaultProfile from "../data/blank-profile-picture.svg";
 import spotifyIcon from "../data/spotify_icon.svg";
 import PhotoChange from "./PhotoChange";
 import React, { useState, useEffect } from "react";
@@ -8,21 +8,25 @@ import Calendar from "react-calendar";
 import "../css/Profile.css";
 import "../css/Calendar.css";
 import { Await, useLoaderData, useParams } from "react-router-dom";
-import Post from "./Post.js"
+import Post from "./Post.js";
 import ChangeSong from "./ChangeSong";
 import AddFriend from "./AddFriend";
-
 
 function Posts({ posts, postOrder }) {
   const listItems = postOrder.map((number) => {
     const post = posts.data[number];
     if (post) {
-      const postWrap = { id: post.idpost, username: post.username, text: post.article, added: post.added, numberLikes: post.nlikes }
-      return <Post post={postWrap} images={posts.images[number]}></Post>
+      const postWrap = {
+        id: post.idpost,
+        username: post.username,
+        text: post.article,
+        added: post.added,
+        numberLikes: post.nlikes,
+      };
+      return <Post post={postWrap} images={posts.images[number]}></Post>;
     }
-  }
-  );
-  return <>{listItems}</>
+  });
+  return <>{listItems}</>;
 }
 
 const formatShortWeekday = (locale, date) => {
@@ -31,38 +35,41 @@ const formatShortWeekday = (locale, date) => {
 
 export default function Profile() {
   const { username, avatar, posts, friends } = useLoaderData();
-  const [ours, setOurs] = useState(username === sessionStorage.getItem("username"));
-  const [isFriend, setIsFriend] = useState((!ours && friends.includes(sessionStorage.getItem("username"))) ? true : false)
+  const [ours, setOurs] = useState(
+    username === sessionStorage.getItem("username")
+  );
+  const [isFriend, setIsFriend] = useState(
+    !ours && friends.includes(sessionStorage.getItem("username")) ? true : false
+  );
 
   const [photo, setPhoto] = useState(avatar);
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
-  const postOrder = Object.keys(posts.data).sort((a, b) => b - a)
-  let currentPost = posts.data[postOrder[0]]
+  const postOrder = Object.keys(posts.data).sort((a, b) => b - a);
+  let currentPost = posts.data[postOrder[0]];
   const songName = "В очах  •  Skryabin";
-
 
   const submitHandler = async (event) => {
     const file = URL.createObjectURL(event.target.files[0]);
-    setPhoto(file)
+    setPhoto(file);
     const body = {
-      "username": sessionStorage.getItem("username"),
-      "picture": file
+      username: sessionStorage.getItem("username"),
+      picture: file,
     };
     return await fetch("http://localhost:8000/fetch-modify-profile-photo", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body)
-    })
+      body: JSON.stringify(body),
+    });
   };
 
   const handlePhoto = () => {
     setShow((show) => !show);
-  }
+  };
   function handleShowFriends() {
-    console.log(friends)
+    console.log(friends);
   }
   return (
     <main>
@@ -70,41 +77,52 @@ export default function Profile() {
         <div className="profileDescription">
           <div className="profilePictureDiv" onClick={handlePhoto}>
             <span className="editText">Change Photo</span>
-            <img src={photo ?? false ? photo : DefaultProfile} className="profilePicture" />
+            <img
+              src={photo ?? false ? photo : DefaultProfile}
+              className="profilePicture"
+            />
             <PhotoChange changleHandler={submitHandler} />
           </div>
           <span className="tag">@{username}</span>
         </div>
-        <div className="headRadio">
-          <div className="Song">
-            <img
-              className="spotify-icon"
-              src={spotifyIcon}
-              style={{ width: "40px" }}
-            ></img>
-            <div className="songName">
-              {songName}
+        <div className="ProfileInfoAside">
+          <div className="headRadio">
+            <div className="Song">
+              <img
+                className="spotify-icon"
+                src={spotifyIcon}
+                style={{ width: "40px" }}
+              ></img>
+              <div className="songName">{songName}</div>
+            </div>
+            <div className="Stats">
+              <div className="Posts">
+                <span>POSTS</span>
+                <span className="numbers">{postOrder.length}</span>
+              </div>
+              <div className="Friends" onClick={handleShowFriends}>
+                <span>FRIENDS</span>
+                <span className="numbers">{friends.length}</span>
+              </div>
             </div>
           </div>
-          <div className="Stats">
-            <div className="Posts">
-              <span>POSTS</span>
-              <span className="numbers">{postOrder.length}</span>
-            </div>
-            <div className="Friends" onClick={handleShowFriends}>
-              <span>FRIENDS</span>
-              <span className="numbers">{friends.length}</span>
-            </div>
-            {ours ? <ChangeSong /> : <AddFriend profile={username} friends={isFriend} />}
-          </div>
+          {ours ? (
+            <ChangeSong />
+          ) : (
+            <AddFriend profile={username} friends={isFriend} />
+          )}
         </div>
       </section>
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
-      <Post post={currentPost??false? currentPost: {}} /*images={currentPost}*/ headerType="lastPostElement"></Post>
-      <div className='calendar-container'>
-        <Calendar onChange={setDate}
+      <Post
+        post={currentPost ?? false ? currentPost : {}}
+        /*images={currentPost}*/ headerType="lastPostElement"
+      ></Post>
+      <div className="calendar-container">
+        <Calendar
+          onChange={setDate}
           value={date}
           maxDetail="month"
           showDoubleView
@@ -125,7 +143,10 @@ export default function Profile() {
       <p className="text-center">
         <span className="bold">Selected Date:</span> {date.toDateString()}
       </p>
-      <Posts posts={posts} postOrder={postOrder.slice(1, postOrder.length)}></Posts>
+      <Posts
+        posts={posts}
+        postOrder={postOrder.slice(1, postOrder.length)}
+      ></Posts>
     </main>
   );
 }
