@@ -78,19 +78,21 @@ export default function Profile() {
 
   }
 
+  const photoChange = <div> <span className="editText" onClick={handlePhoto}>
+              Change Photo
+            </span>
+            {show ? <PhotoChange changleHandler={submitHandler} /> : null}</div>;
+
   return (
     <main>
       <section className="profileInfo">
         <div className="profileDescription">
           <div className="profilePictureDiv">
-            <span className="editText" onClick={handlePhoto}>
-              Change Photo
-            </span>
             <img
               src={photo ?? false ? photo : DefaultProfile}
               className="profilePicture"
             />
-            {show ? <PhotoChange changleHandler={submitHandler} /> : null}
+            {ours && photoChange}
           </div>
           <span className="tag">@{username}</span>
         </div>
