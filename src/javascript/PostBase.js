@@ -33,12 +33,13 @@ async function hasLikedHandler(data) {
 
 }
 
-export default function PostBase({ images, article, date, nlikes, idpost, username }) {
+export default function PostBase({ images, article, date, nlikes, id, username }) {
     const [hasLiked, setHasLiked] = useState(false);
-    useEffect(() => { setHasLiked(hasLikedHandler({ "post": idpost, "username": username })); }, [])
+    useEffect(() => { setHasLiked(hasLikedHandler({ "post": id, "username": username })); }, [])
     const [nLikes, setNLikes] = useState(nlikes);
     const likeHandler = async () => {
-        const like = await setLikeHandler({ "idpost": idpost, "username": username })
+        // console.log(idpost)
+        const like = await setLikeHandler({ "idpost": id, "username": username })
             .then((data) => data.json())
             .catch((data) => data.json());
         if (like["liked"] === "0") {
@@ -56,7 +57,7 @@ export default function PostBase({ images, article, date, nlikes, idpost, userna
             <div className="textPart">
                 <div className="fullText">
                     <div className="postText">
-                        {article ?? false ? parse(article) : ""}
+                        {article ? parse(article) : ""}
                     </div>
                 </div>
                 <div className="postFooter">

@@ -131,7 +131,6 @@ async def fetch_show_profile(username: str, response: Response):
     images = {post_id: [image[2] for image in val]
               for post_id, val in images.items()}
     friends = select_query("isfriend", f"`username1`= '{username}'")
-    print(friends)
 
 
     data = {"username": username, "avatar": avatar, "song": song, "posts": {
@@ -251,10 +250,21 @@ async def fetch_like(request: Request, response: Response):
     response.status_code = status.HTTP_200_OK
     return res
 
-@app.get("/fetch-main-page")
+@app.post("/fetch-main-page")
 async def main(request: Request, response: Response):
     item = await request.json()
+    username = item["username"]
+    friends = [names[1] for names in select_query("isfriend", f"`username1`= '{username}'")]
+    print(friends)
+    posts = []
+    for friend in friends:
+        data = await fetch_show_profile(friend, response)
+        cur_posts = data["posts"]
+        posts.append(cur_posts)
+    posts_dates = [val["data"] for val in posts][0]
+    posts_dates = sorted(list(posts_dates.values()), key=lambda x: max(x["added"], x["modified"]), reverse=True)
     response.status_code = status.HTTP_200_OK
+    return {"posts": posts_dates[:max(len(posts_dates), 10)]}
 
 
 @app.post("/fetch-login")

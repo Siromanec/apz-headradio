@@ -35,7 +35,6 @@ export default function Login({ setToken, setSavedUserName }) {
       username,
       password,
     });
-    console.log(token);
     if (!token) {
       setBadInput(true);
       return;

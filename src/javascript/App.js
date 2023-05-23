@@ -24,7 +24,6 @@ export default function App() {
   const location = useLocation();
 
   const token = getToken();
-  console.log(token);
   let currentElement;
   if (
     !token &&
@@ -35,10 +34,8 @@ export default function App() {
       !location.pathname.startsWith("/profile")
     )
   ) {
-    console.log("yes")
     navigate("/login");
   } else {
-    console.log(`token: ${getToken()}`)
   }
 
   function onSignOut() {

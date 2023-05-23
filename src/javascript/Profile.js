@@ -12,7 +12,7 @@ import Post from "./Post.js";
 import ChangeSong from "./ChangeSong";
 import AddFriend from "./AddFriend";
 
-function Posts({ posts, postOrder }) {
+export function Posts({ posts, postOrder }) {
   const listItems = postOrder.map((number) => {
     const post = posts.data[number];
     if (post) {
