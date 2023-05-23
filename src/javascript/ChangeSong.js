@@ -60,12 +60,19 @@ export default function ChangeSong() {
         setPopUpClass("popup-change")
     }
 
+
+
     async function handleSongChange() {
         setPopUpClass("popup-change")
         const song = document.getElementById("song-name");
-        const songID = new URL(songName).pathname.split('/').pop();
-        const token = await APIController.getToken();
-        song.textContent = await APIController.getTrack(token, songID);
+        try {
+            const songID = new URL(songName).pathname.split('/').pop();
+            const token = await APIController.getToken();
+            song.textContent = await APIController.getTrack(token, songID);
+        }
+        catch (err){
+            song.textContent = "No such song";
+        }
         console.log(song.textContent);
     }
 
