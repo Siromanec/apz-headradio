@@ -1,4 +1,3 @@
-import ProfilePicture from "../data/profile.jpg";
 import DefaultProfile from "../data/blank-profile-picture.svg"
 import spotifyIcon from "../data/spotify_icon.svg";
 import PhotoChange from "./PhotoChange";
@@ -26,21 +25,35 @@ const formatShortWeekday = (locale, date) => {
   return date.toLocaleDateString(locale, { weekday: "short" }).slice(0, 1);
 };
 
-
-
 export default function Profile() {
-  const [photo, setPhoto] = useState();
+  const { username, avatar, posts, friends } = useLoaderData();
+  console.log(avatar)
+  const [photo, setPhoto] = useState(avatar);
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
-  const { username, posts, friends } = useLoaderData();
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a)
   let currentPost = posts.data[postOrder[0]]
   const songName = "В очах  •  Skryabin";
 
-  const submitHandler = (event) => {
-    setPhoto(event.target.files[0])
+  
+
+  const submitHandler = async (event) => {
+    const file = URL.createObjectURL(event.target.files[0]);
+    console.log(file);
+    setPhoto(file)
+    const body = {
+      "username": sessionStorage.getItem("username"),
+      "picture": file
+    };
+    return await fetch("http://localhost:8000/fetch-modify-profile-photo", {
+      method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body)
+    })
   };
-  console.log(photo);
+
   const handlePhoto = () => {
     setShow((show) => !show);
   }
@@ -53,7 +66,7 @@ export default function Profile() {
         <div className="profileDescription">
           <div className="profilePictureDiv" onClick={handlePhoto}>
             <span className="editText">Change Photo</span>
-            <img src={photo??false ?URL.createObjectURL(photo): DefaultProfile} className="profilePicture" />
+            <img src={photo??false ?photo: DefaultProfile} className="profilePicture" />
             <PhotoChange changleHandler={submitHandler} />
           </div>
           <span className="tag">@{username}</span>
@@ -93,8 +106,6 @@ export default function Profile() {
           locale="en"
           minDetail="month"
           tileClassName={({ date, view }) => {
-            // console.log(date)
-            // console.log(date.toDateString())
             if (
               date.getDay() === 21 &&
               date.getMonth() === 5 &&
@@ -102,9 +113,6 @@ export default function Profile() {
             ) {
               return "low";
             }
-            // if(date.format("DD-MM-YYYY").toDateString()===("21-05-2023")){
-            //  return  'low'
-            // }
           }}
           formatShortWeekday={formatShortWeekday}
         />

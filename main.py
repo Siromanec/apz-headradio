@@ -156,9 +156,9 @@ async def fetch_photo(request: Request, response: Response):
     item = await request.json()
     # items = list(item.values())
     print(item)
-    username, picturelink = item["username"], item[1]
+    username, picturelink = item["username"], item["picture"]
     update_query(
-        "user", f"`profilePicture`='{picturelink}'", f"`username`='{username}'")
+        "user", {"profilePicture": f"'{picturelink}'"}, f"`username`='{username}'")
     response.status_code = status.HTTP_200_OK
 
 
