@@ -21,14 +21,18 @@ function SearchInput() {
     else{
       setExists(false);
     }
+    if(exists) {
+      navigate("/profile/"+text)
+      return
+    }
   }
   const textHandler = (event) => {
     setText(event.target.value)
   }
   return <div className="search">
-    <input type="search" name="input" placeholder="Search..." onClick={searchHandler} onChange={textHandler}/>
-    <img className="searchButton" src={SearchInputImg} />
-    {exists? "user exists" : "No such user" }
+    <input type="search" name="input" placeholder="Search..." onChange={textHandler}/>
+    <button className="searchBtn" onClick={searchHandler} ><img className="searchImg" src={SearchInputImg} /></button>
+    {exists? null : "No such user" }
   </div>;
 }
 // export default function Header() {
