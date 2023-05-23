@@ -73,6 +73,12 @@ export default function Profile() {
   function handleShowFriends() {
     console.log(friends);
   }
+  
+  async function handleSongClick() {
+    const songID = document.getElementById("song-id").value;
+    window.location.replace(songID)
+
+  }
   useEffect(() => {
     setIsCurrentUser(username === sessionStorage.getItem("username"))
     setPhoto(avatar)
