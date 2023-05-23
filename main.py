@@ -115,7 +115,7 @@ async def fetch_add(request: Request, response: Response):
 
 @app.get("/fetch-show-user/{username}")
 async def fetch_show_profile(username: str, response: Response):
-    # print(username)
+    print(username)
     userdata = select_query("user", f"`username`= '{username}'")[0]
     avatar, song = userdata[2], userdata[3]
     posts = select_query("post", f"`username`= '{username}'")
@@ -126,18 +126,20 @@ async def fetch_show_profile(username: str, response: Response):
     images = {post_id: [image[2] for image in val]
               for post_id, val in images.items()}
     friends = select_query("isfriend", f"`username1`= '{username}'")
+    print(friends)
 
 
     data = {"username": username, "avatar": avatar, "song": song, "posts": {
         "data": post_ids, "images": images}, "friends": [friend[1] for friend in friends]}
     response.status_code = status.HTTP_200_OK
-    print(data)
+    # print(data)
     return data
 
 
 @app.post("/fetch-add-friend")
 async def fetch_friend(request: Request, response: Response):
     item = await request.json()
+    print(item)
     insert_query('isfriend', item)
     response.status_code = status.HTTP_200_OK
 

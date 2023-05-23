@@ -9,13 +9,17 @@ import "../css/Profile.css";
 import "../css/Calendar.css";
 import { Await, useLoaderData, useParams } from "react-router-dom";
 import Post from "./Post.js"
+import ChangeSong from "./ChangeSong";
+import AddFriend from "./AddFriend";
 
 
 function Posts({ posts, postOrder }) {
   const listItems = postOrder.map((number) => {
     const post = posts.data[number];
-    const postWrap = { id: post.idpost, username: post.username, text: post.article, added: post.added, numberLikes: post.nlikes }
-    return <Post post={postWrap} images={posts.images[number]}></Post>
+    if (post) {
+      const postWrap = { id: post.idpost, username: post.username, text: post.article, added: post.added, numberLikes: post.nlikes }
+      return <Post post={postWrap} images={posts.images[number]}></Post>
+    }
   }
   );
   return <>{listItems}</>
@@ -27,7 +31,9 @@ const formatShortWeekday = (locale, date) => {
 
 export default function Profile() {
   const { username, avatar, posts, friends } = useLoaderData();
-  console.log(avatar)
+  const [ours, setOurs] = useState(username === sessionStorage.getItem("username"));
+  const [isFriend, setIsFriend] = useState((!ours && friends.includes(sessionStorage.getItem("username"))) ? true : false)
+
   const [photo, setPhoto] = useState(avatar);
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
@@ -35,11 +41,9 @@ export default function Profile() {
   let currentPost = posts.data[postOrder[0]]
   const songName = "В очах  •  Skryabin";
 
-  
 
   const submitHandler = async (event) => {
     const file = URL.createObjectURL(event.target.files[0]);
-    console.log(file);
     setPhoto(file)
     const body = {
       "username": sessionStorage.getItem("username"),
@@ -47,10 +51,10 @@ export default function Profile() {
     };
     return await fetch("http://localhost:8000/fetch-modify-profile-photo", {
       method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body)
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body)
     })
   };
 
@@ -66,7 +70,7 @@ export default function Profile() {
         <div className="profileDescription">
           <div className="profilePictureDiv" onClick={handlePhoto}>
             <span className="editText">Change Photo</span>
-            <img src={photo??false ?photo: DefaultProfile} className="profilePicture" />
+            <img src={photo ?? false ? photo : DefaultProfile} className="profilePicture" />
             <PhotoChange changleHandler={submitHandler} />
           </div>
           <span className="tag">@{username}</span>
@@ -91,13 +95,14 @@ export default function Profile() {
               <span>FRIENDS</span>
               <span className="numbers">{friends.length}</span>
             </div>
+            {ours ? <ChangeSong /> : <AddFriend profile={username} friends={isFriend} />}
           </div>
         </div>
       </section>
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
-      <Post post={currentPost} /*images={currentPost}*/ headerType="lastPostElement"></Post>
+      <Post post={currentPost??false? currentPost: {}} /*images={currentPost}*/ headerType="lastPostElement"></Post>
       <div className='calendar-container'>
         <Calendar onChange={setDate}
           value={date}
