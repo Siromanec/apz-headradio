@@ -7,6 +7,10 @@
     background-color: white;
 }
 
+.off {
+    background-color: #e6e6e6 !important;
+    color: #755139 !important;
+}
 
 .popup {
     position: fixed;
@@ -35,9 +39,9 @@
     gap: 3px;
 }
 
-input[type=checkbox]{
-    accent-color:  #755139;
-    }
+input[type=checkbox] {
+    accent-color: #755139;
+}
 
 u {
     cursor: pointer;
