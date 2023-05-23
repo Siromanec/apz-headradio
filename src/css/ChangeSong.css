@@ -24,5 +24,53 @@
     background-color: white;
     display: flex;
     flex-direction: column;
-    column-gap: 10px;
+    gap: 20px;
+    padding: 20px 30px;
+    border-radius: 25px;
+}
+
+.insert-song-desc {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 47px;
+    text-align: center;
+}
+
+.insert-song input {
+    width: 300px;
+    border: solid 1px #755139;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 20px;
+    padding: 0.25em 0.5em 0.25em 1em;
+    color: #392619;
+}
+
+.insert-song input:focus{
+    outline: none;
+}
+
+.insert-song-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.insert-song-btn {
+    background-color: #755139;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    border-radius: 25px;
+    padding: 5px 15px;
 }

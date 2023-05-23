@@ -1,4 +1,6 @@
 import SendIcon from "../data/send-icon.svg";
+import PictureIcon from "../data/picture-icon.svg";
+
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef } from "react";
 import "../css/Editor.css";
@@ -41,7 +43,7 @@ export default function EditorWrapper() {
           quickbars_selection_toolbar: false,
           quickbars_image_toolbar: false,
           plugins: ["quickbars"],
-          toolbar: "blocks | bold italic strikethrough | quickimage",
+          toolbar: "blocks | bold italic strikethrough",
           content_css: "../css/Editor.css",
           selector: "#postEditor", // change this value according to your HTML
           a_plugin_option: true,
@@ -55,6 +57,7 @@ export default function EditorWrapper() {
         }}
         //   onChange={onChange}
       />
+      <button className="editor-add-images-button"><img className="EditorSubmitImg" src={PictureIcon}></img></button>
       <button className="EditorSubmitButton" onClick={save}><img className="EditorSubmitImg" src={SendIcon}></img></button>
     </div>
   );

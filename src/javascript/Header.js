@@ -14,7 +14,8 @@ function SearchInput() {
   const [message, setMessage] = useState()
   const navigate = useNavigate()
   const searchHandler = async ()=>{
-    const data = await (await fetch(`http://localhost:8000/fetch-show-user/${text}`)).json();
+    const data = await (fetch(`http://localhost:8000/fetch-show-user/${text}`)).then(data => data.json()).then(data => data).catch(e =>console.log(e));
+    console.log({data:data});
     console.log(typeof(data));
     if (Object.keys(data).length!==0){
       console.log("here");

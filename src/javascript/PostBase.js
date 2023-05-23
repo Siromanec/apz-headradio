@@ -52,6 +52,8 @@ export default function PostBase({ images, article, date, nlikes, id, username }
         }
         setNLikes(like["nlikes"]);
     }
+    const dateObj = new Date(date);
+    const dateLocale = dateObj.toLocaleString()
     return (
         <div className="post">
             <div className="photoPart">
@@ -63,10 +65,10 @@ export default function PostBase({ images, article, date, nlikes, id, username }
                     </div>
                 </div>
                 <div className="postFooter">
-                    <span className="postDate">{date}</span>
+                    <span className="postDate">{dateLocale}</span>
                     <div className="likes">
                         <span className="nlikes">{nLikes}</span>
-                        <button className="likeBtn"><img className="heart" src={hasLiked ? likeIconFull : likeIconEmpty} onClick={likeHandler}></img></button>
+                        <button className="likeBtn"><img className="heart" src={!hasLiked ? likeIconFull : likeIconEmpty} onClick={likeHandler}></img></button>
                     </div>
                 </div>
             </div>

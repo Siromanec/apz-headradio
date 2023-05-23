@@ -60,27 +60,32 @@ export default function ChangeSong() {
         setPopUpClass("popup-change")
     }
 
+
+
     async function handleSongChange() {
         setPopUpClass("popup-change")
         const song = document.getElementById("song-name");
-        const songID = new URL(songName).pathname.split('/').pop();
-        const token = await APIController.getToken();
-        song.textContent = await APIController.getTrack(token, songID);
+        try {
+            const songID = new URL(songName).pathname.split('/').pop();
+            const token = await APIController.getToken();
+            song.textContent = await APIController.getTrack(token, songID);
+        }
+        catch (err){
+            song.textContent = "No such song";
+        }
         console.log(song.textContent);
     }
-
-
 
     return <div className="changeSong">
         <div className={popUpClass}>
             <div className="insert-song">
-                <span>Insert song link</span>
-                <input type="text" id="song-id" placeholder="..."
+                <span className="insert-song-desc">Insert song link</span>
+                <input type="text" id="song-id" placeholder="Song link . . ."
                        onChange={(e) => setSongName(e.target.value)}/>
-                <button className="changeButton" onClick={handleSongChange}>Change</button>
-                <button className="exitButton" onClick={exitClick}>
-                    <img src={crossButton} />
-                </button>
+                <div className="insert-song-buttons">
+                    <button className="insert-song-btn" onClick={handleSongChange}>Change</button>
+                    <button className="insert-song-btn" onClick={exitClick}>Cancel</button>
+                </div>
             </div>
         </div>
         <div className="lower-button-div">

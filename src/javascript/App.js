@@ -1,12 +1,14 @@
-import logo from "../data/logo.svg";
-import "../css/App.css";
-import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
-import Header from "./Header.js";
-import Footer from "./Footer.js";
 import { RequireAuth } from "react-auth-kit";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+
+import logo from "../data/logo.svg";
+import Footer from "./Footer.js";
+import Header from "./Header.js";
 import Login from "./Login.js";
-import { useNavigate, useLocation } from "react-router-dom";
+
+import "../css/App.css";
+
 
 function resetToken() {
   sessionStorage.setItem("token", JSON.stringify(null));
