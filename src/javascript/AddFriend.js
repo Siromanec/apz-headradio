@@ -10,7 +10,7 @@ export default function AddFriend({ profile, isFriend, setIsFriend, friendsCount
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ "username1": profile, "username2": sessionStorage.getItem("username") })
+                body: JSON.stringify({ "username2": profile, "username1": sessionStorage.getItem("username") })
             });
             if(isFriend) {
                 setIsFriend(false)

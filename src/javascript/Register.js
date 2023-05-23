@@ -26,10 +26,10 @@ export default function Register({ setToken, setSavedUserName }) {
   const [badPassword, setBadPassword] = useState(false);
   const [badEmail, setBadEmail] = useState(false);
   const [badUsername, setBadUsername] = useState(false);
-  const [noValue, setNoValue] = useState(false)
-  const [popUpClass, setPopUpClass] = useState("popup")
-
-
+  const [noValue, setNoValue] = useState(false);
+  const [popUpClass, setPopUpClass] = useState("popup");
+  const [isChecked, setCheckedBox] = useState(false);
+  const [isTriedToClick, setTriedToClick] = useState(false);
   const navigate = useNavigate();
   // const location = useLocation();
   // console.log(location.state);
@@ -37,8 +37,13 @@ export default function Register({ setToken, setSavedUserName }) {
   //pipeline
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setTriedToClick(true);
+    console.log("am here")
     if (password !== passwordAgain) {
       setBadPassword(true)
+      return
+    }
+    if (!isChecked) {
       return
     }
     setBadPassword(false)
@@ -62,8 +67,6 @@ export default function Register({ setToken, setSavedUserName }) {
 
       navigate("/home")
     }
-
-
   };
 
   function handleClick() {
@@ -74,11 +77,15 @@ export default function Register({ setToken, setSavedUserName }) {
     setPopUpClass("popup")
   }
 
+  function handleCheck() {
+    setCheckedBox(!isChecked)
+  }
+
   const badPasswordElement = <div className="error">*Passwords do not match!</div>
   const badEmailElement = <div className="error">*Email already in use!</div>
   const badUserElement = <div className="error">*Username already exists!</div>
   const badInputElement = <div className="error">*Insert every value!</div>
-
+  const notCheckedError = <div className="error">*Not accepted terms and services!</div>
   return (
     <section className="register">
       <div className={popUpClass}>
@@ -124,13 +131,14 @@ export default function Register({ setToken, setSavedUserName }) {
           {badUsername && badUserElement}
           {noValue && badInputElement}
           <div className="t-of-s">
-            <input type="checkbox" className="t-of-s" />
+            <input type="checkbox" className="t-of-s" onChange={handleCheck} />
             <span >I agree with the </span>
             <u onClick={handleClick}>terms of services</u>
             <span>.</span>
           </div>
           <div>
-            <button type="submit" onClick={handleSubmit}>Sign Up</button>
+              {isTriedToClick && !isChecked && notCheckedError}
+              <button onClick={handleSubmit}>Sign Up</button>
           </div>
           <div className="login">
             Already have an account? <Link to="/login"> Login here</Link>

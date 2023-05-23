@@ -50,9 +50,23 @@ export default function Profile() {
   
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a);
   let currentPost = posts.data[postOrder[0]];
-  const songName = "В очах  •  Skryabin";
 
-  
+  const submitHandler = async (event) => {
+    const file = URL.createObjectURL(event.target.files[0]);
+    setPhoto(file);
+    const body = {
+      username: sessionStorage.getItem("username"),
+      picture: file,
+    };
+    return await fetch("http://localhost:8000/fetch-modify-profile-photo", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  };
+
   const handlePhoto = () => {
     setShow((show) => !show);
   };
@@ -90,8 +104,9 @@ export default function Profile() {
                 className="spotify-icon"
                 src={spotifyIcon}
                 style={{ width: "40px" }}
+                onClick={handleSongClick}
               ></img>
-              <div className="songName">{songName}</div>
+              <span id="song-name" className="songName" onClick={handleSongClick}>No added song</span>
             </div>
             <div className="Stats">
               <div className="Posts">
@@ -114,9 +129,13 @@ export default function Profile() {
       <section className="recentDiary"></section>
       <section className="textField"></section>
       <EditorWrapper></EditorWrapper>
-      <Post post={currentPost ?? false ? currentPost : {}} /*images={currentPost}*/ headerType="lastPostElement"></Post>
-      <div className='calendar-container'>
-        <Calendar onChange={setDate}
+      <Post
+        post={currentPost ?? false ? currentPost : {}}
+        /*images={currentPost}*/ headerType="lastPostElement"
+      ></Post>
+      <div className="calendar-container">
+        <Calendar
+          onChange={setDate}
           value={date}
           maxDetail="month"
           showDoubleView
