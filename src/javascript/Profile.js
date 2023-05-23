@@ -26,9 +26,11 @@ function getSavedUserName() {
 //   );
 // }
 function Posts({posts, postOrder}){
-  console.log(posts)
-  const listItems = postOrder.map((number) =>
-  <Post post={posts.data[number]} images={posts.images[number]}></Post>
+  const listItems = postOrder.map((number) => {
+    const post = posts.data[number];
+    const postWrap = {id: post.idpost, username:post.username, text:post.article, added:post.added, numberLikes:post.nlikes}
+    return <Post post={postWrap} images={posts.images[number]}></Post>
+  }
 );
 return <>{listItems}</>
 }
@@ -47,7 +49,7 @@ export default function Profile() {
   // console.log(posts)
   const postOrder = Object.keys(posts.data).sort((a, b) => b-a)
   let currentPost = posts.data[postOrder[0]]
-  console.log(currentPost)
+  // console.log(currentPost)
   const songName = "В очах  •  Skryabin";
 
   const submitHandler = (file) => {
@@ -59,7 +61,7 @@ export default function Profile() {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
+        // console.log(result);
       });
   };
   const handleClick = () => {
@@ -75,7 +77,7 @@ export default function Profile() {
   function handleShowFriends(){
     console.log(friends)
   }
-  console.log(currentPost)
+  // console.log(currentPost)
   // posts.then(console.log(posts))
   // getUserPosts("user");
 

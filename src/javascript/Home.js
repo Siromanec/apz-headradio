@@ -10,28 +10,28 @@ export default function Home() {
   return (
     <div>
       <TripleFriendSong></TripleFriendSong>
-      <Post
-        id="1"
-        headerType="lastPostElement"
-        nickName="Beheni"
-        avatar={ProfilePicture}
-        text={
+      <Post post={{
+        id:"1",
+        headerType:"lastPostElement",
+        username:"Beheni",
+        avatar:{ProfilePicture},
+        text:
           "Alonso is greatest driver of all time. Everyone who thinks different — is wrong. He won championships in bad cars and always showed great results. Alonso FTW"
-        }
-        date={"2 MAY 2023"}
-        numberLikes={22}
+        ,
+        added:"2 MAY 2023",
+        numberLikes:22}}
       ></Post>
 
-      <Post
-        id="2"
-        headerType="postHeader"
-        nickName="Beheni"
-        avatar={ProfilePicture}
-        text={
+        <Post post={{
+        id:"2",
+        headerType:"lastPostElement",
+        username:"Beheni",
+        avatar:{ProfilePicture},
+        text:
           "Alonso is greatest driver of all time. Everyone who thinks different — is wrong. He won championships in bad cars and always showed great results. Alonso FTW"
-        }
-        date={"2 MAY 2023"}
-        numberLikes={22}
+        ,
+        added:"2 MAY 2023",
+        numberLikes:22}}
       ></Post>
     </div>
   );

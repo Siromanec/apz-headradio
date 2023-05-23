@@ -56,7 +56,7 @@ export default function PostBase({ images, article, date, nlikes, idpost, userna
             <div className="textPart">
                 <div className="fullText">
                     <div className="postText">
-                        {parse(article)}
+                        {article??false ? parse(article): ""}
                     </div>
                     <button className="openFullTextBtn"><img className="fullTextImg" src={openFullIcon}></img></button>
                 </div>
