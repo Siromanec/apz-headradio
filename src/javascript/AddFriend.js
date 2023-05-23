@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import "../css/AddChangeButton.css"
 
 
 export default function AddFriend({ profile, friends}) {
@@ -14,7 +14,7 @@ export default function AddFriend({ profile, friends}) {
             });
             setIsFriend(!isFriend)
         };
-    return <div className="lower-button">
-        <button onClick={addHandler}>{!isFriend?"Add Friend":"Remove friend"}</button>
+    return <div className="lower-button-div">
+        <button className="lower-button" onClick={addHandler}>{!isFriend?"Add Friend":"Remove friend"}</button>
     </div>
 }

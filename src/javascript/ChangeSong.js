@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/ChangeSong.css";
+import "../css/AddChangeButton.css"
+
 import crossButton from "../data/cross.svg"
 
 export default function ChangeSong() {
@@ -21,8 +23,8 @@ export default function ChangeSong() {
                 </button>
             </div>
         </div>
-        <div className="lower-button">
-            <button onClick={handleClick}>Change Song</button>
+        <div className="lower-button-div">
+            <button className="lower-button" onClick={handleClick}>Change Song</button>
         </div>
     </div>
 }
