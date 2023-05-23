@@ -133,3 +133,9 @@ main {
 .low {
     color: blue;
 }
+
+.ProfileInfoAside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
