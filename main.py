@@ -115,8 +115,13 @@ async def fetch_add(request: Request, response: Response):
 
 @app.get("/fetch-show-user/{username}")
 async def fetch_show_profile(username: str, response: Response):
-    # print(username)
-    userdata = select_query("user", f"`username`= '{username}'")[0]
+    print(username)
+    userdata = select_query("user", f"`username`= '{username}'")
+    if userdata == []:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {}
+    else:
+        userdata = userdata[0]
     avatar, song = userdata[2], userdata[3]
     posts = select_query("post", f"`username`= '{username}'")
     post_ids = {post[0]: dict(zip(COLUMNS["post"], post)) for post in posts}
@@ -131,13 +136,14 @@ async def fetch_show_profile(username: str, response: Response):
     data = {"username": username, "avatar": avatar, "song": song, "posts": {
         "data": post_ids, "images": images}, "friends": [friend[1] for friend in friends]}
     response.status_code = status.HTTP_200_OK
-    print(data)
+    # print(data)
     return data
 
 
 @app.post("/fetch-add-friend")
 async def fetch_friend(request: Request, response: Response):
     item = await request.json()
+    print(item)
     insert_query('isfriend', item)
     response.status_code = status.HTTP_200_OK
 
@@ -212,8 +218,10 @@ async def fetch_has_liked(request: Request, response: Response):
     hasliked = select_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post}")
     response.status_code = status.HTTP_200_OK
     if hasliked == []:
+        print(False)
         return JSONResponse(content={"liked": "0"})
     else:
+        print(False)
         return JSONResponse(content={"liked": "1"})
         
 
@@ -222,17 +230,21 @@ async def fetch_like(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
     print(items)
-    post_id, username= items[0], items[1]
+    post_id, username, author = items[0], items[1], items[2]
     hasliked = select_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post_id}")
     if hasliked == []:
         add = 1
     else:
         add = -1
     post = list(select_query(
-        "post", f"`idpost` = {post_id} AND `username`= '{username}'")[0])
-    print(post)
+        "post", f"`idpost` = {post_id} AND `username`= '{username}'"))
+    if post!=[]:
+        post = post[0]
+    else:
+        res = JSONResponse(content={"liked": "0"})
+        return res
     if add == 1:
-        insert_query("userlikedpost", {"userUsername": username, "idPost": post_id, "authorUsername": post[1]})
+        insert_query("userlikedpost", {"userUsername": username, "idPost": post_id, "authorUsername": author})
         res = JSONResponse(content={"liked": "1", "nlikes": max(post[-1] + add, 0)})
     else:
         delete_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post_id}")
@@ -244,16 +256,26 @@ async def fetch_like(request: Request, response: Response):
     response.status_code = status.HTTP_200_OK
     return res
 
-@app.get("/fetch-main-page")
+@app.post("/fetch-main-page")
 async def main(request: Request, response: Response):
     item = await request.json()
+    username = item["username"]
+    friends = [names[1] for names in select_query("isfriend", f"`username1`= '{username}'")]
+    print(friends)
+    posts = []
+    for friend in friends:
+        data = await fetch_show_profile(friend, response)
+        cur_posts = data["posts"]
+        posts.append(cur_posts)
+    posts_dates = [val["data"] for val in posts][0]
+    posts_dates = sorted(list(posts_dates.values()), key=lambda x: max(x["added"], x["modified"]), reverse=True)
     response.status_code = status.HTTP_200_OK
+    return {"posts": posts_dates[:max(len(posts_dates), 10)]}
 
 
 @app.post("/fetch-login")
 async def fetch_login(request: Request, response: Response):
     item = await request.json()
-    # items = list(item.values())
     print(item)
     username, password = item["username"], item["password"]
     try:

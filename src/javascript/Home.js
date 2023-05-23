@@ -1,38 +1,45 @@
-import React from "react";
-import FriendSongElement from "./FriendSongElement.js";
-import PostBase from "./PostBase.js";
-import ProfilePicture from "../data/profile.jpg";
-import PostHeader from "./PostHeader.js";
+import React, { useEffect, useState } from "react";
 import Post from "./Post.js";
 import TripleFriendSong from "./TripleFriendSong.js";
 
+function Posts({ posts, postOrder }) {
+  const listItems = posts ? postOrder.map((number) => {  
+    const num = parseInt(number)
+    const post = posts[num];
+    if (post) {
+      const postWrap = {
+        id: post["idpost"],
+        username: post["username"],
+        text: post["article"],
+        added: post["added"],
+        numberLikes: post["nlikes"],
+      };
+      return <Post post={postWrap} images={null}></Post>;
+    }
+  }): null;
+  return <>{listItems}</>;
+}
+
 export default function Home() {
+  const postsHandler = async () => {
+    const data = await fetch("http://localhost:8000/fetch-main-page", 
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({"username": sessionStorage.getItem("username")}),
+    });
+    const listPosts = await data.json().then((data)=> data["posts"])
+    setPosts(listPosts)
+  }
+  const [posts, setPosts] = useState(postsHandler);
+  const postOrder = posts ? Object.keys(posts).sort((a, b) => b - a): [];
+
   return (
     <div>
       <TripleFriendSong></TripleFriendSong>
-      <Post post={{
-        id:"1",
-        headerType:"lastPostElement",
-        username:"Beheni",
-        avatar:{ProfilePicture},
-        text:
-          "Alonso is greatest driver of all time. Everyone who thinks different — is wrong. He won championships in bad cars and always showed great results. Alonso FTW"
-        ,
-        added:"2 MAY 2023",
-        numberLikes:22}}
-      ></Post>
-
-        <Post post={{
-        id:"2",
-        headerType:"lastPostElement",
-        username:"Beheni",
-        avatar:{ProfilePicture},
-        text:
-          "Alonso is greatest driver of all time. Everyone who thinks different — is wrong. He won championships in bad cars and always showed great results. Alonso FTW"
-        ,
-        added:"2 MAY 2023",
-        numberLikes:22}}
-      ></Post>
+      <Posts posts={posts} postOrder={postOrder ? postOrder.slice(1, postOrder.length) : []}/>
     </div>
   );
 }

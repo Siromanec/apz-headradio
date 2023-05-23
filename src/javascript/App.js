@@ -7,15 +7,6 @@ import Footer from "./Footer.js";
 import { RequireAuth } from "react-auth-kit";
 import Login from "./Login.js";
 import { useNavigate, useLocation } from "react-router-dom";
-function MyButton() {
-  const [count, setCount] = useState(0);
-
-  function handleClick() {
-    setCount(count + 1);
-  }
-
-  return <button onClick={handleClick}>Clicked {count} times</button>;
-}
 
 function resetToken() {
   sessionStorage.setItem("token", JSON.stringify(null));
@@ -33,7 +24,6 @@ export default function App() {
   const location = useLocation();
 
   const token = getToken();
-  // console.log(token) ;
   let currentElement;
   if (
     !token &&
@@ -41,7 +31,6 @@ export default function App() {
       location.pathname === "/login" ||
       location.pathname === "/about" ||
       location.pathname === "/signup"||
-      location.pathname !== "/home" || // not working idk
       !location.pathname.startsWith("/profile")
     )
   ) {

@@ -1,16 +1,41 @@
 import logo from "../data/logo.svg";
 import settingsIcon from "../data/cogwheel.svg";
 import "../css/Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import SearchInputImg from "../data/search_button.svg";
 import SignOutImg from "../data/sign_out.svg";
+import userEvent from "@testing-library/user-event";
 
 
 function SearchInput() {
+  const [exists, setExists] = useState(false)
+  const [text, setText] = useState("")
+  const [message, setMessage] = useState()
+  const navigate = useNavigate()
+  const searchHandler = async ()=>{
+    const data = await (await fetch(`http://localhost:8000/fetch-show-user/${text}`)).json();
+    console.log(typeof(data));
+    if (Object.keys(data).length!==0){
+      console.log("here");
+      setExists(true);
+      navigate("/profile/"+text);
+      setMessage(null)
+      return;
+    }
+    else{
+      setExists(false);
+      setMessage("No such user")
+      return;
+    }
+  }
+  const textHandler = (event) => {
+    setText(event.target.value)
+  }
   return <div className="search">
-    <input type="search" placeholder="Search..." />
-    <img className="searchButton" src={SearchInputImg} />
+    <input type="search" name="input" placeholder="Search..." onChange={textHandler}/>
+    <button className="searchBtn" onClick={searchHandler} ><img className="searchImg" src={SearchInputImg} /></button>
+    {message}
   </div>;
 }
 // export default function Header() {

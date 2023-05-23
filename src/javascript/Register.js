@@ -57,6 +57,9 @@ export default function Register({ setToken, setSavedUserName }) {
       setNoValue(true)
     }
     else {
+      setToken(result)
+      setSavedUserName(username);
+
       navigate("/home")
     }
 

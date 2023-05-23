@@ -24,7 +24,18 @@ a:active {
     border-right: 0;
     /* min-width: 20%; */
 }
-
+.searchBtn {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    /* padding: 5px; */
+    height: 45px;
+    width: 45px;
+    border-radius: 20%;
+}
+.searchBtn:hover {
+    background-color: #e6e6e6;
+}
 .getOut {
     margin-left: 60%;
     margin-right: 10%;
