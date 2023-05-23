@@ -11,6 +11,7 @@ import userEvent from "@testing-library/user-event";
 function SearchInput() {
   const [exists, setExists] = useState(false)
   const [text, setText] = useState("")
+  const [message, setMessage] = useState()
   const navigate = useNavigate()
   const searchHandler = async ()=>{
     const data = await (await fetch(`http://localhost:8000/fetch-show-user/${text}`)).json();
@@ -19,10 +20,12 @@ function SearchInput() {
       console.log("here");
       setExists(true);
       navigate("/profile/"+text);
+      setMessage(null)
       return;
     }
     else{
       setExists(false);
+      setMessage("No such user")
       return;
     }
   }
@@ -32,7 +35,7 @@ function SearchInput() {
   return <div className="search">
     <input type="search" name="input" placeholder="Search..." onChange={textHandler}/>
     <button className="searchBtn" onClick={searchHandler} ><img className="searchImg" src={SearchInputImg} /></button>
-    {exists? null : "No such user" }
+    {message}
   </div>;
 }
 // export default function Header() {
