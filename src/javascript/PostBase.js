@@ -23,7 +23,7 @@ async function hasLikedHandler(data) {
         },
         body: JSON.stringify(data)
     }).then((data) => data.json())
-    .catch((data) => data.json());
+        .catch((data) => data.json());
     if (like["liked"] === 0) {
         return false;
     }
@@ -33,12 +33,12 @@ async function hasLikedHandler(data) {
 
 }
 
-export default function PostBase({ images, article, date, nlikes, idpost, username}) {
+export default function PostBase({ images, article, date, nlikes, idpost, username }) {
     const [hasLiked, setHasLiked] = useState(false);
-    useEffect(()=>{setHasLiked(hasLikedHandler({"post": idpost , "username": username}));}, [])
+    useEffect(() => { setHasLiked(hasLikedHandler({ "post": idpost, "username": username })); }, [])
     const [nLikes, setNLikes] = useState(nlikes);
     const likeHandler = async () => {
-        const like = await setLikeHandler({"idpost": idpost , "username": username})
+        const like = await setLikeHandler({ "idpost": idpost, "username": username })
             .then((data) => data.json())
             .catch((data) => data.json());
         if (like["liked"] === "0") {
@@ -56,9 +56,8 @@ export default function PostBase({ images, article, date, nlikes, idpost, userna
             <div className="textPart">
                 <div className="fullText">
                     <div className="postText">
-                        {article??false ? parse(article): ""}
+                        {article ?? false ? parse(article) : ""}
                     </div>
-                    <button className="openFullTextBtn"><img className="fullTextImg" src={openFullIcon}></img></button>
                 </div>
                 <div className="postFooter">
                     <span className="postDate">{date}</span>
