@@ -15,21 +15,21 @@ footer {
     padding: 10px 0px 10px 0px;
     border-right: 0;
     border-left: 0;
-    position: fixed;
-    bottom: 0;
+    /* position: fixed; */
+    /* bottom: 0; */
     width: 100%;
+    box-shadow: 0 50vh 0 50vh #E8DDCA;
 }
 
 .footerDiv {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0px 50px;
 }
 
 .footerLinkWrapper {
     display: flex;
     gap: 100px;
-    margin-left: 70%;
-
 }
 
 .footerLink {
