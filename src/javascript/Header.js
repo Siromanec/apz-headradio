@@ -14,16 +14,16 @@ function SearchInput() {
   const navigate = useNavigate()
   const searchHandler = async ()=>{
     const data = await (await fetch(`http://localhost:8000/fetch-show-user/${text}`)).json();
-    console.log(data);
-    if (data["detail"]!=="Not Found"){
+    console.log(typeof(data));
+    if (Object.keys(data).length!==0){
+      console.log("here");
       setExists(true);
+      navigate("/profile/"+text);
+      return;
     }
     else{
       setExists(false);
-    }
-    if(exists) {
-      navigate("/profile/"+text)
-      return
+      return;
     }
   }
   const textHandler = (event) => {
