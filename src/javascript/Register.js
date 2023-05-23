@@ -28,7 +28,7 @@ export default function Register({ setToken, setSavedUserName }) {
   const [badUsername, setBadUsername] = useState(false);
   const [noValue, setNoValue] = useState(false)
   const [popUpClass, setPopUpClass] = useState("popup")
-
+  const [isChecked, setCheckedBox] = useState(false)
 
   const navigate = useNavigate();
   // const location = useLocation();
@@ -39,6 +39,9 @@ export default function Register({ setToken, setSavedUserName }) {
     e.preventDefault();
     if (password !== passwordAgain) {
       setBadPassword(true)
+      return
+    }
+    if(!isChecked){
       return
     }
     setBadPassword(false)
@@ -62,8 +65,6 @@ export default function Register({ setToken, setSavedUserName }) {
 
       navigate("/home")
     }
-
-
   };
 
   function handleClick() {
@@ -74,10 +75,15 @@ export default function Register({ setToken, setSavedUserName }) {
     setPopUpClass("popup")
   }
 
+  function handleCheck() {
+    setCheckedBox(! isChecked)
+  }
+
   const badPasswordElement = <div className="error">*Passwords do not match!</div>
   const badEmailElement = <div className="error">*Email already in use!</div>
   const badUserElement = <div className="error">*Username already exists!</div>
   const badInputElement = <div className="error">*Insert every value!</div>
+  const notCheckedError = <div className="error">*Not accepted terms and services!</div>
 
   return (
     <section className="register">
@@ -124,11 +130,12 @@ export default function Register({ setToken, setSavedUserName }) {
           {badUsername && badUserElement}
           {noValue && badInputElement}
           <div className="t-of-s">
-            <input type="checkbox" className="t-of-s" />
+            <input type="checkbox" className="t-of-s" onChange={handleCheck}/>
             <span >I agree with the </span>
             <u onClick={handleClick}>terms of services</u>
             <span>.</span>
           </div>
+          {!isChecked && notCheckedError}
           <div>
             <button type="submit" onClick={handleSubmit}>Sign Up</button>
           </div>
