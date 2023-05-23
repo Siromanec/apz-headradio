@@ -57,6 +57,10 @@ export default function Register({ setToken, setSavedUserName }) {
       setNoValue(true)
     }
     else {
+      console.log(`result token: ${result["token"]}`);
+      setToken(result)
+      setSavedUserName(username);
+
       navigate("/home")
     }
 
