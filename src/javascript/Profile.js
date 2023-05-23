@@ -11,6 +11,7 @@ import { Await, useLoaderData, useParams } from "react-router-dom";
 import Post from "./Post.js";
 import ChangeSong from "./ChangeSong";
 import AddFriend from "./AddFriend";
+import crossButton from "../data/cross.svg";
 
 export function Posts({ posts, postOrder }) {
   const listItems = postOrder.map((number) => {
@@ -68,14 +69,19 @@ export default function Profile() {
   const handlePhoto = () => {
     setShow((show) => !show);
   };
+
+  const [popUpFriendsCLass, setPopUpFriendsClass] = useState("popup-change");
   function handleShowFriends() {
     console.log(friends);
+    setPopUpFriendsClass("popup-change show");
+  }
+  function exitShowFriends() {
+    setPopUpFriendsClass("popup-change");
   }
 
   async function handleSongClick() {
     const songID = document.getElementById("song-id").value;
-    window.location.replace(songID)
-
+    window.location.replace(songID);
   }
 
   return (
@@ -103,7 +109,13 @@ export default function Profile() {
                 style={{ width: "40px" }}
                 onClick={handleSongClick}
               ></img>
-              <span id="song-name" className="songName" onClick={handleSongClick}>No added song</span>
+              <span
+                id="song-name"
+                className="songName"
+                onClick={handleSongClick}
+              >
+                No added song
+              </span>
             </div>
             <div className="Stats">
               <div className="Posts">
@@ -113,6 +125,19 @@ export default function Profile() {
               <div className="Friends" onClick={handleShowFriends}>
                 <span>FRIENDS</span>
                 <span className="numbers">{friends.length}</span>
+              </div>
+              <div className={popUpFriendsCLass}>
+                <div className="FriendsList-div">
+                  <div className="FriendsList-header-div">
+                    <span className="FriendsList-header">Friends</span>
+                    <button className="exitButton" onClick={exitShowFriends}>
+                      <img src={crossButton} />
+                    </button>
+                  </div>
+                  <div className="FriendsList-main-div">
+                    <span>1.Friend</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
