@@ -131,9 +131,18 @@ async def fetch_show_profile(username: str, response: Response):
     images = {post_id: [image[2] for image in val]
               for post_id, val in images.items()}
     friends = select_query("isfriend", f"`username1`= '{username}'")
+    
 
-
-    data = {"username": username, "avatar": avatar, "song": song, "posts": {
+    # avatar_data = avatar
+    try:
+        with open("./data/" + avatar, "r") as file:
+            avatar_data = file.read()
+    except TypeError:
+        # status.HTTP_400_BAD_REQUEST
+        # return
+        avatar_data = None
+    # print(avatar_data)
+    data = {"username": username, "avatar": avatar_data, "song": song, "posts": {
         "data": post_ids, "images": images}, "friends": [friend[1] for friend in friends]}
     response.status_code = status.HTTP_200_OK
     # print(data)
@@ -147,7 +156,6 @@ async def fetch_friend(request: Request, response: Response):
     insert_query('isfriend', item)
     response.status_code = status.HTTP_200_OK
 
-
 @app.post("/fetch-remove-friend")
 async def fetch_no_friend(request: Request, response: Response):
     item = await request.json()
@@ -156,16 +164,40 @@ async def fetch_no_friend(request: Request, response: Response):
         'isfriend', f"`username1` = '{user1}' AND `username2` = '{user2}'")
     response.status_code = status.HTTP_200_OK
 
-
+import uuid
+import os
 @app.post("/fetch-modify-profile-photo")
-async def fetch_photo(request: Request, response: Response):
+async def fetch_profile_photo(request: Request, response: Response):
+    # TODO
+    # changes are needed here
     item = await request.json()
-    # items = list(item.values())
-    print(item)
-    username, picturelink = item["username"], item["picture"]
+    filename = str(uuid.uuid4())
+    while os.path.isfile("./data/" + filename):
+        filename = str(uuid.uuid4())
+    with open("./data/" + filename, "w") as file:
+        file.write(item["image"])
+    print("./data/" + filename)
+    username = item["username"]
     update_query(
-        "user", {"profilePicture": f"'{picturelink}'"}, f"`username`='{username}'")
+        "user", {"profilePicture": f"'{filename}'"}, f"`username`='{username}'")
     response.status_code = status.HTTP_200_OK
+
+# @app.get("/fetch-photo/{image}")
+# async def fetch_photo(image: Request, response: Response):
+#     # TODO
+#     # changes are needed here
+#     # item = await request.json()
+#     # filename = str(uuid.uuid4())
+#     # while os.path.isfile("./data/" + filename):
+#     #     filename = str(uuid.uuid4())
+#     # with open("./data/" + filename, "w") as file:
+#     #     file.write(item["image"])
+#     # print("./data/" + filename)
+#     # username = item["username"]
+#     # update_query(
+#     #     "user", {"profilePicture": f"'{filename}'"}, f"`username`='{username}'")
+    
+#     response.status_code = status.HTTP_200_OK
 
 
 @app.post("/fetch-modify-music")
@@ -179,6 +211,8 @@ async def fetch_photo(request: Request, response: Response):
 
 @app.post("/fetch-new-post")
 async def fetch_new_post(request: Request, response: Response):
+    # TODO
+    # changes are needed here
     item = await request.json()
     username = item["username"]
     new_id = select_query("post")[-1][0]

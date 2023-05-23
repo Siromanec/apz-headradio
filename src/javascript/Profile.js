@@ -35,35 +35,23 @@ const formatShortWeekday = (locale, date) => {
 
 export default function Profile() {
   const { username, avatar, posts, friends } = useLoaderData();
-  const [ours, setOurs] = useState(
+  
+  const [isCurrentUser, setIsCurrentUser] = useState(
     username === sessionStorage.getItem("username")
   );
   const [isFriend, setIsFriend] = useState(
-    !ours && friends.includes(sessionStorage.getItem("username")) ? true : false
+    !isCurrentUser && friends.includes(sessionStorage.getItem("username"))
   );
 
   const [photo, setPhoto] = useState(avatar);
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [friendsCount, setFriendsCount] = useState(friends.length);
+  
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a);
   let currentPost = posts.data[postOrder[0]];
   const songName = "В очах  •  Skryabin";
 
-  const submitHandler = async (event) => {
-    const file = URL.createObjectURL(event.target.files[0]);
-    setPhoto(file);
-    const body = {
-      username: sessionStorage.getItem("username"),
-      picture: file,
-    };
-    return await fetch("http://localhost:8000/fetch-modify-profile-photo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-  };
   
   const handlePhoto = () => {
     setShow((show) => !show);
@@ -71,14 +59,27 @@ export default function Profile() {
   function handleShowFriends() {
     console.log(friends);
   }
+  useEffect(() => {
+    setIsCurrentUser(username === sessionStorage.getItem("username"))
+    setPhoto(avatar)
+    setFriendsCount(friends.length)
+  }, [username])
+  // useEffect(() => {
+  //   setIsCurrentUser(username === sessionStorage.getItem("username"))
+  //   setPhoto(avatar)
+  //   setFriendsCount(friends.length)
+  // }, [friendsCount])
+  // useEffect(() => {
+  //   // setIsCurrentUser(username === sessionStorage.getItem("username"))
+  // }, [friends])
   return (
     <main>
       <section className="profileInfo">
         <div className="profileDescription">
-          <div className="profilePictureDiv">
+          <div className={`profilePictureDiv ${isCurrentUser ? "can-change-picture":""}`}>
             <span className="editText" onClick={handlePhoto}>Change Photo</span>
-            <img src={photo ?? false ? photo : DefaultProfile} className="profilePicture" />
-            {show ? <PhotoChange changleHandler={submitHandler} /> : null}
+            <img src={photo ? photo : DefaultProfile} className="profilePicture" />
+            {show ? <PhotoChange isSessionUser={isCurrentUser}/> : null}
           </div>
           <span className="tag">@{username}</span>
         </div>
@@ -99,14 +100,14 @@ export default function Profile() {
               </div>
               <div className="Friends" onClick={handleShowFriends}>
                 <span>FRIENDS</span>
-                <span className="numbers">{friends.length}</span>
+                <span className="numbers">{friendsCount}</span>
               </div>
             </div>
           </div>
-          {ours ? (
+          {isCurrentUser ? (
             <ChangeSong />
           ) : (
-            <AddFriend profile={username} friends={isFriend} />
+            <AddFriend profile={username} isFriend={isFriend}  friendsCount={friendsCount} setIsFriend={setIsFriend} setFriendsCount={setFriendsCount}/>
           )}
         </div>
       </section>

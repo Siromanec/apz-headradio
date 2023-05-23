@@ -41,11 +41,11 @@
     cursor: pointer;
 }
 
-.profilePictureDiv:hover .editText {
+.can-change-picture:hover .editText {
     opacity: 1;
 }
 
-.profilePictureDiv:hover .profilePicture {
+.can-change-picture:hover .profilePicture {
     opacity: 25%;
 }
 

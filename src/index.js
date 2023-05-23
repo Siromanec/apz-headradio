@@ -1,24 +1,38 @@
 import React from "react";
+import { AuthProvider, RequireAuth } from "react-auth-kit";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import ClickCounter from "./javascript/ClickCounter";
-import reportWebVitals from "./javascript/reportWebVitals";
 import {
   BrowserRouter,
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Home from "./javascript/Home";
-import Profile from "./javascript/Profile";
+
+
+
+
+
+
 import About from "./javascript/About";
-
 import App from "./javascript/App";
-
-
+import Home from "./javascript/Home";
 import Login from "./javascript/Login";
+import Profile from "./javascript/Profile";
 import Register from "./javascript/Register";
+import reportWebVitals from "./javascript/reportWebVitals";
 
-import { AuthProvider, RequireAuth } from "react-auth-kit";
+
+
+
+
+
+
+import "./index.css";
+
+
+
+
+
+
 
 function setToken(userToken) {
   sessionStorage.setItem("token", JSON.stringify(userToken));
