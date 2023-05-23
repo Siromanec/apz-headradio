@@ -218,8 +218,10 @@ async def fetch_has_liked(request: Request, response: Response):
     hasliked = select_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post}")
     response.status_code = status.HTTP_200_OK
     if hasliked == []:
+        print(False)
         return JSONResponse(content={"liked": "0"})
     else:
+        print(False)
         return JSONResponse(content={"liked": "1"})
         
 
@@ -228,17 +230,21 @@ async def fetch_like(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
     print(items)
-    post_id, username= items[0], items[1]
+    post_id, username, author = items[0], items[1], items[2]
     hasliked = select_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post_id}")
     if hasliked == []:
         add = 1
     else:
         add = -1
     post = list(select_query(
-        "post", f"`idpost` = {post_id} AND `username`= '{username}'")[0])
-    print(post)
+        "post", f"`idpost` = {post_id} AND `username`= '{username}'"))
+    if post!=[]:
+        post = post[0]
+    else:
+        res = JSONResponse(content={"liked": "0"})
+        return res
     if add == 1:
-        insert_query("userlikedpost", {"userUsername": username, "idPost": post_id, "authorUsername": post[1]})
+        insert_query("userlikedpost", {"userUsername": username, "idPost": post_id, "authorUsername": author})
         res = JSONResponse(content={"liked": "1", "nlikes": max(post[-1] + add, 0)})
     else:
         delete_query("userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post_id}")
@@ -270,7 +276,6 @@ async def main(request: Request, response: Response):
 @app.post("/fetch-login")
 async def fetch_login(request: Request, response: Response):
     item = await request.json()
-    # items = list(item.values())
     print(item)
     username, password = item["username"], item["password"]
     try:

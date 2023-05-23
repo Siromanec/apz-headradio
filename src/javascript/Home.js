@@ -3,13 +3,9 @@ import Post from "./Post.js";
 import TripleFriendSong from "./TripleFriendSong.js";
 
 function Posts({ posts, postOrder }) {
-  console.log(posts);
-
   const listItems = posts ? postOrder.map((number) => {  
     const num = parseInt(number)
-    console.log(typeof(num))
     const post = posts[num];
-    console.log(post)
     if (post) {
       const postWrap = {
         id: post["idpost"],
@@ -35,7 +31,6 @@ export default function Home() {
       body: JSON.stringify({"username": sessionStorage.getItem("username")}),
     });
     const listPosts = await data.json().then((data)=> data["posts"])
-    console.log(listPosts)
     setPosts(listPosts)
   }
   const [posts, setPosts] = useState(postsHandler);

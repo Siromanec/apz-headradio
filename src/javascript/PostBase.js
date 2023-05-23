@@ -15,31 +15,33 @@ async function setLikeHandler(data) {
     });
 }
 
-async function hasLikedHandler(data) {
-    const like = fetch("http://localhost:8000/fetch-has-liked", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-    }).then((data) => data.json())
-        .catch((data) => data.json());
-    if (like["liked"] === 0) {
-        return false;
-    }
-    else {
-        return true;
-    };
-
-}
 
 export default function PostBase({ images, article, date, nlikes, id, username }) {
     const [hasLiked, setHasLiked] = useState(false);
-    useEffect(() => { setHasLiked(hasLikedHandler({ "post": id, "username": username })); }, [])
     const [nLikes, setNLikes] = useState(nlikes);
+    const hasLikedHandler = async(data) => {
+        const like = fetch("http://localhost:8000/fetch-has-liked", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        }).then((data) => data.json())
+            .catch((data) => data.json());
+        if (like["liked"] === 0) {
+            setHasLiked(false)
+        }
+        else {
+            setHasLiked(true)
+        };
+        console.log(hasLiked)
+    
+    }
+
+    useEffect(() => {hasLikedHandler({ "post": id, "username": sessionStorage.getItem("username") })} , [])
     const likeHandler = async () => {
-        // console.log(idpost)
-        const like = await setLikeHandler({ "idpost": id, "username": username })
+        
+        const like = await setLikeHandler({ "idpost": id, "username": sessionStorage.getItem("username"), "author": username})
             .then((data) => data.json())
             .catch((data) => data.json());
         if (like["liked"] === "0") {
