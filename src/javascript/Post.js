@@ -9,7 +9,7 @@ import "../css/Post.css";
 
 
 export default function Post({
-  post,
+  post, headerType
 }) {
 
   return (
@@ -17,7 +17,7 @@ export default function Post({
       <div className="PostHeaderDiv">
         <PostHeader
           className="PostHeader"
-          headerType={post.headerType}
+          headerType={headerType}
           username={post.username}
           avatar={post.avatar}
         ></PostHeader>
