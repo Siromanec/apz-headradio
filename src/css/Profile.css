@@ -129,6 +129,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
 }
 .low {
     color: blue;
@@ -173,6 +174,9 @@ main {
 .FriendsList-header-div {
     border-bottom: 1px solid #755139;
     padding: 5px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .FriendsList-header {
@@ -182,6 +186,42 @@ main {
 }
 
 .FriendsList-main-div {
-    padding: 5px 30px;
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
+.friend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.friend-username {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.unfriend-button {
+    background: #FCFBF3;
+    border: 1px solid #755139;
+    border-radius: 25px;
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    padding: 2px 30px;
+    color: #755139;
+}
+
+.exitButton {
+    padding: 5px;
+    padding-top: 15px;
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
 }
