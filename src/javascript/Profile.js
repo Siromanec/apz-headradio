@@ -183,7 +183,7 @@ export default function Profile() {
       </section>
       <section className="recentDiary"></section>
       <section className="textField"></section>
-      <EditorWrapper></EditorWrapper>
+      {isCurrentUser && <EditorWrapper></EditorWrapper>}
       <Post
         post={currentPost ?? false ? currentPost : {}}
         /*images={currentPost}*/ headerType="lastPostElement"
