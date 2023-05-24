@@ -51,7 +51,15 @@ export default function Profile() {
   const [friendsCount, setFriendsCount] = useState(friends.length);
 
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a);
-  let currentPost = posts.data[postOrder[0]];
+  const [currentPost, setCurrentPost] = useState(posts.data[postOrder[0]]);
+
+  useEffect(()=>{setCurrentPost({
+    id: currentPost.idpost,
+    username: currentPost.username,
+    text: currentPost.article,
+    added: currentPost.added,
+    numberLikes: currentPost.nlikes,
+  });}, []);
 
   const submitHandler = async (event) => {
     const file = URL.createObjectURL(event.target.files[0]);
