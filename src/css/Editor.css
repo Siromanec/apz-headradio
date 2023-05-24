@@ -61,17 +61,3 @@
 .EditorSubmitImg {
   height: 24px;
 }
-
-.editor-add-images-button {
-  position: absolute;
-  top: 6px;
-  z-index: 2;
-  left: min(320px, 80%);
-  border: none;
-  background-color: transparent;
-}
-
-.editor-add-images-button:hover {
-  background-color: white;
-  border-radius: 10%;
-}
