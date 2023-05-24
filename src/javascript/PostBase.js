@@ -65,7 +65,6 @@ export default function PostBase({
   const dateLocale = dateObj.toLocaleString();
   return (
     <div className="post">
-      <div className="photoPart"></div>
       <div className="textPart">
         <div className="fullText">
           <div className="postText">{article ? parse(article) : ""}</div>
