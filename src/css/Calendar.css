@@ -23,7 +23,7 @@
   margin: -0.5em;
 }
 
-.react-calendar--doubleView .react-calendar__viewContainer>* {
+.react-calendar--doubleView .react-calendar__viewContainer > * {
   width: 50%;
   margin: 0.5em;
 }
@@ -85,7 +85,7 @@
 .react-calendar__navigation__label {
   color: #755139;
   font-size: 33px;
-  font-family: 'Playfair Display';
+  font-family: "Playfair Display";
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -101,15 +101,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
 
 .react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend {
-  font-family: "Poppins"
+  font-family: "Poppins";
 }
 
 .react-calendar__tile.react-calendar__month-view__days__day {
-  font-family: "Poppins"
+  font-family: "Poppins";
 }
 
 .react-calendar__month-view__weekNumbers .react-calendar__tile {
@@ -193,5 +192,5 @@
 }
 
 .react-calendar__tile--now {
-  background-color: #E8DDCA;
+  background-color: #e8ddca;
 }

@@ -5,13 +5,7 @@ import ProfilePicture from "../data/profile.jpg";
 import PostHeader from "./PostHeader.js";
 import "../css/Post.css";
 
-
-
-
-export default function Post({
-  post, headerType
-}) {
-
+export default function Post({ post, headerType }) {
   return (
     <div className="PostDiv">
       <div className="PostHeaderDiv">
@@ -23,7 +17,13 @@ export default function Post({
         ></PostHeader>
       </div>
 
-      <PostBase nlikes={post.numberLikes} date={post.added} article={post.text} id={post.id} username={post.username}></PostBase>
+      <PostBase
+        nlikes={post.numberLikes}
+        date={post.added}
+        article={post.text}
+        id={post.id}
+        username={post.username}
+      ></PostBase>
     </div>
   );
 }

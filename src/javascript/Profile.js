@@ -36,7 +36,7 @@ const formatShortWeekday = (locale, date) => {
 
 export default function Profile() {
   const { username, avatar, posts, friends } = useLoaderData();
-  
+
   const [isCurrentUser, setIsCurrentUser] = useState(
     username === sessionStorage.getItem("username")
   );
@@ -48,7 +48,7 @@ export default function Profile() {
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const [friendsCount, setFriendsCount] = useState(friends.length);
-  
+
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a);
   let currentPost = posts.data[postOrder[0]];
 
@@ -68,13 +68,15 @@ export default function Profile() {
     });
   };
 
-  let friendsList = []
+  let friendsList = [];
 
-  for(let i = 0; i < friends.length; ++i) {
-    friendsList.push(<div className="friend">
-      <span className="friend-username">{"@"+friends[i]}</span>
-      <button className="unfriend-button">friEND</button>
-    </div>)
+  for (let i = 0; i < friends.length; ++i) {
+    friendsList.push(
+      <div className="friend">
+        <span className="friend-username">{"@" + friends[i]}</span>
+        <button className="unfriend-button">friEND</button>
+      </div>
+    );
   }
   const handlePhoto = () => {
     setShow((show) => !show);
@@ -88,17 +90,17 @@ export default function Profile() {
   function exitShowFriends() {
     setPopUpFriendsClass("popup-change");
   }
-  
+
   async function handleSongClick() {
     const songID = document.getElementById("song-id").value;
     window.location.replace(songID);
   }
 
   useEffect(() => {
-    setIsCurrentUser(username === sessionStorage.getItem("username"))
-    setPhoto(avatar)
-    setFriendsCount(friends.length)
-  }, [username])
+    setIsCurrentUser(username === sessionStorage.getItem("username"));
+    setPhoto(avatar);
+    setFriendsCount(friends.length);
+  }, [username]);
   // useEffect(() => {
   //   setIsCurrentUser(username === sessionStorage.getItem("username"))
   //   setPhoto(avatar)
@@ -111,10 +113,21 @@ export default function Profile() {
     <main>
       <section className="profileInfo">
         <div className="profileDescription">
-          <div className={`profilePictureDiv ${isCurrentUser ? "can-change-picture":""}`}>
-            <span className="editText" onClick={handlePhoto}>Change Photo</span>
-            <img src={photo ? photo : DefaultProfile} className="profilePicture" />
-            {show ? <PhotoChange isSessionUser={isCurrentUser} setPhoto={setPhoto}/> : null}
+          <div
+            className={`profilePictureDiv ${
+              isCurrentUser ? "can-change-picture" : ""
+            }`}
+          >
+            <span className="editText" onClick={handlePhoto}>
+              Change Photo
+            </span>
+            <img
+              src={photo ? photo : DefaultProfile}
+              className="profilePicture"
+            />
+            {show ? (
+              <PhotoChange isSessionUser={isCurrentUser} setPhoto={setPhoto} />
+            ) : null}
           </div>
           <span className="tag">@{username}</span>
         </div>
@@ -148,13 +161,11 @@ export default function Profile() {
                 <div className="FriendsList-div">
                   <div className="FriendsList-header-div">
                     <span className="FriendsList-header">Friends</span>
-                    <button className="exitButton"  onClick={exitShowFriends}>
-                      <img src={crossButton} style={{ width: "20px" }}/>
+                    <button className="exitButton" onClick={exitShowFriends}>
+                      <img src={crossButton} style={{ width: "20px" }} />
                     </button>
                   </div>
-                  <div className="FriendsList-main-div">
-                    {friendsList}
-                  </div>
+                  <div className="FriendsList-main-div">{friendsList}</div>
                 </div>
               </div>
             </div>
@@ -162,7 +173,11 @@ export default function Profile() {
           {isCurrentUser ? (
             <ChangeSong />
           ) : (
-            <AddFriend profile={username} isFriend={isFriend} setIsFriend={setIsFriend}/>
+            <AddFriend
+              profile={username}
+              isFriend={isFriend}
+              setIsFriend={setIsFriend}
+            />
           )}
         </div>
       </section>

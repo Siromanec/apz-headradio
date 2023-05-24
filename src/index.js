@@ -43,11 +43,11 @@ const router = createBrowserRouter([
             body: JSON.stringify({
               username: sessionStorage.getItem("username"),
             }),
-          }).then(data => data.json());
-          const posts = data.posts
-          const avatars = data.avatars
+          }).then((data) => data.json());
+          const posts = data.posts;
+          const avatars = data.avatars;
 
-          return {posts, avatars}
+          return { posts, avatars };
         },
       },
       {

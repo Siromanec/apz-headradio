@@ -24,11 +24,11 @@ export default function Login({ setToken, setSavedUserName }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username) {
-      setUserName("")
+      setUserName("");
       return;
     }
     if (!password) {
-      setPassword("")
+      setPassword("");
       return;
     }
     const token = await loginUser({
@@ -48,12 +48,8 @@ export default function Login({ setToken, setSavedUserName }) {
   const badInputElement = (
     <div className="error">*Incorrect username or password</div>
   );
-  const noUsernameElement = (
-    <div className="error">*please enter username</div>
-  );
-  const noPasswordElement = (
-    <div className="error">*please enter password</div>
-  );
+  const noUsernameElement = <div className="error">*please enter username</div>;
+  const noPasswordElement = <div className="error">*please enter password</div>;
 
   return (
     <div className="login-wrapper">

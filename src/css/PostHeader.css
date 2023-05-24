@@ -1,37 +1,37 @@
 .lastPostLabelDiv {
-    border: 1px solid #755139;
-    background-color: #ffffff;
-    padding: 10px 100px;
-    width: fit-content;
-    font-family: "Poppins", sans-serif;
-    font-size: 25px;
-    margin-top: 30px;
+  border: 1px solid #755139;
+  background-color: #ffffff;
+  padding: 10px 100px;
+  width: fit-content;
+  font-family: "Poppins", sans-serif;
+  font-size: 25px;
+  margin-top: 30px;
 }
 
 .postHeaderDiv {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    border: 1px solid #755139;
-    background-color: #ffffff;
-    margin-top: 30px;
-    padding: 10px 40px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid #755139;
+  background-color: #ffffff;
+  margin-top: 30px;
+  padding: 10px 40px;
 }
 
-.postHeaderImg{
-    width: 70px;
-    height: 70px;
-    border-radius: 100%;
-    object-fit: cover;
-    border: solid 1px #755139;
+.postHeaderImg {
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  object-fit: cover;
+  border: solid 1px #755139;
 }
 
 .postHeaderLabelDiv {
-    display: flex;
-    height: fit-content;
+  display: flex;
+  height: fit-content;
 }
 
 .postHeaderLabel {
-    font-family: "Poppins", sans-serif;
-    font-size: 25px;
+  font-family: "Poppins", sans-serif;
+  font-size: 25px;
 }

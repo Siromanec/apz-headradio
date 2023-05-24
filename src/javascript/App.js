@@ -9,7 +9,6 @@ import Login from "./Login.js";
 
 import "../css/App.css";
 
-
 function resetToken() {
   sessionStorage.setItem("token", JSON.stringify(null));
 }
@@ -32,7 +31,7 @@ export default function App() {
     !(
       location.pathname === "/login" ||
       location.pathname === "/about" ||
-      location.pathname === "/signup"||
+      location.pathname === "/signup" ||
       !location.pathname.startsWith("/profile")
     )
   ) {

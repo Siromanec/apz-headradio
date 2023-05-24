@@ -1,77 +1,77 @@
 .tox .tox-toolbar,
 .tox .tox-toolbar__overflow,
 .tox .tox-toolbar__primary {
-    background-color: #E8DDCA !important;
+  background-color: #e8ddca !important;
 }
 
 .tox:not(.tox-tinymce-inline) .tox-editor-header {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 .tox-tinymce {
-    border: 1px solid #755139 !important;
+  border: 1px solid #755139 !important;
 }
 
 .tox:not(.tox-tinymce-inline) .tox-editor-header {
-    padding: 0px !important;
+  padding: 0px !important;
 }
 
 .tox .tox-tbtn--enabled {
-    background: white !important;
+  background: white !important;
 }
 
 .tox .tox-tbtn:hover {
-    background: white !important;
+  background: white !important;
 }
 
 .tox .tox-toolbar__primary {
-    border-bottom: 1px solid #755139 !important;
+  border-bottom: 1px solid #755139 !important;
 }
 
 .tox .tox-tbtn svg {
-    fill: #755139 !important;
+  fill: #755139 !important;
 }
 
 .tox .tox-tbtn--bespoke {
-    background-color: white !important;
+  background-color: white !important;
 }
 
 .tox .tox-tbtn__select-label {
-    font-family: "Poppins", sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
 }
 
 .EditorDiv {
-    position: relative;
+  position: relative;
 }
 
 .EditorSubmitButton {
-    position: absolute;
-    top: 6px;
-    z-index: 2;
-    right: 10px;
-    border:none;
-    background-color: transparent;
+  position: absolute;
+  top: 6px;
+  z-index: 2;
+  right: 10px;
+  border: none;
+  background-color: transparent;
 }
 
 .EditorSubmitButton:hover {
-    background-color: white;
-    border-radius: 10%;
+  background-color: white;
+  border-radius: 10%;
 }
 
 .EditorSubmitImg {
-    height: 24px;
+  height: 24px;
 }
 
 .editor-add-images-button {
-    position: absolute;
-    top: 6px;
-    z-index: 2;
-    left: min(320px, 80%);
-    border:none;
-    background-color: transparent;
+  position: absolute;
+  top: 6px;
+  z-index: 2;
+  left: min(320px, 80%);
+  border: none;
+  background-color: transparent;
 }
 
 .editor-add-images-button:hover {
-    background-color: white;
-    border-radius: 10%;
+  background-color: white;
+  border-radius: 10%;
 }

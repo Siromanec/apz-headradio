@@ -25,8 +25,11 @@ export default function EditorWrapper() {
   const save = async () => {
     const content = editorRef.current.getContent();
     editorRef.current.setContent("");
-    const response = await sendPostContents({article: content, username: getSavedUserName()})
-    console.log(response)
+    const response = await sendPostContents({
+      article: content,
+      username: getSavedUserName(),
+    });
+    console.log(response);
     // an application would save the editor content to the server here
     // }
   };
@@ -57,8 +60,12 @@ export default function EditorWrapper() {
         }}
         //   onChange={onChange}
       />
-      <button className="editor-add-images-button"><img className="EditorSubmitImg" src={PictureIcon}></img></button>
-      <button className="EditorSubmitButton" onClick={save}><img className="EditorSubmitImg" src={SendIcon}></img></button>
+      <button className="editor-add-images-button">
+        <img className="EditorSubmitImg" src={PictureIcon}></img>
+      </button>
+      <button className="EditorSubmitButton" onClick={save}>
+        <img className="EditorSubmitImg" src={SendIcon}></img>
+      </button>
     </div>
   );
 }

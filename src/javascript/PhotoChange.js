@@ -18,24 +18,30 @@ const submitHandler = async (event, setPhoto) => {
     username: username,
     image: file,
   };
-  
-  const response = await fetch("http://localhost:8000/fetch-modify-profile-photo", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+
+  const response = await fetch(
+    "http://localhost:8000/fetch-modify-profile-photo",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
 };
 
 export default function PhotoChange({ isSessionUser, setPhoto }) {
   if (!isSessionUser) {
-    return <></>
+    return <></>;
   }
   return (
     <div className="PhotoChange">
-      <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => submitHandler(e, setPhoto)} />
+      <input
+        type="file"
+        accept=".jpg,.jpeg,.png"
+        onChange={(e) => submitHandler(e, setPhoto)}
+      />
     </div>
   );
 }
- 
