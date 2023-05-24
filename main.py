@@ -249,20 +249,20 @@ async def fetch_delete_post(request: Request, response: Response):
 @app.post("/fetch-has-liked")
 async def fetch_has_liked(request: Request, response: Response):
     item = await request.json()
-
     try:
-        username, post = item["username"], item["post"]
+        username, post, author = item["username"], item["post"], item["author"]
     except:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return
-
     hasliked = select_query(
-        "userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post}")
+        "userlikedpost", f"`idPost` = {post} and `userUsername`='{author}' ")
+    print(hasliked)
     response.status_code = status.HTTP_200_OK
     if hasliked == []:
-        return JSONResponse(content={"liked": "0"})
+        res =JSONResponse(content={"liked": "0"})
     else:
-        return JSONResponse(content={"liked": "1"})
+        res = JSONResponse(content={"liked": "1"})
+    return res
 
 
 @app.post("/fetch-like")
@@ -277,12 +277,14 @@ async def fetch_like(request: Request, response: Response):
     else:
         add = -1
     post = list(select_query(
-        "post", f"`idpost` = {post_id} AND `username`= '{username}'"))
+        "post", f"`idpost` = {post_id} AND `username`= '{author}'"))
+    # print(post)
     if post != []:
-        post = post[0]
+        post = list(post[0])
     else:
         res = JSONResponse(content={"liked": "0"})
         return res
+    print(post)
     if add == 1:
         insert_query("userlikedpost", {
                      "userUsername": username, "idPost": post_id, "authorUsername": author})
