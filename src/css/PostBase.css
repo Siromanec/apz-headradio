@@ -80,4 +80,5 @@
 .fullText {
   overflow: auto;
   height: 200px;
+  word-wrap: break-word;
 }
