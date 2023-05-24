@@ -66,6 +66,7 @@ export default function PostBase({
         } else {
             setHasLiked(true);
         }
+        console.log(like["likes"])
         setNLikes(like["nlikes"]);
     };
     const dateObj = new Date(date);

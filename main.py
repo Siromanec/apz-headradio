@@ -278,26 +278,35 @@ async def fetch_like(request: Request, response: Response):
         add = -1
     post = list(select_query(
         "post", f"`idpost` = {post_id} AND `username`= '{author}'"))
-    # print(post)
     if post != []:
         post = list(post[0])
     else:
         res = JSONResponse(content={"liked": "0"})
         return res
-    print(post)
     if add == 1:
+        print("here")
         insert_query("userlikedpost", {
                      "userUsername": username, "idPost": post_id, "authorUsername": author})
         res = JSONResponse(
             content={"liked": "1", "nlikes": max(post[-1] + add, 0)})
     else:
+        print("there")
         delete_query("userlikedpost",
                      f"`userUsername` = '{username}' and `idPost` = {post_id}")
         res = JSONResponse(
-            content={"liked": "0", "nlikes": max(post[-1] + add, 0)})
+            content={"liked": "0", "nlikes": post[-1]-1})
+    print(post)
     post[-1] = max(post[-1] + add, 0)
+    print(post)
+    print(post[-1])
     update_query(
-        "post", {'nlikes': post[-1]}, f"`idpost` = {post_id} AND `username`= '{username}'")
+        "post", {'nlikes': post[-1]}, f"`idpost` = {post_id} AND `username`= '{author}'")
+    post = list(select_query(
+        "post", f"`idpost` = {post_id} AND `username`= '{author}'"))
+    print(post)
+    print(post[0][-1])
+    
+    print(res.body)
     response.status_code = status.HTTP_200_OK
     return res
 
