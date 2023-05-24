@@ -39,7 +39,7 @@ export default function ChangeSong({profile, APIController, setUserSong}) {
       setUserSong("No such song");
     }
 
-    const response = await saveSong({profile, songName});
+    const response = await saveSong({profile, songName})
   }
 
   return (

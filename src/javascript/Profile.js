@@ -12,6 +12,9 @@ import Post from "./Post.js";
 import ChangeSong from "./ChangeSong";
 import AddFriend from "./AddFriend";
 import crossButton from "../data/cross.svg";
+import { Link, useNavigate } from "react-router-dom";
+
+
 import {spotifyClientID, spotifyClientSecret} from "./APIKeys";
 
 const APIController = (function () {
@@ -95,7 +98,15 @@ export default function Profile() {
   const [friendsCount, setFriendsCount] = useState(friends.length);
 
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a);
-  let currentPost = posts.data[postOrder[0]];
+  const [currentPost, setCurrentPost] = useState(posts.data[postOrder[0]]);
+
+  useEffect(()=>{setCurrentPost({
+    id: currentPost.idpost,
+    username: currentPost.username,
+    text: currentPost.article,
+    added: currentPost.added,
+    numberLikes: currentPost.nlikes,
+  });}, []);
 
   const submitHandler = async (event) => {
     const file = URL.createObjectURL(event.target.files[0]);
@@ -113,20 +124,6 @@ export default function Profile() {
     });
   };
 
-  let friendsList = [];
-
-  for (let i = 0; i < friends.length; ++i) {
-    friendsList.push(
-      <div className="friend">
-        <span className="friend-username">{"@" + friends[i]}</span>
-        <button className="unfriend-button">friEND</button>
-      </div>
-    );
-  }
-  const handlePhoto = () => {
-    setShow((show) => !show);
-  };
-
   const [popUpFriendsCLass, setPopUpFriendsClass] = useState("popup-change");
   function handleShowFriends() {
     console.log(friends);
@@ -135,6 +132,25 @@ export default function Profile() {
   function exitShowFriends() {
     setPopUpFriendsClass("popup-change");
   }
+
+  const navigate = useNavigate();
+  let friendsList = [];
+  for (let i = 0; i < friends.length; ++i) {
+    friendsList.push(
+      <div className="friend">
+        <span
+          onClick={() => {navigate("/profile/" + friends[i]); exitShowFriends()}}
+          className="friend-username"
+        >
+          {"@" + friends[i]}
+        </span>
+        <button className="unfriend-button">friEND</button>
+      </div>
+    );
+  }
+  const handlePhoto = () => {
+    setShow((show) => !show);
+  };
 
   async function handleSongClick() {
     console.log(song)

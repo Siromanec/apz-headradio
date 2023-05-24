@@ -37,13 +37,13 @@ a:active {
   background-color: #e6e6e6;
 }
 .getOut {
-  margin-left: 60%;
-  margin-right: 10%;
+  /* margin-left: 80px; */
+  /* margin-right: 50px; */
   display: flex;
-  justify-content: center;
-  align-items: right;
+  justify-content: right;
+  /* align-items: right; */
   min-width: 50px;
-  max-width: 100px;
+  /* max-width: 100px; */
 }
 
 .settingsIcon {
@@ -131,4 +131,5 @@ header {
 
 .emptyPart {
   width: 20%;
+  padding-right: 20px;
 }

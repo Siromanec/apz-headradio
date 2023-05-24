@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Post from "./Post.js";
+
 import TripleFriendSong from "./TripleFriendSong.js";
 import { Await, useLoaderData, useParams } from "react-router-dom";
 
@@ -28,8 +29,6 @@ function Posts({ posts, postOrder, avatars }) {
 
 export default function Home() {
   const { posts, avatars } = useLoaderData();
-
-  // const [posts, setPosts] = useState(postsHandler);
   const postOrder = posts ? Object.keys(posts).sort((a, b) => b - a) : [];
 
   return (

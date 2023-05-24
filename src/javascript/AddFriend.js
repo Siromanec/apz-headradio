@@ -11,8 +11,8 @@ export default function AddFriend({ profile, isFriend, setIsFriend }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username1: sessionStorage.getItem("username"),
-          username2: profile,
+          username2: sessionStorage.getItem("username"),
+          username1: profile,
         }),
       }
     );
