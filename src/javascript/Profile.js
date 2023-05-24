@@ -72,7 +72,7 @@ export default function Profile() {
 
   for(let i = 0; i < friends.length; ++i) {
     friendsList.push(<div className="friend">
-      <span className="friend-username">{friends[i]}</span>
+      <span className="friend-username">{"@"+friends[i]}</span>
       <button className="unfriend-button">friEND</button>
     </div>)
   }
@@ -148,8 +148,8 @@ export default function Profile() {
                 <div className="FriendsList-div">
                   <div className="FriendsList-header-div">
                     <span className="FriendsList-header">Friends</span>
-                    <button className="exitButton" onClick={exitShowFriends}>
-                      <img src={crossButton} />
+                    <button className="exitButton"  onClick={exitShowFriends}>
+                      <img src={crossButton} style={{ width: "20px" }}/>
                     </button>
                   </div>
                   <div className="FriendsList-main-div">
