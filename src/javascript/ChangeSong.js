@@ -67,7 +67,6 @@ export default function ChangeSong() {
     } catch (err) {
       song.textContent = "No such song";
     }
-    console.log(song.textContent);
   }
 
   return (

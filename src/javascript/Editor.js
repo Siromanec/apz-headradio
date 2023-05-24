@@ -29,9 +29,6 @@ export default function EditorWrapper() {
       article: content,
       username: getSavedUserName(),
     });
-    console.log(response);
-    // an application would save the editor content to the server here
-    // }
   };
   return (
     <div className="EditorDiv">
@@ -67,4 +64,3 @@ export default function EditorWrapper() {
     </div>
   );
 }
-// для картинок би окремий механізм

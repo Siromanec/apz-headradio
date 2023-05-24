@@ -332,7 +332,7 @@ async def main(request: Request, response: Response):
         x["added"], x["modified"]), reverse=True) if post else None for post in posts_dates]
     posts_dates = [item for subitem in posts_dates for item in subitem]
     posts_dates = sorted(posts_dates, key=lambda x: max(
-        x["added"], x["modified"]), reverse=True)
+        x["added"], x["modified"]))
     response.status_code = status.HTTP_200_OK
     selected_posts = posts_dates[:max(len(posts_dates), 10)]
     selected_avatars = []
