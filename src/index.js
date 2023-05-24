@@ -7,11 +7,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-
-
-
-
-
 import About from "./javascript/About";
 import App from "./javascript/App";
 import Home from "./javascript/Home";
@@ -20,26 +15,14 @@ import Profile from "./javascript/Profile";
 import Register from "./javascript/Register";
 import reportWebVitals from "./javascript/reportWebVitals";
 
-
-
-
-
-
-
 import "./index.css";
-
-
-
-
-
-
 
 function setToken(userToken) {
   sessionStorage.setItem("token", JSON.stringify(userToken));
 }
 
 function setSavedUserName(username) {
-  sessionStorage.setItem("username", (username));
+  sessionStorage.setItem("username", username);
 }
 
 const router = createBrowserRouter([
@@ -50,18 +33,32 @@ const router = createBrowserRouter([
       {
         path: "/home",
         index: true,
-        element: <Home />
+        element: <Home />,
+        loader: async () => {
+          const data = await fetch("http://localhost:8000/fetch-main-page", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: sessionStorage.getItem("username"),
+            }),
+          }).then(data => data.json());
+          const posts = data.posts
+          const avatars = data.avatars
+
+          return {posts, avatars}
+        },
       },
       {
         path: "/profile/:username",
         index: true,
         element: <Profile />,
         loader: async ({ params }) => {
-          const apiUrl = `http://localhost:8000/fetch-show-user/${params.username}`
+          const apiUrl = `http://localhost:8000/fetch-show-user/${params.username}`;
           const data = await (await fetch(apiUrl)).json();
-          return data
-        }
-      
+          return data;
+        },
       },
       {
         path: "/about",
@@ -71,12 +68,16 @@ const router = createBrowserRouter([
       {
         path: "/login",
         index: true,
-        element: <Login setToken={setToken} setSavedUserName={setSavedUserName}/>,
+        element: (
+          <Login setToken={setToken} setSavedUserName={setSavedUserName} />
+        ),
       },
       {
         path: "/signup",
         index: true,
-        element: <Register setToken={setToken} setSavedUserName={setSavedUserName}/>,
+        element: (
+          <Register setToken={setToken} setSavedUserName={setSavedUserName} />
+        ),
       },
     ],
   },

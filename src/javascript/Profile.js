@@ -105,7 +105,7 @@ export default function Profile() {
           <div className={`profilePictureDiv ${isCurrentUser ? "can-change-picture":""}`}>
             <span className="editText" onClick={handlePhoto}>Change Photo</span>
             <img src={photo ? photo : DefaultProfile} className="profilePicture" />
-            {show ? <PhotoChange isSessionUser={isCurrentUser}/> : null}
+            {show ? <PhotoChange isSessionUser={isCurrentUser} setPhoto={setPhoto}/> : null}
           </div>
           <span className="tag">@{username}</span>
         </div>
@@ -153,7 +153,7 @@ export default function Profile() {
           {isCurrentUser ? (
             <ChangeSong />
           ) : (
-            <AddFriend profile={username} isFriend={isFriend}  friendsCount={friendsCount} setIsFriend={setIsFriend} setFriendsCount={setFriendsCount}/>
+            <AddFriend profile={username} isFriend={isFriend} setIsFriend={setIsFriend}/>
           )}
         </div>
       </section>

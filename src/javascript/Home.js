@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Post from "./Post.js";
 import TripleFriendSong from "./TripleFriendSong.js";
+import { Await, useLoaderData, useParams } from "react-router-dom";
 
-function Posts({ posts, postOrder }) {
+function Posts({ posts, postOrder,avatars }) {
   const listItems = posts ? postOrder.map((number) => {  
     const num = parseInt(number)
     const post = posts[num];
@@ -13,6 +14,7 @@ function Posts({ posts, postOrder }) {
         text: post["article"],
         added: post["added"],
         numberLikes: post["nlikes"],
+        avatar: avatars[post["username"]]
       };
       return <Post headerType="postHeader" post={postWrap} images={null}></Post>;
     }
@@ -21,25 +23,15 @@ function Posts({ posts, postOrder }) {
 }
 
 export default function Home() {
-  const postsHandler = async () => {
-    const data = await fetch("http://localhost:8000/fetch-main-page", 
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({"username": sessionStorage.getItem("username")}),
-    });
-    const listPosts = await data.json().then((data)=> data["posts"])
-    setPosts(listPosts)
-  }
-  const [posts, setPosts] = useState(postsHandler);
+  const {posts, avatars } = useLoaderData();
+
+  // const [posts, setPosts] = useState(postsHandler);
   const postOrder = posts ? Object.keys(posts).sort((a, b) => b - a): [];
 
   return (
     <div>
       <TripleFriendSong></TripleFriendSong>
-      <Posts headerType="postHeader" posts={posts} postOrder={postOrder ? postOrder.slice(1, postOrder.length) : []}/>
+      <Posts headerType="postHeader" posts={posts} avatars={avatars} postOrder={postOrder ? postOrder.slice(0, postOrder.length) : []}/>
     </div>
   );
 }

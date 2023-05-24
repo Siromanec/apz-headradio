@@ -7,6 +7,7 @@ import json
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
+from pprint import pprint
 
 app = FastAPI()
 conn = sqlite3.connect("./database.db")
@@ -153,13 +154,16 @@ async def fetch_show_profile(username: str, response: Response):
 async def fetch_friend(request: Request, response: Response):
     item = await request.json()
     print(item)
-    insert_query('isfriend', item)
+    try:
+        insert_query('isfriend', item)
+    except sqlite3.IntegrityError:
+        response.status_code = status.HTTP_409_CONFLICT
     response.status_code = status.HTTP_200_OK
 
 @app.post("/fetch-remove-friend")
 async def fetch_no_friend(request: Request, response: Response):
     item = await request.json()
-    user1, user2 = list(item.values())
+    user1, user2 = item["username1"], item["username2"]
     delete_query(
         'isfriend', f"`username1` = '{user1}' AND `username2` = '{user2}'")
     response.status_code = status.HTTP_200_OK
@@ -295,16 +299,32 @@ async def main(request: Request, response: Response):
     item = await request.json()
     username = item["username"]
     friends = [names[1] for names in select_query("isfriend", f"`username1`= '{username}'")]
-    print(friends)
+    # friend_data = dict(zip(friends ,[select_query("user", f"`username`= '{friend}'") for friend in friends]))
+    # print(friend_data)
+    # print(friends)
     posts = []
+    friend_avatars = {}
     for friend in friends:
         data = await fetch_show_profile(friend, response)
         cur_posts = data["posts"]
+        friend_avatars[friend] = data["avatar"]
+        # print("data:   ")
+        # pprint(data.keys())
+
+        
         posts.append(cur_posts)
     posts_dates = [val["data"] for val in posts][0]
+    
     posts_dates = sorted(list(posts_dates.values()), key=lambda x: max(x["added"], x["modified"]), reverse=True)
+    # print(posts_dates)
     response.status_code = status.HTTP_200_OK
-    return {"posts": posts_dates[:max(len(posts_dates), 10)]}
+    selected_posts = posts_dates[:max(len(posts_dates), 10)]
+    selected_avatars = []
+    # for post in selected_posts:
+    selected_avatars = {post["username"]:friend_avatars[post["username"]] for post in selected_posts}
+    
+    # print({"posts": selected_posts, "avatars": selected_avatars}) # 1 to
+    return {"posts": selected_posts, "avatars": selected_avatars}
 
 
 @app.post("/fetch-login")
