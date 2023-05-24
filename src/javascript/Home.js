@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Post from "./Post.js";
-import DefaultPic from "../data/blank-profile-picture.svg"
+
 import TripleFriendSong from "./TripleFriendSong.js";
 import { Await, useLoaderData, useParams } from "react-router-dom";
 
