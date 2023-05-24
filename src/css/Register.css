@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   padding: 40px;
-  gap: 20px;
+  gap: 10px;
 }
 
 .exitButton {
@@ -27,13 +27,11 @@
   background-color: #e6e6e6 !important;
   color: #755139 !important;
 }
-.h {
-  text-align: center !important;
-}
+
 .header-div {
   display: flex;
-  align-items: center;
-  justify-items: center;
+  align-content: center;
+  justify-content: center;
   text-align: center;
   /* border: solid red 1px; */
   /* translate: ; */
