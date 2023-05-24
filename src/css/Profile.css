@@ -193,7 +193,8 @@ main {
 .friend {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 40px;
 }
 
 .friend-username {
