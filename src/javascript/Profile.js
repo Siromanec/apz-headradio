@@ -97,7 +97,6 @@ export default function Profile() {
         >
           {"@" + friends[i]}
         </span>
-        <button className="unfriend-button">friEND</button>
       </div>
     );
   }
