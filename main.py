@@ -333,19 +333,21 @@ async def main(request: Request, response: Response):
         # pprint(data.keys())
 
         posts.append(cur_posts)
-    posts_dates = [val["data"] for val in posts][0]
-
-    posts_dates = sorted(list(posts_dates.values()), key=lambda x: max(
-        x["added"], x["modified"]), reverse=True)
+    posts_dates = [val["data"] for val in posts]
+    posts_dates = [sorted(list(post.values()), key=lambda x: max(
+        x["added"], x["modified"]), reverse=True) if post else None for post in posts_dates]
     # print(posts_dates)
+    posts_dates = [item for subitem in posts_dates for item in subitem]
+    posts_dates = sorted(posts_dates, key=lambda x: max(
+        x["added"], x["modified"]), reverse=True)
     response.status_code = status.HTTP_200_OK
     selected_posts = posts_dates[:max(len(posts_dates), 10)]
     selected_avatars = []
-    # for post in selected_posts:
-    selected_avatars = {
-        post["username"]: friend_avatars[post["username"]] for post in selected_posts}
+    for post in selected_posts:
+        selected_avatars = {
+            post["username"]: friend_avatars[post["username"]] for post in selected_posts}
 
-    # print({"posts": selected_posts, "avatars": selected_avatars}) # 1 to
+    print({"posts": selected_posts, "avatars": selected_avatars}) # 1 to
     return {"posts": selected_posts, "avatars": selected_avatars}
 
 
