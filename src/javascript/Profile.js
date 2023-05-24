@@ -91,8 +91,15 @@ export default function Profile() {
   );
 
   const [photo, setPhoto] = useState(avatar);
-  const [userSong, setUserSong] = useState(song);
-
+  const [userSong, setUserSong] = useState();
+  const songChange = async () => {
+    const token = await APIController.getToken()
+    const songs =  new URL(song).pathname.split("/").pop();
+    const result = await APIController.getTrack(token, songs);
+    console.log(result);
+    setUserSong(result)
+  }
+  useEffect(()=>{songChange()}, [])
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const [friendsCount, setFriendsCount] = useState(friends.length);
