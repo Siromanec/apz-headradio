@@ -14,6 +14,51 @@ import AddFriend from "./AddFriend";
 import crossButton from "../data/cross.svg";
 import { Link, useNavigate } from "react-router-dom";
 
+
+import {spotifyClientID, spotifyClientSecret} from "./APIKeys";
+
+const APIController = (function () {
+  const clientId = spotifyClientID;
+  const clientSecret = spotifyClientSecret;
+
+  // private methods
+  const _getToken = async () => {
+    const result = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: "Basic " + btoa(clientId + ":" + clientSecret),
+      },
+      body: "grant_type=client_credentials",
+    });
+
+    const data = await result.json();
+    return data.access_token;
+  };
+
+  const _getTrack = async (token, songID) => {
+    const result = await fetch(`https://api.spotify.com/v1/tracks/${songID}`, {
+      method: "GET",
+      headers: { Authorization: "Bearer " + token },
+    });
+
+    const data = await result.json();
+    if (data.name) {
+      return data.name + " • " + data.artists[0].name;
+    }
+    return "No such song";
+  };
+
+  return {
+    getToken() {
+      return _getToken();
+    },
+    getTrack(token, trackEndPoint) {
+      return _getTrack(token, trackEndPoint);
+    },
+  };
+})();
+
 export function Posts({ posts, postOrder }) {
   const listItems = postOrder.map((number) => {
     const post = posts.data[number];
@@ -36,7 +81,7 @@ const formatShortWeekday = (locale, date) => {
 };
 
 export default function Profile() {
-  const { username, avatar, posts, friends } = useLoaderData();
+  const { username, avatar, posts, friends, song } = useLoaderData();
 
   const [isCurrentUser, setIsCurrentUser] = useState(
     username === sessionStorage.getItem("username")
@@ -46,6 +91,8 @@ export default function Profile() {
   );
 
   const [photo, setPhoto] = useState(avatar);
+  const [userSong, setUserSong] = useState(song);
+
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const [friendsCount, setFriendsCount] = useState(friends.length);
@@ -105,8 +152,8 @@ export default function Profile() {
   };
 
   async function handleSongClick() {
-    const songID = document.getElementById("song-id").value;
-    window.location.replace(songID);
+    console.log(song)
+    window.location.replace(userSong);
   }
 
   useEffect(() => {
@@ -158,7 +205,7 @@ export default function Profile() {
                 className="songName"
                 onClick={handleSongClick}
               >
-                No added song
+              {userSong}
               </span>
             </div>
             <div className="Stats">
@@ -184,7 +231,7 @@ export default function Profile() {
             </div>
           </div>
           {isCurrentUser ? (
-            <ChangeSong />
+            <ChangeSong profile={username} APIController={APIController} setUserSong={setUserSong}/>
           ) : (
             <AddFriend
               profile={username}

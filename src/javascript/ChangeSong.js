@@ -4,49 +4,20 @@ import "../css/AddChangeButton.css";
 import crossButton from "../data/cross.svg";
 import { spotifyClientID, spotifyClientSecret } from "./APIKeys";
 
-const APIController = (function () {
-  const clientId = spotifyClientID;
-  const clientSecret = spotifyClientSecret;
-
-  // private methods
-  const _getToken = async () => {
-    const result = await fetch("https://accounts.spotify.com/api/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Basic " + btoa(clientId + ":" + clientSecret),
-      },
-      body: "grant_type=client_credentials",
-    });
-
-    const data = await result.json();
-    return data.access_token;
-  };
-
-  const _getTrack = async (token, songID) => {
-    const result = await fetch(`https://api.spotify.com/v1/tracks/${songID}`, {
-      method: "GET",
-      headers: { Authorization: "Bearer " + token },
-    });
-
-    const data = await result.json();
-    if (data.name) {
-      return data.name + " • " + data.artists[0].name;
-    }
-    return "No such song";
-  };
-
-  return {
-    getToken() {
-      return _getToken();
+async function saveSong(songData) {
+  return fetch("http://localhost:8000/fetch-modify-music", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-    getTrack(token, trackEndPoint) {
-      return _getTrack(token, trackEndPoint);
-    },
-  };
-})();
+    body: JSON.stringify(songData),
+  }).then((data) => data.json());
+}
 
-export default function ChangeSong() {
+
+
+
+export default function ChangeSong({profile, APIController, setUserSong}) {
   const [songName, setSongName] = useState();
   const [popUpClass, setPopUpClass] = useState("popup-change");
   function handleClick() {
@@ -57,16 +28,18 @@ export default function ChangeSong() {
     setPopUpClass("popup-change");
   }
 
-  async function handleSongChange() {
+  async function handleSongChange(setUserSong) {
     setPopUpClass("popup-change");
     const song = document.getElementById("song-name");
     try {
       const songID = new URL(songName).pathname.split("/").pop();
       const token = await APIController.getToken();
-      song.textContent = await APIController.getTrack(token, songID);
+      setUserSong(await APIController.getTrack(token, songID))
     } catch (err) {
-      song.textContent = "No such song";
+      setUserSong("No such song");
     }
+
+    const response = await saveSong({profile, songName})
   }
 
   return (
@@ -81,7 +54,7 @@ export default function ChangeSong() {
             onChange={(e) => setSongName(e.target.value)}
           />
           <div className="insert-song-buttons">
-            <button className="insert-song-btn" onClick={handleSongChange}>
+            <button className="insert-song-btn" onClick={() => handleSongChange(setUserSong)}>
               Change
             </button>
             <button className="insert-song-btn" onClick={exitClick}>
