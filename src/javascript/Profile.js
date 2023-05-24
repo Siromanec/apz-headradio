@@ -107,13 +107,14 @@ export default function Profile() {
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a);
   const [currentPost, setCurrentPost] = useState(posts.data[postOrder[0]]);
 
-  useEffect(()=>{setCurrentPost({
+  useEffect(()=>{currentPost ?
+    setCurrentPost({
     id: currentPost.idpost,
     username: currentPost.username,
     text: currentPost.article,
     added: currentPost.added,
     numberLikes: currentPost.nlikes,
-  });}, []);
+  }): setCurrentPost(null);}, []);
 
   const submitHandler = async (event) => {
     const file = URL.createObjectURL(event.target.files[0]);
@@ -251,10 +252,10 @@ export default function Profile() {
       <section className="recentDiary"></section>
       <section className="textField"></section>
       {isCurrentUser && <EditorWrapper></EditorWrapper>}
-      <Post
+      {currentPost?<Post
         post={currentPost ?? false ? currentPost : {}}
         /*images={currentPost}*/ headerType="lastPostElement"
-      ></Post>
+      ></Post>: null}
       <div className="calendar-container">
         <Calendar
           onChange={setDate}

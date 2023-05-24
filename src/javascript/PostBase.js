@@ -16,7 +16,7 @@ export default function PostBase({
     username,
 }) {
     const [hasLiked, setHasLiked] = useState(false);
-    const [nLikes, setNLikes] = useState(nlikes? nlikes: 0);
+    const [nLikes, setNLikes] = useState(nlikes ? nlikes : 0);
     const hasLikedHandler = async (data) => {
         const like = fetch("http://localhost:8000/fetch-has-liked", {
             method: "POST",
@@ -27,18 +27,19 @@ export default function PostBase({
         })
             .then((data) => data.json())
             .catch((data) => data.json());
-        
-        const liked = await like;
 
-        if (liked["liked"] === "0") {
-            setHasLiked(false);
-        } else {
-            setHasLiked(true);
+        const liked = await like;
+        console.log(liked);
+        if (liked) {
+            if (liked["liked"] === "0") {
+                setHasLiked(false);
+            } else {
+                setHasLiked(true);
+            }
+            setNLikes(nlikes)
         }
-        setNLikes(nlikes)
-        
     };
-    const setLikeHandler = async(value) => {
+    const setLikeHandler = async (value) => {
         const data = await fetch("http://localhost:8000/fetch-like", {
             method: "POST",
             headers: {
@@ -50,7 +51,7 @@ export default function PostBase({
     }
 
     useEffect(() => {
-        hasLikedHandler({ post: id, username: username, author: sessionStorage.getItem("username")}); 
+        hasLikedHandler({ post: id, username: username, author: sessionStorage.getItem("username") });
     }, []);
     const likeHandler = async () => {
         const like = await setLikeHandler({
