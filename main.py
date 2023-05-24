@@ -157,6 +157,7 @@ async def fetch_show_profile(username: str, response: Response):
 @app.post("/fetch-add-friend")
 async def fetch_friend(request: Request, response: Response):
     item = await request.json()
+    print(item)
     try:
         insert_query('isfriend', item)
     except sqlite3.IntegrityError:
@@ -167,6 +168,8 @@ async def fetch_friend(request: Request, response: Response):
 @app.post("/fetch-remove-friend")
 async def fetch_no_friend(request: Request, response: Response):
     item = await request.json()
+    print(select_query("isfriend"))
+    print(item)
     user1, user2 = item["username1"], item["username2"]
     delete_query(
         'isfriend', f"`username1` = '{user1}' AND `username2` = '{user2}'")

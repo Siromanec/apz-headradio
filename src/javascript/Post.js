@@ -1,5 +1,6 @@
 import FriendSongElement from "./FriendSongElement.js";
 import PostBase from "./PostBase.js";
+import DefaultPic from "../data/blank-profile-picture.svg"
 import React, { useState } from "react";
 import ProfilePicture from "../data/profile.jpg";
 import PostHeader from "./PostHeader.js";
@@ -13,7 +14,7 @@ export default function Post({ post, headerType }) {
           className="PostHeader"
           headerType={headerType}
           username={post.username}
-          avatar={post.avatar}
+          avatar={post.avatar? post.avatar : DefaultPic}
         ></PostHeader>
       </div>
 

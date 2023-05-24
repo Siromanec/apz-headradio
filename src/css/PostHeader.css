@@ -29,6 +29,7 @@
 .postHeaderLabelDiv {
   display: flex;
   height: fit-content;
+  cursor: pointer;
 }
 
 .postHeaderLabel {
