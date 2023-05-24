@@ -1,9 +1,16 @@
 import "../css/PostHeader.css";
+import { Link, useNavigate } from "react-router-dom";
 
+// function headerFriendHeandler() {
+//   navigate("/profile/" + text);
+// }
 export default function PostHeader({ headerType, username, avatar }) {
+  const navigate = useNavigate();
+  console.log(username)
   if (headerType === "postHeader") {
     return (
-      <div className="postHeaderDiv">
+      <div onClick={() => { navigate("/profile/" + username); }} className="postHeaderDiv">
+       {/* <div className="postHeaderDiv"> */}
         <img className="postHeaderImg" src={avatar}></img>
         <div className="postHeaderLabelDiv">
           <label className="postHeaderLabel">{username}</label>
