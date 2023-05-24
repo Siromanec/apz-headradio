@@ -97,7 +97,7 @@ export default function Register({ setToken, setSavedUserName }) {
       <div className={popUpClass}>
         <div className="terms-of-services">
           <div className="header-div">
-            <h2 className="h">Terms of Services</h2>
+            <h2>Terms of Services</h2>
           </div>
           <div className="terms-p">
             <p>• You must be at least 13 years old to use the service. <br></br>
