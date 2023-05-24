@@ -167,6 +167,7 @@ main {
   column-gap: 10px;
   border: 1px solid #755139;
   border-radius: 30px;
+  min-width: 300px;
 }
 
 .FriendsList-header-div {
@@ -194,6 +195,7 @@ main {
   align-items: center;
   justify-content: space-between;
   gap: 40px;
+  cursor: pointer;
 }
 
 .friend-username {
