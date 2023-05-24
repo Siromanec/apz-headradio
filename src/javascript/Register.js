@@ -96,7 +96,21 @@ export default function Register({ setToken, setSavedUserName }) {
     <section className="register">
       <div className={popUpClass}>
         <div className="terms-of-services">
-          <h2>Terms of Services</h2>
+          <div className="header-div">
+            <h2>Terms of Services</h2>
+          </div>
+          <div className="terms-p">
+            <p>• You must be at least 13 years old to use the service. <br></br>
+              • You must give us maximum points for this project.<br></br>
+              • Provide accurate information for your account.<br></br>
+              • Prohibited activities include infringing upon others' <br></br> rights and posting harmful or offensive content. <br></br>
+              • You must be Aries to use the service. <br></br>
+              • Respect intellectual property rights. <br></br>
+              • You must be Computer Science student to use the service. <br></br>
+              • We may not implement all the features we promised<br></br>
+              • We may update these terms, and continued use implies acceptance. <br></br>
+            </p>
+          </div>
           <button className="exitButton" onClick={exitClick}>
             <img src={crossButton} />
           </button>
