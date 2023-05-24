@@ -1,6 +1,6 @@
 .lastPostLabelDiv {
   border: 1px solid #755139;
-  background-color: #ffffff;
+  background-color: #E8DDCA;
   padding: 10px 100px;
   width: fit-content;
   font-family: "Poppins", sans-serif;
@@ -13,7 +13,7 @@
   align-items: center;
   gap: 20px;
   border: 1px solid #755139;
-  background-color: #ffffff;
+  background-color: #E8DDCA;
   margin-top: 30px;
   padding: 10px 40px;
 }

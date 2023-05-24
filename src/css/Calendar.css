@@ -194,3 +194,7 @@
 .react-calendar__tile--now {
   background-color: #e8ddca;
 }
+
+.text-center {
+  visibility: hidden;
+}
