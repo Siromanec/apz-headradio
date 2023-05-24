@@ -60,9 +60,7 @@ export default function EditorWrapper() {
         }}
         //   onChange={onChange}
       />
-      <button className="editor-add-images-button">
-        <img className="EditorSubmitImg" src={PictureIcon}></img>
-      </button>
+
       <button className="EditorSubmitButton" onClick={save}>
         <img className="EditorSubmitImg" src={SendIcon}></img>
       </button>
