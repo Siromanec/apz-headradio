@@ -9,7 +9,6 @@ import json
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
-from pprint import pprint
 
 app = FastAPI()
 conn = sqlite3.connect("./database.db")
@@ -79,10 +78,8 @@ def delete_query(table, arguments=None):
 def update_query(table, values, arguments=None):
     ordered_values = ", ".join(
         [f"`{key}`={val}" for key, val in values.items()])
-    print(ordered_values)
     if arguments:
         q = f"UPDATE {table} SET {ordered_values} WHERE {arguments}"
-        print(q)
         cursor.execute(q)
     else:
         cursor.execute(f"UPDATE {table} SET {ordered_values}")
@@ -93,7 +90,6 @@ def update_query(table, values, arguments=None):
 
 TABLES = ["user", "post", "postimages", "userlikedpost", "isfriend"]
 COLUMNS = {table: get_columns(table) for table in TABLES}
-print(COLUMNS)
 
 #  r.post("http://localhost:8000/fetch-add-user", json={"username": "@redn1njaA", "email": "ostap.seryvko@ucu.edu.ua", "profilepicture": "None", "currmusic": "None", "password": "123"})
 
@@ -110,10 +106,9 @@ async def fetch_add(request: Request, response: Response):
         item["password"] = token
         user_exists = select_query("user", f"`username`= '{username}'")
         email_exists = select_query("user", f"`email` = '{email}'")
-
         if user_exists == [] and email_exists == []:
             insert_query("user", item)
-            print(token)
+    
             response.status_code = status.HTTP_200_OK
             return JSONResponse(content={"token": token})
         elif user_exists != []:
@@ -129,7 +124,6 @@ async def fetch_add(request: Request, response: Response):
 
 @app.get("/fetch-show-user/{username}")
 async def fetch_show_profile(username: str, response: Response):
-    print(username)
     userdata = select_query("user", f"`username`= '{username}'")
     if userdata == []:
         response.status_code = status.HTTP_404_NOT_FOUND
@@ -154,18 +148,15 @@ async def fetch_show_profile(username: str, response: Response):
         # status.HTTP_400_BAD_REQUEST
         # return
         avatar_data = None
-    # print(avatar_data)
     data = {"username": username, "avatar": avatar_data, "song": song, "posts": {
         "data": post_ids, "images": images}, "friends": [friend[1] for friend in friends]}
     response.status_code = status.HTTP_200_OK
-    # print(data)
     return data
 
 
 @app.post("/fetch-add-friend")
 async def fetch_friend(request: Request, response: Response):
     item = await request.json()
-    print(item)
     try:
         insert_query('isfriend', item)
     except sqlite3.IntegrityError:
@@ -192,7 +183,6 @@ async def fetch_profile_photo(request: Request, response: Response):
         filename = str(uuid.uuid4())
     with open("./data/" + filename, "w") as file:
         file.write(item["image"])
-    print("./data/" + filename)
     username = item["username"]
     update_query(
         "user", {"profilePicture": f"'{filename}'"}, f"`username`='{username}'")
@@ -259,29 +249,26 @@ async def fetch_delete_post(request: Request, response: Response):
 @app.post("/fetch-has-liked")
 async def fetch_has_liked(request: Request, response: Response):
     item = await request.json()
-    print(item)
     try:
-        username, post = item["username"], item["post"]
+        username, post, author = item["username"], item["post"], item["author"]
     except:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return
-
     hasliked = select_query(
-        "userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post}")
+        "userlikedpost", f"`idPost` = {post} and `userUsername`='{author}' ")
+    print(hasliked)
     response.status_code = status.HTTP_200_OK
     if hasliked == []:
-        print(False)
-        return JSONResponse(content={"liked": "0"})
+        res =JSONResponse(content={"liked": "0"})
     else:
-        print(False)
-        return JSONResponse(content={"liked": "1"})
+        res = JSONResponse(content={"liked": "1"})
+    return res
 
 
 @app.post("/fetch-like")
 async def fetch_like(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
-    print(items)
     post_id, username, author = items[0], items[1], items[2]
     hasliked = select_query(
         "userlikedpost", f"`userUsername` = '{username}' and `idPost` = {post_id}")
@@ -290,26 +277,36 @@ async def fetch_like(request: Request, response: Response):
     else:
         add = -1
     post = list(select_query(
-        "post", f"`idpost` = {post_id} AND `username`= '{username}'"))
+        "post", f"`idpost` = {post_id} AND `username`= '{author}'"))
     if post != []:
-        post = post[0]
+        post = list(post[0])
     else:
         res = JSONResponse(content={"liked": "0"})
         return res
     if add == 1:
+        print("here")
         insert_query("userlikedpost", {
                      "userUsername": username, "idPost": post_id, "authorUsername": author})
         res = JSONResponse(
             content={"liked": "1", "nlikes": max(post[-1] + add, 0)})
     else:
+        print("there")
         delete_query("userlikedpost",
                      f"`userUsername` = '{username}' and `idPost` = {post_id}")
         res = JSONResponse(
-            content={"liked": "0", "nlikes": max(post[-1] + add, 0)})
+            content={"liked": "0", "nlikes": post[-1]-1})
     print(post)
     post[-1] = max(post[-1] + add, 0)
+    print(post)
+    print(post[-1])
     update_query(
-        "post", {'nlikes': post[-1]}, f"`idpost` = {post_id} AND `username`= '{username}'")
+        "post", {'nlikes': post[-1]}, f"`idpost` = {post_id} AND `username`= '{author}'")
+    post = list(select_query(
+        "post", f"`idpost` = {post_id} AND `username`= '{author}'"))
+    print(post)
+    print(post[0][-1])
+    
+    print(res.body)
     response.status_code = status.HTTP_200_OK
     return res
 
@@ -320,39 +317,31 @@ async def main(request: Request, response: Response):
     username = item["username"]
     friends = [names[1] for names in select_query(
         "isfriend", f"`username1`= '{username}'")]
-    # friend_data = dict(zip(friends ,[select_query("user", f"`username`= '{friend}'") for friend in friends]))
-    # print(friend_data)
-    # print(friends)
     posts = []
     friend_avatars = {}
     for friend in friends:
         data = await fetch_show_profile(friend, response)
         cur_posts = data["posts"]
         friend_avatars[friend] = data["avatar"]
-        # print("data:   ")
-        # pprint(data.keys())
-
         posts.append(cur_posts)
-    posts_dates = [val["data"] for val in posts][0]
-
-    posts_dates = sorted(list(posts_dates.values()), key=lambda x: max(
+    posts_dates = [val["data"] for val in posts]
+    posts_dates = [sorted(list(post.values()), key=lambda x: max(
+        x["added"], x["modified"]), reverse=True) if post else None for post in posts_dates]
+    posts_dates = [item for subitem in posts_dates for item in subitem]
+    posts_dates = sorted(posts_dates, key=lambda x: max(
         x["added"], x["modified"]), reverse=True)
-    # print(posts_dates)
     response.status_code = status.HTTP_200_OK
     selected_posts = posts_dates[:max(len(posts_dates), 10)]
     selected_avatars = []
-    # for post in selected_posts:
-    selected_avatars = {
-        post["username"]: friend_avatars[post["username"]] for post in selected_posts}
-
-    # print({"posts": selected_posts, "avatars": selected_avatars}) # 1 to
+    for post in selected_posts:
+        selected_avatars = {
+            post["username"]: friend_avatars[post["username"]] for post in selected_posts}
     return {"posts": selected_posts, "avatars": selected_avatars}
 
 
 @app.post("/fetch-login")
 async def fetch_login(request: Request, response: Response):
     item = await request.json()
-    print(item)
     username, password = item["username"], item["password"]
     try:
         login = select_query("user", f"`username`= '{username}'")[0]

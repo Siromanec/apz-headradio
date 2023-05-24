@@ -28,8 +28,6 @@ function Posts({ posts, postOrder, avatars }) {
 
 export default function Home() {
   const { posts, avatars } = useLoaderData();
-
-  // const [posts, setPosts] = useState(postsHandler);
   const postOrder = posts ? Object.keys(posts).sort((a, b) => b - a) : [];
 
   return (
