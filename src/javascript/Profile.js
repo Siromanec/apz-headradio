@@ -160,7 +160,7 @@ export default function Profile() {
 
   async function handleSongClick() {
     console.log(song)
-    window.location.replace(userSong);
+    window.open(song);
   }
 
   useEffect(() => {
