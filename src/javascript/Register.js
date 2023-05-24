@@ -43,7 +43,6 @@ export default function Register({ setToken, setSavedUserName }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setTriedToClick(true);
-    console.log("am here");
     if (password !== passwordAgain) {
       setBadPassword(true);
       return;

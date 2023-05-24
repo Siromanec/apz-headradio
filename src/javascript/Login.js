@@ -19,8 +19,6 @@ export default function Login({ setToken, setSavedUserName }) {
   const [badInput, setBadInput] = useState(false);
 
   const navigate = useNavigate();
-  // const location = useLocation();
-  // console.log(location.state);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username) {

@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 // }
 export default function PostHeader({ headerType, username, avatar }) {
   const navigate = useNavigate();
-  console.log(username)
   if (headerType === "postHeader") {
     return (
       <div onClick={() => { navigate("/profile/" + username); }} className="postHeaderDiv">

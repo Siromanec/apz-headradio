@@ -12,7 +12,6 @@ const submitHandler = async (event, setPhoto) => {
   // const file = URL.createObjectURL(event.target.files[0]);
   const file = await toBase64(event.target.files[0]);
   const username = sessionStorage.getItem("username");
-  console.log(file);
   setPhoto(file);
   const body = {
     username: username,

@@ -60,13 +60,11 @@ export default function PostBase({
         })
             .then((data) => data.json())
             .catch((data) => data.json());
-        console.log(like);
         if (like["liked"] === "0") {
             setHasLiked(false);
         } else {
             setHasLiked(true);
         }
-        console.log(like["likes"])
         setNLikes(like["nlikes"]);
     };
     const dateObj = new Date(date);
