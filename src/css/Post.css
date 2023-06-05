@@ -1,0 +1,14 @@
+.PostDiv {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-bottom: 30px;
+}
+
+.lastPostLabelDiv,
+.postHeaderDiv {
+  border-bottom: none;
+}

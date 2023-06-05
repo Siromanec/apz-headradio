@@ -1,0 +1,65 @@
+.tox .tox-toolbar,
+.tox .tox-toolbar__overflow,
+.tox .tox-toolbar__primary {
+  background-color: #e8ddca !important;
+}
+
+.tox:not(.tox-tinymce-inline) .tox-editor-header {
+  box-shadow: none !important;
+}
+
+.tox-tinymce {
+  border: 1px solid #755139 !important;
+}
+
+.tox:not(.tox-tinymce-inline) .tox-editor-header {
+  padding: 0px !important;
+}
+
+.tox .tox-tbtn--enabled {
+  background: white !important;
+}
+
+.tox .tox-tbtn:hover {
+  background: white !important;
+}
+
+.tox .tox-toolbar__primary {
+  border-bottom: 1px solid #755139 !important;
+}
+
+.tox .tox-tbtn svg {
+  fill: #755139 !important;
+}
+
+.tox .tox-tbtn--bespoke {
+  background-color: white !important;
+}
+
+.tox .tox-tbtn__select-label {
+  font-family: "Poppins", sans-serif !important;
+}
+
+.EditorDiv {
+  position: relative;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.EditorSubmitButton {
+  position: absolute;
+  top: 6px;
+  z-index: 2;
+  right: 10px;
+  border: none;
+  background-color: transparent;
+}
+
+.EditorSubmitButton:hover {
+  background-color: white;
+  border-radius: 10%;
+}
+
+.EditorSubmitImg {
+  height: 24px;
+}

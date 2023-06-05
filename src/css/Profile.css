@@ -1,0 +1,225 @@
+.profileInfo {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 50px;
+  margin-top: 30px;
+}
+
+.profilePicture {
+  width: 258px;
+  height: 258px;
+  border-radius: 100%;
+  object-fit: cover;
+  border: solid 1px #755139;
+}
+
+.profilePictureDiv {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.profileDescription {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.editText {
+  position: absolute;
+  top: 120px;
+  transform: translateX(-50%);
+  left: 50%;
+  font-size: 18px;
+  opacity: 0;
+  font-family: "Poppins", sans-serif;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.can-change-picture:hover .editText {
+  opacity: 1;
+}
+
+.can-change-picture:hover .profilePicture {
+  opacity: 25%;
+}
+
+.headRadio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border: solid 1px #755139;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 30px;
+  padding-top: 20px;
+  background: rgb(232, 221, 202);
+  border-radius: 30px;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.Stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 175px;
+
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  text-align: center;
+}
+
+.Song {
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  border: solid 1px #755139;
+  padding: 30px 75px;
+  background: white;
+  border-radius: 20px;
+}
+
+main {
+  margin: 0 10%;
+}
+
+.tag {
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 25px;
+  line-height: 38px;
+  text-align: center;
+}
+
+.songName {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.spotify-icon {
+  cursor: pointer;
+}
+
+.numbers {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 40px;
+}
+
+.Posts,
+.Friends {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.low {
+  color: blue;
+}
+
+.ProfileInfoAside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.popup-change {
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.FriendsList-div {
+  border: solid 1px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #e8ddca;
+  display: flex;
+  flex-direction: column;
+  column-gap: 10px;
+  border: 1px solid #755139;
+  border-radius: 30px;
+  min-width: 300px;
+}
+
+.FriendsList-header-div {
+  border-bottom: 1px solid #755139;
+  padding: 5px 30px;
+  display: flex;
+  justify-content: center
+}
+
+.FriendsList-header {
+  font-family: "Playfair Display";
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.FriendsList-main-div {
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.friend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  cursor: pointer;
+}
+
+.friend-username {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.unfriend-button {
+  background: #fcfbf3;
+  border: 1px solid #755139;
+  border-radius: 25px;
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  padding: 2px 30px;
+  color: #755139;
+}
+
+.exitButton {
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
