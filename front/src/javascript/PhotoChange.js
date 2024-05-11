@@ -19,7 +19,7 @@ const submitHandler = async (event, setPhoto) => {
   };
 
   const response = await fetch(
-    "http://localhost:8000/fetch-modify-profile-photo",
+    "http://localhost:8000/modify-profile-photo",
     {
       method: "POST",
       headers: {

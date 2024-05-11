@@ -11,7 +11,7 @@ function getSavedUserName() {
 }
 
 async function sendPostContents(articleData) {
-  return fetch("http://localhost:8000/fetch-new-post", {
+  return fetch("http://localhost:8000/new-post", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
