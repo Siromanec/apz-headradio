@@ -14,7 +14,7 @@ function SearchInput() {
   const [message, setMessage] = useState()
   const navigate = useNavigate()
   const searchHandler = async ()=>{
-    const data = await (fetch(`http://localhost:8000/fetch-show-user/${text}`)).then(data => data.json()).then(data => data).catch(e =>console.log(e));
+    const data = await (fetch(`http://localhost:8000/show-user/${text}`)).then(data => data.json()).then(data => data).catch(e =>console.log(e));
     if (Object.keys(data).length!==0){
       setExists(true);
       navigate("/profile/"+text);

@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 
 async function signupUser(credentials) {
-  return fetch("http://localhost:8000/fetch-add-user", {
+  return fetch("http://localhost:8000/add-user", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

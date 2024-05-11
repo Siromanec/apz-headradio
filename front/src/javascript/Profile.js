@@ -123,7 +123,7 @@ export default function Profile() {
       username: sessionStorage.getItem("username"),
       picture: file,
     };
-    return await fetch("http://localhost:8000/fetch-modify-profile-photo", {
+    return await fetch("http://localhost:8000/modify-profile-photo", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

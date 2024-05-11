@@ -18,7 +18,7 @@ export default function PostBase({
     const [hasLiked, setHasLiked] = useState(false);
     const [nLikes, setNLikes] = useState(nlikes ? nlikes : 0);
     const hasLikedHandler = async (data) => {
-        const like = fetch("http://localhost:8000/fetch-has-liked", {
+        const like = fetch("http://localhost:8000/has-liked", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

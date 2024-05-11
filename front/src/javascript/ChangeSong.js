@@ -5,7 +5,7 @@ import crossButton from "../data/cross.svg";
 import { spotifyClientID, spotifyClientSecret } from "./APIKeys";
 
 async function saveSong(songData) {
-  return fetch("http://localhost:8000/fetch-modify-music", {
+  return fetch("http://localhost:8000/modify-music", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

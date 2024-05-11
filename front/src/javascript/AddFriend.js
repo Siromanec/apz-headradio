@@ -4,7 +4,7 @@ import "../css/AddChangeButton.css";
 export default function AddFriend({ profile, isFriend, setIsFriend }) {
   const addHandler = async () => {
     await fetch(
-      `http://localhost:8000/fetch-${!isFriend ? "add" : "remove"}-friend`,
+      `http://localhost:8000/${!isFriend ? "add" : "remove"}-friend`,
       {
         method: "POST",
         headers: {
