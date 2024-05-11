@@ -1,5 +1,4 @@
 import fastapi
-import requests.status_codes
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -24,7 +23,7 @@ async def get_user_posts(user: str, response: Response):
 async def new_post(request: Request, response: Response):
     item = await request.json()
     global id
-    id +=1 
+    id +=1 # todo have the db handle the ids (on service shutdown the last id is forgotten)
     items = {"idpost": id, "user": item["username"], "article": item["article"],  "added": datetime.now(
     ), "modified": datetime.now(), "nlikes": 0}
     service.new_post(items)
