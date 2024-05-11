@@ -1,0 +1,19 @@
+services:
+  likes_db:
+    image: postgres:latest
+    pull_policy: missing
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root_pass
+      POSTGRES_DB: likes_db
+    volumes:
+      - ./like_service/postgres-db-init:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+  likes:
+    build: ./like_service/
+    depends_on:
+      - likes_db
+    ports:
+      - "8080:8080"
+
