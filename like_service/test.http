@@ -1,0 +1,10 @@
+GET http://localhost:8080/has-liked?user=admin&post=1
+
+###
+POST http://localhost:8080/add-like?user=admin&post=1
+
+###
+POST http://localhost:8080/remove-like?user=admin&post=1
+
+###
+GET http://localhost:8080/get-likes?post=1
