@@ -5,6 +5,8 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi import FastAPI, Request, Response, status
 import service
+import uuid
+import os
 
 app = FastAPI()
 
@@ -21,8 +23,15 @@ async def get_user_data(user: str, response: Response):
     return {"get_user_data": user_data}
 
 @app.post("/modify-profile-photo/")
-async def modify_profile_photo(response: Response):
-    service.modify_profile_photo()
+async def modify_profile_photo(request: Request, response: Response):
+    item = await request.json()
+    filename = str(uuid.uuid4())
+    while os.path.isfile("./data/" + filename):
+        filename = str(uuid.uuid4())
+    with open("./data/" + filename, "w") as file:
+        file.write(item["image"])
+    username = item["username"]
+    service.modify_profile_photo("user", {"profilePicture": f"'{filename}'"}, f"`username`='{username}'")
     response.status_code = status.HTTP_200_OK
 
 @app.post("/set-music/")
