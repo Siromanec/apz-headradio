@@ -1,5 +1,5 @@
 npm install react-player
 npm install react-router-dom --save
 npm install --save react-audio-player
- npm install --save @tinymce/tinymce-react
- npm install --save react-auth-kit
+npm install --save @tinymce/tinymce-react
+npm install --save react-auth-kit

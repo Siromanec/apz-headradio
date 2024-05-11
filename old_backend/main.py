@@ -11,7 +11,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-conn = sqlite3.connect("./database.db")
+conn = sqlite3.connect("database.db")
 cursor = conn.cursor()
 origins = [
     "http://localhost",
@@ -91,11 +91,11 @@ def update_query(table, values, arguments=None):
 TABLES = ["user", "post", "postimages", "userlikedpost", "isfriend"]
 COLUMNS = {table: get_columns(table) for table in TABLES}
 
-#  r.post("http://localhost:8000/fetch-add-user", json={"username": "@redn1njaA", "email": "ostap.seryvko@ucu.edu.ua", "profilepicture": "None", "currmusic": "None", "password": "123"})
+#  r.post("http://localhost:8000/ add-user", json={"username": "@redn1njaA", "email": "ostap.seryvko@ucu.edu.ua", "profilepicture": "None", "currmusic": "None", "password": "123"})
 
 
-@app.post("/fetch-add-user")
-async def fetch_add(request: Request, response: Response):
+@app.post("/add-user")
+async def  add(request: Request, response: Response):
     item = await request.json()
     try:
         username = item["username"]
@@ -122,8 +122,8 @@ async def fetch_add(request: Request, response: Response):
         return JSONResponse(content={"token": "500"})
 
 
-@app.get("/fetch-show-user/{username}")
-async def fetch_show_profile(username: str, response: Response):
+@app.get("/show-user/{username}")
+async def show_profile(username: str, response: Response):
     userdata = select_query("user", f"`username`= '{username}'")
     if userdata == []:
         response.status_code = status.HTTP_404_NOT_FOUND
@@ -154,8 +154,8 @@ async def fetch_show_profile(username: str, response: Response):
     return data
 
 
-@app.post("/fetch-add-friend")
-async def fetch_friend(request: Request, response: Response):
+@app.post("/add-friend")
+async def  friend(request: Request, response: Response):
     item = await request.json()
     print(item)
     try:
@@ -165,8 +165,8 @@ async def fetch_friend(request: Request, response: Response):
     response.status_code = status.HTTP_200_OK
 
 
-@app.post("/fetch-remove-friend")
-async def fetch_no_friend(request: Request, response: Response):
+@app.post("/remove-friend")
+async def  no_friend(request: Request, response: Response):
     item = await request.json()
     print(select_query("isfriend"))
     print(item)
@@ -176,8 +176,8 @@ async def fetch_no_friend(request: Request, response: Response):
     response.status_code = status.HTTP_200_OK
 
 
-@app.post("/fetch-modify-profile-photo")
-async def fetch_profile_photo(request: Request, response: Response):
+@app.post("/modify-profile-photo")
+async def  profile_photo(request: Request, response: Response):
     # TODO
     # changes are needed here
     item = await request.json()
@@ -191,8 +191,8 @@ async def fetch_profile_photo(request: Request, response: Response):
         "user", {"profilePicture": f"'{filename}'"}, f"`username`='{username}'")
     response.status_code = status.HTTP_200_OK
 
-# @app.get("/fetch-photo/{image}")
-# async def fetch_photo(image: Request, response: Response):
+# @app.get("/ photo/{image}")
+# async def  photo(image: Request, response: Response):
 #     # TODO
 #     # changes are needed here
 #     # item = await request.json()
@@ -209,8 +209,8 @@ async def fetch_profile_photo(request: Request, response: Response):
 #     response.status_code = status.HTTP_200_OK
 
 
-@app.post("/fetch-modify-music")
-async def fetch_photo(request: Request, response: Response):
+@app.post("/modify-music")
+async def  photo(request: Request, response: Response):
     item = await request.json()
     print(item)
     username, song = item["profile"], item["songName"]
@@ -218,8 +218,8 @@ async def fetch_photo(request: Request, response: Response):
     response.status_code = status.HTTP_200_OK
 
 
-@app.post("/fetch-new-post")
-async def fetch_new_post(request: Request, response: Response):
+@app.post("/new-post")
+async def  new_post(request: Request, response: Response):
     # TODO
     # changes are needed here
     item = await request.json()
@@ -232,8 +232,8 @@ async def fetch_new_post(request: Request, response: Response):
     response.status_code = status.HTTP_200_OK
 
 
-@app.post("/fetch-edit-post")
-async def fetch_edit_post(request: Request, response: Response):
+@app.post("/edit-post")
+async def  edit_post(request: Request, response: Response):
     item = await request.json()
     idpost, username, text = list(item.values())
     update_query("post", f"`article`='{text}', `modified` = '{datetime.now()}'",
@@ -241,16 +241,16 @@ async def fetch_edit_post(request: Request, response: Response):
     response.status_code = status.HTTP_200_OK
 
 
-@app.post("/fetch-delete-post")
-async def fetch_delete_post(request: Request, response: Response):
+@app.post("/delete-post")
+async def  delete_post(request: Request, response: Response):
     item = await request.json()
     idpost, username = list(item.values())
     delete_query("post", f"`idpost`={idpost} AND `username` = '{username}'")
     response.status_code = status.HTTP_200_OK
 
 
-@app.post("/fetch-has-liked")
-async def fetch_has_liked(request: Request, response: Response):
+@app.post("/has-liked")
+async def  has_liked(request: Request, response: Response):
     item = await request.json()
     try:
         username, post, author = item["username"], item["post"], item["author"]
@@ -268,8 +268,8 @@ async def fetch_has_liked(request: Request, response: Response):
     return res
 
 
-@app.post("/fetch-like")
-async def fetch_like(request: Request, response: Response):
+@app.post("/like")
+async def  like(request: Request, response: Response):
     item = await request.json()
     items = list(item.values())
     post_id, username, author = items[0], items[1], items[2]
@@ -314,7 +314,7 @@ async def fetch_like(request: Request, response: Response):
     return res
 
 
-@app.post("/fetch-main-page")
+@app.post("/main-page")
 async def main(request: Request, response: Response):
     item = await request.json()
     username = item["username"]
@@ -323,7 +323,7 @@ async def main(request: Request, response: Response):
     posts = []
     friend_avatars = {}
     for friend in friends:
-        data = await fetch_show_profile(friend, response)
+        data = await  show_profile(friend, response)
         cur_posts = data["posts"]
         friend_avatars[friend] = data["avatar"]
         posts.append(cur_posts)
@@ -342,8 +342,8 @@ async def main(request: Request, response: Response):
     return {"posts": selected_posts, "avatars": selected_avatars}
 
 
-@app.post("/fetch-login")
-async def fetch_login(request: Request, response: Response):
+@app.post("/login")
+async def  login(request: Request, response: Response):
     item = await request.json()
     username, password = item["username"], item["password"]
     try:
