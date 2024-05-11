@@ -1,0 +1,4 @@
+POST http://localhost:8081/login?user=admin&password=chachacha
+
+###
+POST http://localhost:8081/register?user=admin&password=chachacha&email=email
