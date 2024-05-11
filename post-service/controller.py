@@ -25,7 +25,7 @@ async def new_post(request: Request, response: Response):
     item = await request.json()
     global id
     id +=1 
-    items = {"idpost": id, "user": item["user"], "article": item["article"],  "added": datetime.now(
+    items = {"idpost": id, "user": item["username"], "article": item["article"],  "added": datetime.now(
     ), "modified": datetime.now(), "nlikes": 0}
     service.new_post(items)
     response.status_code = status.HTTP_200_OK
