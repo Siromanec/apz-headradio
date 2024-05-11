@@ -1,0 +1,13 @@
+GET http://localhost:8081/get-pfp?user=admin
+
+###
+GET http://localhost:8081/get-user-data?user=admin
+
+###
+POST http://localhost:8081/modify-profile-photo
+
+###
+POST http://localhost:8081/set-music?user=admin&song_name=chachacha
+
+###
+POST http://localhost:8081/create-profile?user=admin

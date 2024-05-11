@@ -1,0 +1,16 @@
+# logic
+
+def get_pfp(user):
+    ...
+
+def get_user_data(user):
+    ...
+
+def modify_profile_photo():
+    ...
+
+def set_music(user, song_name):
+    ...
+
+def create_profile(user):
+    ...
