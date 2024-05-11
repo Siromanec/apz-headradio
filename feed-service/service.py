@@ -1,0 +1,4 @@
+# logic
+
+def feed(user):
+    ...
