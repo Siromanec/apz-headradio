@@ -35,7 +35,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
         loader: async () => {
-          const data = await fetch("http://localhost:8000/fetch-main-page", {
+          const data = await fetch("http://localhost:8000/main-page", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Profile />,
         loader: async ({ params }) => {
-          const apiUrl = `http://localhost:8000/fetch-show-user/${params.username}`;
+          const apiUrl = `http://localhost:8000/show-user/${params.username}`;
           const data = await (await fetch(apiUrl)).json();
           return data;
         },
