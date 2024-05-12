@@ -21,5 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-src/javascript/APIKeys.js
+front/src/javascript/APIKeys.js
 __pycache__/
+.vscode/
+.idea/
+front/node_modules/
+
