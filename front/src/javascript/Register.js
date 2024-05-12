@@ -19,9 +19,6 @@ async function signupUser(credentials) {
   });
 }
 
-// function handleClick() {
-//   myPopUp.classList.add("show")
-// }
 
 export default function Register({ setToken, setSavedUserName }) {
   const [username, setUserName] = useState();
