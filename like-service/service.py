@@ -1,14 +1,11 @@
 # logic
+import repository
 
 def add_like(user, post):
-    print(f"INSERT INTO likes (USERNAME, POST) VALUES ({user}, {post})")
-    ...
+    repository.add_like(user, post)
 def has_liked(user, post):
-    print(f"SELECT EXISTS (SELECT 1 FROM likes WHERE POST = {post} AND USERNAME = {user})")
-    ...
+    return repository.has_liked(user, post)
 def remove_like(user, post):
-    print(f"DELETE FROM likes WHERE POST = {post} AND USERNAME = {user}")
-    ...
+    repository.remove_like(user, post)
 def get_likes(post):
-    print(f"SELECT * FROM likes WHERE POST = {post}")
-    ...
+    return [like[0] for like in repository.get_likes(post)]

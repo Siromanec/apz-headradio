@@ -33,6 +33,7 @@ def insert_query(cursor, conn, table, values):
     ) else None for el in columns]
     cursor.execute(q, ordered_values)
     conn.commit()
+
     # result = cursor.fetchall()
     # return result
 
