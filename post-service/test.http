@@ -1,0 +1,15 @@
+POST http://localhost:8080/new-post/
+Content-Type: application/json
+{
+    "username": "admin",
+    "article": "bla bla amazing post"
+}
+
+POST http://localhost:8080/new-post/
+Content-Type: application/json
+{
+    "username": "user",
+    "article": "hello world"
+}
+
+GET http://localhost:8080/get-user-posts?username=admin
