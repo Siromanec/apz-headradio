@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  post_db:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root_pass
+      MONGO_INITDB_DATABASE: post_db
+    volumes:
+      - ./post-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
+    ports:
+      - "27017:27017"  
