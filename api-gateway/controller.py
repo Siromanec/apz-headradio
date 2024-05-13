@@ -13,6 +13,13 @@ async def login(user: str, passw: str, response: Response):
     response.status_code = result["status"]
     return result["message"]
 
+@app.get("/main-page")
+async def main_page(response: Response):
+    result = service.main_page()
+    response.status_code = result["status"]
+    return result["message"]
+
+
 @app.delete("/logout")
 async def logout(token: str, response: Response):
     result = service.logout(token)

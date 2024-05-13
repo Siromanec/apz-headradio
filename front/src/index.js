@@ -1,6 +1,7 @@
 import React from "react";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
 import ReactDOM from "react-dom/client";
+import UrlResolver from "UrlResolver.js";
 import {
   BrowserRouter,
   createBrowserRouter,
@@ -25,6 +26,8 @@ function setSavedUserName(username) {
   sessionStorage.setItem("username", username);
 }
 
+const urlResolver = new UrlResolver();
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -35,7 +38,8 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
         loader: async () => {
-          const data = await fetch("http://localhost:8000/main-page", {
+          const data = await fetch(urlResolver.getMainPageUrl(), {
+            // const data = await fetch("http://localhost:8000/main-page", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -55,7 +59,8 @@ const router = createBrowserRouter([
         index: true,
         element: <Profile />,
         loader: async ({ params }) => {
-          const apiUrl = `http://localhost:8000/show-user/${params.username}`;
+          // const apiUrl = `http://localhost:8000/show-user/${params.username}`;
+          const apiUrl = urlResolver.getShowUserUrl(params.username);
           const data = await (await fetch(apiUrl)).json();
           return data;
         },
