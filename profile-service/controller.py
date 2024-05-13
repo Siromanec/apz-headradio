@@ -75,6 +75,7 @@ async def modify_profile_photo(request: Request, response: Response):
         print(f"profile-service: User failed to modify profile photo. There is no such file.")
         message_queue.put(f"profile-service: User failed to modify profile photo. There is no such file.")
 
+
 @app.post("/set-music/")
 async def set_music(user: str, song_name: str, response: Response):
     service.set_music(user, song_name)
