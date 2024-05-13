@@ -23,7 +23,7 @@ async def lifespan(app):
     client = hazelcast.HazelcastClient(cluster_name="dev", cluster_members=["hazelcast"])
     global message_queue
     messages_queue_name = "messages_queue"
-    messages_queue = client.get_queue(messages_queue_name).blocking()
+    message_queue = client.get_queue(messages_queue_name).blocking()
     yield
     repository.end_session()
 
