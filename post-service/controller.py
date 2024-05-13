@@ -6,13 +6,13 @@ from fastapi.encoders import jsonable_encoder
 from fastapi import FastAPI, Request, Response, status
 import service
 from datetime import datetime
+import hazelcast
 import consul
 
 app = FastAPI()
 
 id = 0
 
-import hazelcast
 
 message_queue = None
 
@@ -30,6 +30,7 @@ async def lifespan(app):
     messages_queue = client.get_queue(messages_queue_name).blocking()
 
     yield
+
 
 @app.get("/get-user-posts/")
 async def get_user_posts(user: str, response: Response):

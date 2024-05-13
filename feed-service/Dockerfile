@@ -9,5 +9,5 @@ ENV PYTHONUNBUFFERED=1
 COPY ./main.py /code/
 COPY ./controller.py /code/
 COPY ./service.py /code/
-COPY ./repository.py /code/
+
 CMD ["python", "main.py"]
