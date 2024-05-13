@@ -16,9 +16,3 @@ def get_token(username):
 def get_active_tokens():
     return list(session_tokens_map.values())
 
-
-add_token("admin", 1)
-print(get_token("admin"))
-print(get_active_tokens())
-remove_token("admin")
-print(get_active_tokens())

@@ -38,9 +38,9 @@ def logout(token):
     return {"status": code, "message": message}
 
 def show_user(username):
-    user = get_services('user_service')[0]
+    user = get_services('profile')[0]
     address, port = user['Address'], user['Port']
-    url = f'http://{address}:{port}/show-user?{username}'
+    url = f'http://{address}:{port}/get-user-data?user={username}'
     response = requests.get(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
@@ -96,10 +96,34 @@ def has_liked(username, post_id):
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
 
-def main_page():
-    feed = get_services('feed_service')
+def main_page(username):
+    feed = get_services('feed')
     address, port = feed[0]['Address'], feed[0]['Port']
-    url = f'http://{address}:{port}/feed'
+    url = f'http://{address}:{port}/feed/?user={username}'
     response = requests.get(url)
+    code, message = response.status_code, response.text
+    return {"status": code, "message": message}
+
+def modify_music(user, music):
+    profile = get_services('profile')
+    address, port = profile[0]['Address'], profile[0]['Port']
+    url = f'http://{address}:{port}/set-music?user={user}&music={music}'
+    response = requests.post(url)
+    code, message = response.status_code, response.text
+    return {"status": code, "message": message}
+
+def modify_profile_photo(request):
+    profile = get_services('profile')
+    address, port = profile[0]['Address'], profile[0]['Port']
+    url = f'http://{address}:{port}/modify-profile-photo'
+    response = requests.post(url, data=json.dumps(request))
+    code, message = response.status_code, response.text
+    return {"status": code, "message": message}
+
+def new_post(post):
+    feed = get_services('post')
+    address, port = feed[0]['Address'], feed[0]['Port']
+    url = f'http://{address}:{port}/new-post'
+    response = requests.post(url, data=json.dumps(post))
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
