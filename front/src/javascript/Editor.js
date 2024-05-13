@@ -13,8 +13,11 @@ function getSavedUserName() {
 
 const urlResolver = new UrlResolver();
 
+/**
+ * @param articleData.article
+ * @param {String} articleData.profile
+ * */
 async function sendPostContents(articleData) {
-  // return fetch("http://localhost:8000/new-post", {
     return fetch(urlResolver.getNewPostUrl(), {
     method: "POST",
     headers: {

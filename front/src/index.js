@@ -38,16 +38,8 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
         loader: async () => {
-          const data = await fetch(urlResolver.getMainPageUrl(sessionStorage.getItem("username")), {
-            // const data = await fetch("http://localhost:8000/main-page", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username: sessionStorage.getItem("username"),
-            }),
-          }).then((data) => data.json());
+          const data = await fetch(urlResolver.getMainPageUrl(sessionStorage.getItem("username")))
+              .then((data) => data.json());
           const posts = data.posts;
           const avatars = data.avatars;
 

@@ -13,14 +13,14 @@ import UrlResolver from "./UrlResolver";
 
 const urlResolver = new UrlResolver();
 
+/**
+ * @param credentials.username
+ * @param credentials.password
+ * @param credentials.email
+ * */
 async function signupUser(credentials) {
-  // return fetch("http://localhost:8000/add-user", {
   return fetch(urlResolver.getRegisterUserUrl(credentials.username, credentials.password, credentials.email), {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials)
   });
 }
 
