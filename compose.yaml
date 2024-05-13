@@ -95,4 +95,14 @@ services:
       - ./friendzone-service/postgres-db-init:/docker-entrypoint-initdb.d
     ports:
       - "5435:5432"
-
+  post_db:
+    image: mongo:latest
+    pull_policy: missing
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root_pass
+      MONGO_INITDB_DATABASE: post_db
+    volumes:
+      - ./post-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
+    ports:
+      - "27017:27017"  
