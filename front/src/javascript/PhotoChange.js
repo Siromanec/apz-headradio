@@ -1,5 +1,5 @@
 import React from "react";
-import UrlResolver from "../UrlResolver.js";
+import UrlResolver from "./UrlResolver.js";
 
 const urlResolver = new UrlResolver();
 const toBase64 = (file) =>

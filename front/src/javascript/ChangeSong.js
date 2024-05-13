@@ -4,7 +4,7 @@ import "../css/AddChangeButton.css";
 import crossButton from "../data/cross.svg";
 import { spotifyClientID, spotifyClientSecret } from "./APIKeys";
 
-import UrlResolver from "../UrlResolver";
+import UrlResolver from "./UrlResolver";
 
 const urlResolver = new UrlResolver();
 

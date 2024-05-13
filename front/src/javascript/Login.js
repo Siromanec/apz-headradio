@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import UrlResolver from "../UrlResolver.js";
+import UrlResolver from "./UrlResolver";
 
 const urlResolver = new UrlResolver();
 async function loginUser(credentials) {
