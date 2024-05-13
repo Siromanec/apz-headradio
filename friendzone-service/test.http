@@ -1,7 +1,7 @@
-GET http://localhost:8082/get-friends?user=user
+GET http://localhost:8083/get-friends?user=user
 
 ###
-POST http://localhost:8082/add-friend?user1=admin&user2=user
+POST http://localhost:8083/add-friend?user1=admin&user2=user
 
 ###
-POST http://localhost:8082/remove-friend?user1=admin&user2=user
+POST http://localhost:8083/remove-friend?user1=admin&user2=user

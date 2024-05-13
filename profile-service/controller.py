@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 import fastapi
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
@@ -6,8 +8,15 @@ from fastapi import FastAPI, Request, Response, status
 import service
 import uuid
 import os
+import repository
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app):
+    repository.start_session()
+    yield
+    repository.end_session()
+
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/get-pfp/")
 async def get_pfp(user: str, response: Response):
