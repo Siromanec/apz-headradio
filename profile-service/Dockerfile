@@ -3,6 +3,7 @@ WORKDIR /code
 
 COPY ./requirements.txt /code/requirements.txt
 
+RUN mkdir -p data
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 ENV PYTHONUNBUFFERED=1
 

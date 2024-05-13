@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+# HeadRadio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Vision
+HeadRadio was designed to be a small version of a social network that combines features from existing social networks like Spotify and Instagram along with general ideas of blog and journaling. You can use your page as a journal, follow other people, like their posts, share the music you are listening to the most right now, and much more. Our microservices-based architecture ensures scalability and reliability by incorporating Hazelcast, Consul, Docker Compose, SQL, and NoSQL databases to deliver a robust and immersive user experience.
 
-## Available Scripts
+## Architecture
+![image](https://github.com/Siromanec/apz-headradio/assets/91982071/70fd01b6-7ad9-4986-b218-c4e49a9d05d1)
+There are **6** main microservices:
+1) **auth-service**: responsible for user authentication, storage of usernames, emails, and passwords (SQL database, sqlalchemy)
+2) **post-service**: stores the information about all posts (noSQL database, MongoDB), provides API for post creation and deletion
+3) **profile-service**: responsible for the profile page of the user, including setting photo, adding music, and storing this information (noSQL database, MongoDB)
+4) **friendzone-service**: allows users to follow/unfollow other users and get the list of their followers (SQL database, sqlalchemy)
+5) **likes-service**: provides the logic for adding/removing likes on posts (SQL database, sqlalchemy)
+6) **feed-service**: incorporates all the data about followed pages, along with recently played songs from your friends and their latests posts.
+   
+Communication with the clients is executed via an API gateway, and all clients' activities are logged by a logging service that incorporates a message queue. 
 
-In the project directory, you can run:
+## Use cases
 
-### `npm start`
+### Possible actions
+- register/login
+- set photo
+- set music
+- write/delete a post
+- search other users by username
+- follow/remove a friend
+- get a favorite song and the latest posts of followed users
+- add/remove like on a post
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Examples
+*would be great to add scenarios with different number of microservice instances and their behavior in different situations*
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Links
+- architecture [diagram](https://drive.google.com/file/d/1--v8JdgGvQnYgnzEhLhxxedfaLRa2m69/view?usp=sharing)
+- [FigmaDesign](https://www.figma.com/design/jxPF5sCpckApn59pTFHQKc/WebProject?node-id=0%3A1&t=x3PPyBabbjrCoVsd-1)

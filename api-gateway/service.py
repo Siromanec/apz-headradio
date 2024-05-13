@@ -38,9 +38,9 @@ def logout(token):
     return {"status": code, "message": message}
 
 def show_user(username):
-    user = get_services('user_service')[0]
+    user = get_services('profile')[0]
     address, port = user['Address'], user['Port']
-    url = f'http://{address}:{port}/show-user?{username}'
+    url = f'http://{address}:{port}/get-user-data?user={username}'
     response = requests.get(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
@@ -65,41 +65,65 @@ def accept_request(friend1, friend2):
     ...
 
 def like_post(username, post_id):
-    likes = get_services('like_service')
+    likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/add-like?{username}&{post_id}'
+    url = f'http://{address}:{port}/add-like?user={username}&post={post_id}'
     response = requests.post(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
 
 def unlike_post(username, post_id):
-    likes = get_services('like_service')
+    likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/remove-like?{username}&{post_id}'
+    url = f'http://{address}:{port}/remove-like?user={username}&post={post_id}'
     response = requests.post(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
 
 def show_likes(post_id):
-    likes = get_services('like_service')
+    likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/get-likes?{post_id}'
+    url = f'http://{address}:{port}/get-likes?post={post_id}'
     response = requests.get(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
 
 def has_liked(username, post_id):
-    likes = get_services('like_service')
+    likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/has-liked?{username}&{post_id}'
+    url = f'http://{address}:{port}/has-liked?user={username}&post={post_id}'
     response = requests.get(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
 
-def main_page():
-    feed = get_services('feed_service')
+def main_page(username):
+    feed = get_services('feed')
     address, port = feed[0]['Address'], feed[0]['Port']
-    url = f'http://{address}:{port}/feed'
+    url = f'http://{address}:{port}/feed/?user={username}'
     response = requests.get(url)
+    code, message = response.status_code, response.text
+    return {"status": code, "message": message}
+
+def modify_music(user, music):
+    profile = get_services('profile')
+    address, port = profile[0]['Address'], profile[0]['Port']
+    url = f'http://{address}:{port}/set-music?user={user}&music={music}'
+    response = requests.post(url)
+    code, message = response.status_code, response.text
+    return {"status": code, "message": message}
+
+def modify_profile_photo(request):
+    profile = get_services('profile')
+    address, port = profile[0]['Address'], profile[0]['Port']
+    url = f'http://{address}:{port}/modify-profile-photo'
+    response = requests.post(url, data=json.dumps(request))
+    code, message = response.status_code, response.text
+    return {"status": code, "message": message}
+
+def new_post(post):
+    feed = get_services('post')
+    address, port = feed[0]['Address'], feed[0]['Port']
+    url = f'http://{address}:{port}/new-post'
+    response = requests.post(url, data=json.dumps(post))
     code, message = response.status_code, response.text
     return {"status": code, "message": message}

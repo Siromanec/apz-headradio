@@ -4,12 +4,32 @@ Content-Type: application/json
     "username": "admin",
     "article": "bla bla amazing post"
 }
+POST http://localhost:8080/new-post/
+Content-Type: application/json
+{
+    "username": "admin2",
+    "article": "cha cha cha"
+}
 
 POST http://localhost:8080/new-post/
 Content-Type: application/json
 {
-    "username": "user",
+    "username": "admin2",
+    "article": "rim tim tagi dim"
+}
+
+
+POST http://localhost:8080/new-post/
+Content-Type: application/json
+{
+    "username": "admin",
+    "article": "bla bla amazing post2"
+}
+POST http://localhost:8080/new-post/
+Content-Type: application/json
+{
+    "username": "user1",
     "article": "hello world"
 }
 
-GET http://localhost:8080/get-user-posts?username=admin
+GET http://localhost:8080/get-user-posts?user=admin2

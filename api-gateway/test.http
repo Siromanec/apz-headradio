@@ -6,4 +6,40 @@ POST http://localhost:8084/register/?user=root&passw=root&mail=sraka@dupa
 
 ###
 
-POST http://localhost:8084/like-post/?user=root&passw=root&post_id=1
+POST http://localhost:8084/like-post/?username=root&post_id=1
+
+###
+
+DELETE http://localhost:8084/like-post/?username=root&post_id=1
+
+###
+
+GET http://localhost:8084/show-likes/?post_id=1
+
+
+GET http://localhost:8084/has-liked/?username=root&post_id=1
+
+
+GET http://localhost:8084/main-page/?username=root
+
+
+POST http://localhost:8084/modify-profile-photo
+Content-Type: application/json
+
+{
+    "username": "root",
+    "image": "a"
+}
+
+
+GET http://localhost:8084/show-user/?username=root
+
+
+POST http://localhost:8084/new-post/
+Content-Type: application/json
+
+{
+    "username": "root",
+    "article": "a"
+}
+
