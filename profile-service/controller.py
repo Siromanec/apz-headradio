@@ -9,10 +9,17 @@ import service
 import uuid
 import os
 import repository
+import consul
 
 @asynccontextmanager
 async def lifespan(app):
     repository.start_session()
+    c = consul.Consul()
+    c.agent.service.register(name='profile',
+                         service_id='profile',
+                         address='profile',
+                         port=8081)
+
     yield
     repository.end_session()
 
