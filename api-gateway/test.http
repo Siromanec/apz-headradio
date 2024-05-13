@@ -3,3 +3,7 @@ POST http://localhost:8084/login/?user=root&passw=root
 ###
 
 POST http://localhost:8084/register/?user=root&passw=root&mail=sraka@dupa
+
+###
+
+POST http://localhost:8084/like-post/?user=root&passw=root&post_id=1
