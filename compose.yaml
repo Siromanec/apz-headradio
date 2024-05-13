@@ -12,40 +12,49 @@ services:
   likes:
     build: ./like-service/
     depends_on:
-      - likes_db
-      - consul
+      likes_db:
+        condition: service_started
+      consul:
+        condition: service_healthy
     ports:
       - "8079:8079"
   post:
     build: ./post-service/
     depends_on:
-      - consul
+      consul:
+        condition: service_healthy
     ports:
       - "8080:8080"
   profile:
     build: ./profile-service/
     depends_on:
-      - consul
+      consul:
+        condition: service_healthy
     ports:
       - "8081:8081"
   auth:
     build: ./auth-service/
     depends_on:
-      - consul
-      - auth_db
+      auth_db:
+        condition: service_started
+      consul:
+        condition: service_healthy
     ports:
       - "8082:8082"
   friendzone:
     build: ./friendzone-service/
     depends_on:
-      - consul
-      - friendzone_db
+      friendzone_db:
+        condition: service_started
+      consul:
+        condition: service_healthy
     ports:
       - "8083:8083"
   api-gateway:
     build: ./api-gateway/
     depends_on:
-      - consul
+      consul:
+        condition: service_healthy
     ports:
       - "8084:8084"
 
