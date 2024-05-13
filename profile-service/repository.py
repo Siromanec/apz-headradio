@@ -2,7 +2,7 @@
 
 from pymongo import MongoClient
 
-client = MongoClient("mongodb://root:root_pass@localhost:27018/")
+client = MongoClient("mongodb://root:root_pass@profile_db:27018/")
 
 db = client["profile_db"]
 collection = db["profile"]

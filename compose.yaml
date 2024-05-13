@@ -96,6 +96,7 @@ services:
       - "5432:5432"
   profile_db:
     image: mongo:latest
+    hostname: profile_db
     pull_policy: missing
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -130,6 +131,7 @@ services:
       - "5435:5432"
   post_db:
     image: mongo:latest
+    hostname: profile_db
     pull_policy: missing
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
