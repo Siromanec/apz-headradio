@@ -15,7 +15,7 @@ message_queue = None
 @asynccontextmanager
 async def lifespan(app):
     repository.start_session()
-    c = consul.Consul()
+    c = consul.Consul(host="consul")
     c.agent.service.register(name='friendzone',
                             service_id='friendzone',
                             address='friendzone',

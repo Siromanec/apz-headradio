@@ -17,7 +17,8 @@ message_queue = None
 
 @asynccontextmanager
 async def lifespan(app):
-    c = consul.Consul()
+
+    c = consul.Consul(host="consul")
     c.agent.service.register(name='profile',
                          service_id='profile',
                          address='profile',

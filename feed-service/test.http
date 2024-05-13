@@ -1,1 +1,1 @@
-POST http://localhost:8081/feed?user=admin
+GET http://localhost:8085/feed?user=admin
