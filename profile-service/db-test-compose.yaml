@@ -2,12 +2,12 @@ version: '3'
 
 services:
   profile_db:
-    image: postgres:latest
+    image: mongo:latest
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root_pass
-      POSTGRES_DB: profile_db
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root_pass
+      MONGO_INITDB_DATABASE: profile_db
     volumes:
-      - ./postgres-db-init:/docker-entrypoint-initdb.d
+      - ./profile-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
     ports:
-      - "5433:5432"
+      - "27018:27018"  

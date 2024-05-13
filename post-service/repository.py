@@ -1,13 +1,6 @@
 # data access idk
 
 from pymongo import MongoClient
-from bson.objectid import ObjectId
-from bson.json_util import dumps
-from bson.json_util import loads
-from bson import json_util
-import json
-import os
-import datetime
 
 client = MongoClient("mongodb://root:root_pass@localhost:27017/")
 
