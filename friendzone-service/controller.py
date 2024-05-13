@@ -1,12 +1,20 @@
+from contextlib import asynccontextmanager
+
 import fastapi
-import requests.status_codes
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi import FastAPI, Request, Response, status
 import service
+import repository
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app):
+    repository.start_session()
+    yield
+    repository.end_session()
+
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/get-friends/")
 async def get_friends(user: str, response: Response):

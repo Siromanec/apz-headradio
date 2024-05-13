@@ -65,7 +65,7 @@ def remove_like(user: str, post: int):
 
 
 def get_likes(post: int) -> list:
-    return [*session.execute(select(Likes))]
+    return [*session.execute(select(Likes).where(Likes.post_id == post))]
 
 
 def __test_db():
