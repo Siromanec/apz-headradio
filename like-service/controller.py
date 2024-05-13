@@ -7,10 +7,17 @@ from fastapi.encoders import jsonable_encoder
 from fastapi import FastAPI, Request, Response, status
 import service
 import repository
+import consul
 
 @asynccontextmanager
 async def lifespan(app):
     repository.start_session()
+    c = consul.Consul()
+    c.agent.service.register(name='likes',
+                         service_id='likes',
+                         address='likes',
+                         port=8079)
+
     yield
     repository.end_session()
 
