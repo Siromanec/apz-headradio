@@ -19,7 +19,7 @@ async def lifespan(app):
     c.agent.service.register(name='friendzone',
                             service_id='friendzone',
                             address='friendzone',
-                            port=8084)
+                            port=8083)
     client = hazelcast.HazelcastClient(cluster_name="dev", cluster_members=["hazelcast"])
 
     global message_queue

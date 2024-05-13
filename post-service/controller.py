@@ -9,7 +9,6 @@ from datetime import datetime
 import hazelcast
 import consul
 
-app = FastAPI()
 
 id = 0
 
@@ -18,7 +17,7 @@ message_queue = None
 
 @asynccontextmanager
 async def lifespan(app):
-    c = consul.Consul()
+    c = consul.Consul(host="consul")
     c.agent.service.register(name='posts',
                          service_id='posts',
                          address='posts',
@@ -31,6 +30,7 @@ async def lifespan(app):
 
     yield
 
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/get-user-posts/")
 async def get_user_posts(user: str, response: Response):
@@ -38,6 +38,7 @@ async def get_user_posts(user: str, response: Response):
     response.status_code = status.HTTP_200_OK
     print(f"post-service: posts of {user} - {posts}")
     message_queue.put(f"post-service: posts of {user} - {posts}")
+    posts = list(map(lambda x: {"username": x["username"], "post_id": x["post_id"], "article": x["article"], "time": x["time"]}, posts))
     return {"posts": posts}
 
 

@@ -3,15 +3,18 @@ import consul
 
 c = consul.Consul(host = "consul")
 
+
 def get_services(service_name):
     list_services = []
     services = c.health.service(service_name)[1]
     for service in services:
-        service = {}
-        service['Address'] = service['Service']['Address']
-        service['Port'] = service['Service']['Port']
-        list_services.append(service)
-    return services
+        adder = {}
+        adder['Address'] = service['Service']['Address']
+        adder['Port'] = service['Service']['Port']
+        list_services.append(adder)
+    print(list_services)
+    return list_services
+
 
 def get_all_friends(username):
     friend = get_services('friendzone')[0]
