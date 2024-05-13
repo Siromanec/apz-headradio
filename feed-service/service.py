@@ -37,6 +37,15 @@ def get_friend_posts(username):
     print("posts from friends")
     print(response)
     return response
+
+def get_friends_pfp(username):
+    profile = get_services('profile')[0]
+    address, port = profile['Address'], profile['Port']
+    url = f'http://{address}:{port}/get-pfp?user={username}'
+    response = requests.get(url).json()
+    print("pfp of friends")
+    print(response)
+    return response
     
 def feed(user):
     friends = get_all_friends(user)
@@ -46,4 +55,6 @@ def feed(user):
     print(posts)
     posts.sort(key=lambda x: x['time'], reverse=True)
     num = len(posts) if len(posts) < 50  else 50
+    for post in posts:
+        post['profile_picture'] = get_friends_pfp(post['username'])['get_pfp']
     return posts[:num]

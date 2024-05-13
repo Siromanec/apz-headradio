@@ -1,4 +1,6 @@
-POST http://localhost:8081/create-profile?user=admin
+POST http://localhost:8081/create-profile?user=admin2
+
+POST http://localhost:8081/create-profile?user=user1
 
 ###
 POST http://localhost:8081/set-music?user=admin&song_name=chachacha
