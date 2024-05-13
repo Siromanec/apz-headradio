@@ -1,3 +1,5 @@
-POST http://localhost:8084/login?{root}&{root}
+POST http://localhost:8084/login/?user=root&passw=root
 
 ###
+
+POST http://localhost:8084/register/?user=root&passw=root&mail=sraka@dupa

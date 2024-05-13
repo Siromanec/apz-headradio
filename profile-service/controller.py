@@ -14,7 +14,7 @@ import consul
 @asynccontextmanager
 async def lifespan(app):
     repository.start_session()
-    c = consul.Consul()
+    c = consul.Consul(host="consul")
     c.agent.service.register(name='profile',
                          service_id='profile',
                          address='profile',
