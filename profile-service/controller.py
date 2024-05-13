@@ -66,7 +66,7 @@ async def modify_profile_photo(request: Request, response: Response):
         with open("./data/" + filename, "w") as file:
             file.write(item["image"])
         username = item["username"]
-        service.modify_profile_photo("user", {"profilePicture": f"'{filename}'"}, f"`username`='{username}'")
+        service.modify_profile_photo("user", {"profilePicture": f"'{filename}'", "username":f'{username}'})
         response.status_code = status.HTTP_200_OK
         print(f"profile-service: User {username} modified profile photo.")
         message_queue.put(f"profile-service: User {username} modified profile photo.")
