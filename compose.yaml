@@ -1,11 +1,27 @@
 services:
+  hazelcast:
+    image: hazelcast/hazelcast
+    pull_policy: missing
+    depends_on:
+      management-center:
+        condition: service_started
+
+  management-center:
+    image: hazelcast/management-center:5.3.3
+    pull_policy: missing
+    ports:
+      - "8000:8080"
+    environment:
+      - MC_DEFAULT_CLUSTER=dev
+      - MC_DEFAULT_CLUSTER_MEMBERS=hazelcast
+
   consul:
     image: consul:1.15.4 # Consul does not have latest tag :-(
     ports:
       - "8500:8500"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
-      interval: 1s
+      interval: 200ms
       retries: 10
       start_period: 5s
   
