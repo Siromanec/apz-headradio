@@ -19,7 +19,7 @@ def get_services(service_name):
 def get_all_friends(username):
     friend = get_services('friendzone')[0]
     address, port = friend['Address'], friend['Port']
-    url = f'http://{address}:{port}/get-friends?user={username}'
+    url = f'http://{address}:{port}/get-friends/?user={username}'
     response = requests.get(url).json()
     print("friends of user")
     response = response['friends']
@@ -32,7 +32,7 @@ def get_all_friends(username):
 def get_friend_posts(username):
     post = get_services('post')[0]
     address, port = post['Address'], post['Port']
-    url = f'http://{address}:{port}/get-user-posts?user={username}'
+    url = f'http://{address}:{port}/get-user-posts/?user={username}'
     response = requests.get(url).json()
     print("posts from friends")
     print(response)
@@ -41,7 +41,7 @@ def get_friend_posts(username):
 def get_friends_pfp(username):
     profile = get_services('profile')[0]
     address, port = profile['Address'], profile['Port']
-    url = f'http://{address}:{port}/get-pfp?user={username}'
+    url = f'http://{address}:{port}/get-pfp/?user={username}'
     response = requests.get(url).json()
     print("pfp of friends")
     print(response)
