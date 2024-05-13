@@ -50,7 +50,7 @@ def show_user(username):
 def register(user, passw, mail):
     auth = get_services('auth')[0]
     address, port = auth['Address'], auth['Port']
-    url = f'http://{address}:{port}/register?user={user}&password={passw}&email={mail}'
+    url = f'http://{address}:{port}/register/?user={user}&password={passw}&email={mail}'
     response = requests.post(url)
     code, message = response.status_code, response.json()
     token = str(message["token"])
@@ -61,7 +61,7 @@ def register(user, passw, mail):
 def friends(username):
     friend = get_services('friendzone')[0]
     address, port = friend['Address'], friend['Port']
-    url = f'http://{address}:{port}/get-friends?user={username}'
+    url = f'http://{address}:{port}/get-friends/?user={username}'
     response = requests.get(url)
     code, message = response.status_code, response.json()
     return {"status": code, "message": message}
@@ -69,7 +69,7 @@ def friends(username):
 def add_friend(friend1, friend2):
     friend = get_services('friendzone')[0]
     address, port = friend['Address'], friend['Port']
-    url = f'http://{address}:{port}/add-friend?user1={friend1}&user2={friend2}'
+    url = f'http://{address}:{port}/add-friend/?user1={friend1}&user2={friend2}'
     response = requests.post(url)
     code, message = response.status_code, response.json()
     return {"status": code, "message": message}
@@ -77,7 +77,7 @@ def add_friend(friend1, friend2):
 def remove_friend(friend1, friend2):
     friend = get_services('friendzone')[0]
     address, port = friend['Address'], friend['Port']
-    url = f'http://{address}:{port}/remove-friend?user1={friend1}&user2={friend2}'
+    url = f'http://{address}:{port}/remove-friend/?user1={friend1}&user2={friend2}'
     response = requests.post(url)
     code, message = response.status_code, response.json()
     return {"status": code, "message": message}
@@ -85,7 +85,7 @@ def remove_friend(friend1, friend2):
 def like_post(username, post_id):
     likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/add-like?user={username}&post={post_id}'
+    url = f'http://{address}:{port}/add-like/?user={username}&post={post_id}'
     response = requests.post(url)
     code, message = response.status_code, response.json()
     return {"status": code, "message": message}
@@ -93,7 +93,7 @@ def like_post(username, post_id):
 def unlike_post(username, post_id):
     likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/remove-like?user={username}&post={post_id}'
+    url = f'http://{address}:{port}/remove-like/?user={username}&post={post_id}'
     response = requests.post(url)
     code, message = response.status_code, response.json()
     return {"status": code, "message": message}
@@ -101,7 +101,7 @@ def unlike_post(username, post_id):
 def show_likes(post_id):
     likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/get-likes?post={post_id}'
+    url = f'http://{address}:{port}/get-likes/?post={post_id}'
     response = requests.get(url)
     code, message = response.status_code, response.json()
     return {"status": code, "message": message}
@@ -109,7 +109,7 @@ def show_likes(post_id):
 def has_liked(username, post_id):
     likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/has-liked?user={username}&post={post_id}'
+    url = f'http://{address}:{port}/has-liked/?user={username}&post={post_id}'
     response = requests.get(url)
     code, message = response.status_code, response.json()
     return {"status": code, "message": message}
@@ -125,7 +125,7 @@ def main_page(username):
 def modify_music(user, music):
     profile = get_services('profile')
     address, port = profile[0]['Address'], profile[0]['Port']
-    url = f'http://{address}:{port}/set-music?user={user}&music={music}'
+    url = f'http://{address}:{port}/set-music/?user={user}&music={music}'
     response = requests.post(url)
     code, message = response.status_code, response.json()
     return {"status": code, "message": message}
