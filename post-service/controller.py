@@ -11,12 +11,11 @@ app = FastAPI()
 
 id = 0
 
-
 @app.get("/get-user-posts/")
 async def get_user_posts(user: str, response: Response):
     posts = service.get_user_posts(user)
     response.status_code = status.HTTP_200_OK
-    return {"posts": posts}
+    return {"posts": posts} 
 
 
 @app.post("/new-post/")
