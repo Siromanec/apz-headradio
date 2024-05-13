@@ -2,11 +2,11 @@ import requests
 import json
 import consul
 
-c = consul.Consul()
+c = consul.Consul(host = "consul")
 c.agent.service.register(name='api-gateway',
                          service_id='api-gateway',
                          address='api-gateway',
-                         port=5000)
+                         port=8003)
 
 def get_services(service_name):
     list_services = []

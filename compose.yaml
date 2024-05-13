@@ -1,30 +1,54 @@
 services:
+  consul:
+    image: consul:1.15.4 # Consul does not have latest tag :-(
+    ports:
+      - "8500:8500"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+      interval: 1s
+      retries: 10
+      start_period: 5s
+  
   likes:
     build: ./like-service/
     depends_on:
       - likes_db
+      - consul
     ports:
       - "8079:8079"
   post:
     build: ./post-service/
+    depends_on:
+      - consul
     ports:
       - "8080:8080"
   profile:
     build: ./profile-service/
+    depends_on:
+      - consul
     ports:
       - "8081:8081"
   auth:
     build: ./auth-service/
     depends_on:
+      - consul
       - auth_db
     ports:
       - "8082:8082"
   friendzone:
     build: ./friendzone-service/
     depends_on:
+      - consul
       - friendzone_db
     ports:
       - "8083:8083"
+  api-gateway:
+    build: ./api-gateway/
+    depends_on:
+      - consul
+    ports:
+      - "8084:8084"
+
   
 
   likes_db:

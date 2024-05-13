@@ -20,10 +20,10 @@ class Profile(Base):
 db_url = sqlalchemy.engine.URL.create(
     drivername="postgresql+psycopg2",
     database="profile_db",
-    host="localhost", # TODO dynamic host
+    host="profile_db", # TODO dynamic host
     username="root",
     password="root_pass",
-    port="5433")
+    port="5432")
 
 engine = sqlalchemy.engine.create_engine(db_url)
 session: None | Session = None

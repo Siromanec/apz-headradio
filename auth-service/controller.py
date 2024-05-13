@@ -1,15 +1,11 @@
 from contextlib import asynccontextmanager
 
-import fastapi
-import requests.status_codes
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi import FastAPI, Request, Response, status
 import service
 import repository
-import uuid
-import os
 
 @asynccontextmanager
 async def lifespan(app):
