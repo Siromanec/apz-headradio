@@ -17,6 +17,7 @@ services:
     build: ./auth-service/
     ports:
       - "8082:8082"
+  
 
   likes_db:
     image: postgres:latest
