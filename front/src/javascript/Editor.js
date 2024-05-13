@@ -9,9 +9,13 @@ import { tinymceAPIKey } from "./APIKeys";
 function getSavedUserName() {
   return sessionStorage.getItem("username");
 }
+import UrlResolver from "../UrlResolver.js";
+
+const urlResolver = new UrlResolver();
 
 async function sendPostContents(articleData) {
-  return fetch("http://localhost:8000/new-post", {
+  // return fetch("http://localhost:8000/new-post", {
+    return fetch(urlResolver.getNewPostUrl(), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

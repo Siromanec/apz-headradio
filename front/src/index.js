@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
         loader: async () => {
-          const data = await fetch(urlResolver.getMainPageUrl(), {
+          const data = await fetch(urlResolver.getMainPageUrl(sessionStorage.getItem("username")), {
             // const data = await fetch("http://localhost:8000/main-page", {
             method: "POST",
             headers: {

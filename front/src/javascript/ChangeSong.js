@@ -4,8 +4,13 @@ import "../css/AddChangeButton.css";
 import crossButton from "../data/cross.svg";
 import { spotifyClientID, spotifyClientSecret } from "./APIKeys";
 
+import UrlResolver from "../UrlResolver";
+
+const urlResolver = new UrlResolver();
+
 async function saveSong(songData) {
-  return fetch("http://localhost:8000/modify-music", {
+  // return fetch("http://localhost:8000/modify-music", {
+    return fetch(urlResolver.getModifyMusicUrl(), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

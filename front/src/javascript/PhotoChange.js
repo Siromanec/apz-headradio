@@ -1,5 +1,7 @@
 import React from "react";
+import UrlResolver from "../UrlResolver.js";
 
+const urlResolver = new UrlResolver();
 const toBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -19,7 +21,8 @@ const submitHandler = async (event, setPhoto) => {
   };
 
   const response = await fetch(
-    "http://localhost:8000/modify-profile-photo",
+    // "http://localhost:8000/modify-profile-photo",
+    urlResolver.getModifyProfilePhotoUrl(sessionStorage.getItem("username")),
     {
       method: "POST",
       headers: {

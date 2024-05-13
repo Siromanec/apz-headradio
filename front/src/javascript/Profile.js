@@ -13,7 +13,9 @@ import ChangeSong from "./ChangeSong";
 import AddFriend from "./AddFriend";
 import crossButton from "../data/cross.svg";
 import { Link, useNavigate } from "react-router-dom";
+import { UrlResolver } from "../UrlResolver";
 
+const urlResolver = new UrlResolver();
 
 import {spotifyClientID, spotifyClientSecret} from "./APIKeys";
 
@@ -123,7 +125,8 @@ export default function Profile() {
       username: sessionStorage.getItem("username"),
       picture: file,
     };
-    return await fetch("http://localhost:8000/modify-profile-photo", {
+    // return await fetch("http://localhost:8000/modify-profile-photo", {
+      return await fetch(urlResolver.getModifyProfilePhotoUrl(body.username), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

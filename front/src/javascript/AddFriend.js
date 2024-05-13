@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../css/AddChangeButton.css";
 
+import UrlREsolver from "../UrlResolver.js";
+const urlResolver = new UrlREsolver();
+
 export default function AddFriend({ profile, isFriend, setIsFriend }) {
   const addHandler = async () => {
     await fetch(
-      `http://localhost:8000/${!isFriend ? "add" : "remove"}-friend`,
+      // `http://localhost:8000/${!isFriend ? "add" : "remove"}-friend`,
+      urlResolver.getFriendHandlerUrl(),
       {
         method: "POST",
         headers: {

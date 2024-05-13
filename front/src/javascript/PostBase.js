@@ -5,7 +5,9 @@ import likeIconFull from "../data/redHeart.svg";
 import { useEffect, useState } from "react";
 import parse from "html-react-parser";
 
+import UrlResolver from "../UrlResolver.js";
 
+const urlResolver = new UrlResolver();
 
 export default function PostBase({
     images,
@@ -18,7 +20,8 @@ export default function PostBase({
     const [hasLiked, setHasLiked] = useState(false);
     const [nLikes, setNLikes] = useState(nlikes ? nlikes : 0);
     const hasLikedHandler = async (data) => {
-        const like = fetch("http://localhost:8000/has-liked", {
+        // const like = fetch("http://localhost:8000/has-liked", {
+        const like = fetch(urlResolver.getIfLikedPostUrl(username, id), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -40,7 +43,7 @@ export default function PostBase({
         }
     };
     const setLikeHandler = async (value) => {
-        const data = await fetch("http://localhost:8000/fetch-like", {
+        const data = await fetch(urlResolver.getLikePostUrl(value.author, value.idpost), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
