@@ -23,8 +23,4 @@ def new_post(items):
 def delete_post(post):
     collection.delete_one({"post_id": post})
 
-print(get_user_posts("user1"))
-print(new_post({"username": "user1", "post_id": 1, "time": datetime.datetime.now(), "article": "This is a post"}))
-print(get_user_posts("user1"))
-print(delete_post(1))
-print(get_user_posts("user1"))
+
