@@ -2,6 +2,9 @@ import requests
 import json
 import consul
 from hashlib import sha256
+import repository
+from fastapi import status
+
 
 c = consul.Consul(host = "consul")
 c.agent.service.register(name='api-gateway',
@@ -26,16 +29,15 @@ def login(user, passw):
     url = f'http://{address}:{port}/login?user={user}&password={passw}'
     response = requests.post(url)
     code, message = response.status_code, response.json()
+    token = str(message["token"])
+    if code == status.HTTP_200_OK:
+        repository.add_token(token)
     return {"status": code, "message": message}
 
 
 def logout(token):
-    auth = get_services('auth_service')[0]
-    address, port = auth['Address'], auth['Port']
-    url = f'http://{address}:{port}/logout?{token}'
-    response = requests.delete(url)
-    code, message = response.status_code, response.json()
-    return {"status": code, "message": message}
+    repository.remove_token(token)    
+    return {"status": status.HTTP_200_OK, "message": {"message" : f"removed {token} from active sessions"}}
 
 def show_user(username):
     user = get_services('profile')[0]
@@ -51,6 +53,9 @@ def register(user, passw, mail):
     url = f'http://{address}:{port}/register?user={user}&password={passw}&email={mail}'
     response = requests.post(url)
     code, message = response.status_code, response.json()
+    token = str(message["token"])
+    if code == status.HTTP_200_OK:
+        repository.add_token(token)
     return {"status": code, "message": message} 
 
 def friends(username):
