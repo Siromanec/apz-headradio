@@ -6,13 +6,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import UrlResolver from "./UrlResolver";
 
 const urlResolver = new UrlResolver();
+
+/**
+ * @param {String} credentials.username
+ * @param {String} credentials.password
+ * */
 async function loginUser(credentials) {
   return fetch(urlResolver.getLoginUrl(credentials.username, credentials.password), {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
   }).then((data) => data.json());
 }
 

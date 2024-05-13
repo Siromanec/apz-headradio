@@ -127,7 +127,7 @@ export default function Profile() {
       picture: file,
     };
     // return await fetch("http://localhost:8000/modify-profile-photo", {
-      return await fetch(urlResolver.getModifyProfilePhotoUrl(body.username), {
+      return await fetch(urlResolver.getModifyProfilePhotoUrl(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

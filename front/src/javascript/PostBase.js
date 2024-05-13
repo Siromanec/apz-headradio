@@ -21,17 +21,10 @@ export default function PostBase({
     const [nLikes, setNLikes] = useState(nlikes ? nlikes : 0);
     const hasLikedHandler = async (data) => {
         // const like = fetch("http://localhost:8000/has-liked", {
-        const like = fetch(urlResolver.getIfLikedPostUrl(username, id), {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
+        const liked = await fetch(urlResolver.getIfLikedPostUrl(username, id))
             .then((data) => data.json())
             .catch((data) => data.json());
 
-        const liked = await like;
         console.log(liked);
         if (liked) {
             if (liked["liked"] === "0") {
@@ -42,13 +35,13 @@ export default function PostBase({
             setNLikes(nlikes)
         }
     };
+    /**
+     * @param value.author
+     * @param value.idpost
+     * */
     const setLikeHandler = async (value) => {
-        const data = await fetch(urlResolver.getLikePostUrl(value.author, value.idpost), {
+        const data = fetch(urlResolver.getLikePostUrl(value.author, value.idpost), {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(value),
         });
         return data;
     }
