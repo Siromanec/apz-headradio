@@ -13,6 +13,12 @@ services:
     build: ./profile-service/
     ports:
       - "8081:8081"
+  friendzone:
+    build: ./friendzone-service/
+    depends_on:
+      - friendzone_db
+    ports:
+      - "8082:8082"
 
   likes_db:
     image: postgres:latest
@@ -36,3 +42,14 @@ services:
       - ./profile-service/postgres-db-init:/docker-entrypoint-initdb.d
     ports:
       - "5433:5432"
+  friendzone_db:
+    image: postgres:latest
+    pull_policy: missing
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root_pass
+      POSTGRES_DB: friendzone_db
+    volumes:
+      - ./friendzone-service/postgres-db-init:/docker-entrypoint-initdb.d
+    ports:
+      - "5435:5432"
