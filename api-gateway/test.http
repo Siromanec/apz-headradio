@@ -6,4 +6,4 @@ POST http://localhost:8084/register/?user=root&passw=root&mail=sraka@dupa
 
 ###
 
-POST http://localhost:8084/like-post/?user=root&passw=root&post_id=1
+POST http://localhost:8084/like-post/?username=root&post_id=1
