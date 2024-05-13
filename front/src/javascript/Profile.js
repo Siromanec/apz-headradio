@@ -13,11 +13,12 @@ import ChangeSong from "./ChangeSong";
 import AddFriend from "./AddFriend";
 import crossButton from "../data/cross.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { UrlResolver } from "../UrlResolver";
+import UrlResolver from "./UrlResolver";
+import {spotifyClientID, spotifyClientSecret} from "./APIKeys";
+
 
 const urlResolver = new UrlResolver();
 
-import {spotifyClientID, spotifyClientSecret} from "./APIKeys";
 
 const APIController = (function () {
   const clientId = spotifyClientID;

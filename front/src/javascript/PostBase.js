@@ -5,7 +5,7 @@ import likeIconFull from "../data/redHeart.svg";
 import { useEffect, useState } from "react";
 import parse from "html-react-parser";
 
-import UrlResolver from "../UrlResolver.js";
+import UrlResolver from "./UrlResolver";
 
 const urlResolver = new UrlResolver();
 

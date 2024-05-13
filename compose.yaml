@@ -21,9 +21,9 @@ services:
       - "8500:8500"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
-      interval: 200ms
       retries: 10
       start_period: 5s
+      timeout: 5s
   
   likes:
     build: ./like-service/

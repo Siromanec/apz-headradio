@@ -1,4 +1,4 @@
-class UrlResolver {
+export default class UrlResolver {
   constructor() {
     this.baseUrl = "localhost";
     this.port = 8084;

@@ -1,15 +1,15 @@
 import SendIcon from "../data/send-icon.svg";
 import PictureIcon from "../data/picture-icon.svg";
-
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef } from "react";
 import "../css/Editor.css";
 import { tinymceAPIKey } from "./APIKeys";
+import UrlResolver from "./UrlResolver";
+
 // import { Global } from "@emotion/core";
 function getSavedUserName() {
   return sessionStorage.getItem("username");
 }
-import UrlResolver from "../UrlResolver.js";
 
 const urlResolver = new UrlResolver();
 

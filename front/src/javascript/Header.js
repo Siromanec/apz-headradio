@@ -7,8 +7,8 @@ import SearchInputImg from "../data/search_button.svg";
 import SignOutImg from "../data/sign_out.svg";
 import userEvent from "@testing-library/user-event";
 
-import UrlHandler from "../UrlHandler.js";
-const urlHandler = new UrlHandler();
+import UrlResolver from "./UrlResolver.js";
+const urlResolver = new UrlResolver();
 
 function SearchInput() {
   const [exists, setExists] = useState(false)
@@ -17,7 +17,7 @@ function SearchInput() {
   const navigate = useNavigate()
   const searchHandler = async ()=>{
     // const data = await (fetch(`http://localhost:8000/show-user/${text}`)).then(data => data.json()).then(data => data).catch(e =>console.log(e));
-    const data = await (fetch(urlHandler.getShowUserUrl(text))).then(data => data.json()).then(data => data).catch(e =>console.log(e));
+    const data = await (fetch(urlResolver.getShowUserUrl(text))).then(data => data.json()).then(data => data).catch(e =>console.log(e));
     if (Object.keys(data).length!==0){
       setExists(true);
       navigate("/profile/"+text);

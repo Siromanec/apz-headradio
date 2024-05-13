@@ -1,7 +1,7 @@
 import React from "react";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
 import ReactDOM from "react-dom/client";
-import UrlResolver from "UrlResolver.js";
+import UrlResolver from "./javascript/UrlResolver";
 import {
   BrowserRouter,
   createBrowserRouter,

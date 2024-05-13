@@ -9,7 +9,7 @@ import {
   useResolvedPath,
 } from "react-router-dom";
 
-import UrlResolver from "../UrlResolver";
+import UrlResolver from "./UrlResolver";
 
 const urlResolver = new UrlResolver();
 
