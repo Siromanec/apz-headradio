@@ -79,16 +79,17 @@ services:
     ports:
       - "5432:5432"
   profile_db:
-    image: postgres:latest
+    image: mongo:latest
     pull_policy: missing
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root_pass
-      POSTGRES_DB: profile_db
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root_pass
+      MONGO_INITDB_DATABASE: profile_db
     volumes:
-      - ./profile-service/postgres-db-init:/docker-entrypoint-initdb.d
+      - ./profile-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
     ports:
-      - "5433:5432"
+      - "27018:27018"  
+
   auth_db:
     image: postgres:latest
     pull_policy: missing

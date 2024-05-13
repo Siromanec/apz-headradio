@@ -1,4 +1,4 @@
-POST http://localhost:8081/login?user=admin&password=chachacha
+POST http://localhost:8082/login?user=admin&password=chachacha
 
 ###
-POST http://localhost:8081/register?user=admin&password=chachacha&email=email
+POST http://localhost:8082/register?user=admin&password=chachacha&email=email

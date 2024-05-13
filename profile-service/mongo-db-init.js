@@ -4,31 +4,31 @@ db.createUser({
     roles: [
         {
             role: "readWrite",
-            db: "post_db"
+            db: "profile_db"
         },
     ],
 });
 
-db.createCollection("posts",
+db.createCollection("profile",
     {
         validator: {
             $jsonSchema: {
                 bsonType: "object",
-                required: ["username", "post_id", "time", "article"],
+                required: ["username", "profile_picture", "selected_music", "motto"],
                 properties: {
                     username: {
                         bsonType: "string",
                         description: "must be a string and is required",
                     },
-                    post_id: {
-                        bsonType: "int",
-                        description: "must be a int and is required",
+                    profile_picture: {
+                        bsonType: "string",
+                        description: "must be a string and is required",
                     },
-                    time: {
-                        bsonType: "date",
-                        description: "must be a date and is required",
+                    selected_music: {
+                        bsonType: "string",
+                        description: "must be a string and is required",
                     },
-                    article: {
+                    motto: {
                         bsonType: "string",
                         description: "must be a string and is required",
                     },

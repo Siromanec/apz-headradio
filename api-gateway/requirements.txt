@@ -1,4 +1,4 @@
-python-consul==1.1.0
-fastapi==0.111.0
-requests==2.31.0
-uvicorn==0.29.0
+python-consul===1.1.0
+fastapi===0.111.0
+requests===2.31.0
+uvicorn===0.29.0
