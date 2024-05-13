@@ -47,16 +47,22 @@ async def register(user: str, passw: str, mail: str, response: Response):
     return result["message"]
 
 
-@app.post("/friend-request")
+@app.post("/add-friend")
 async def add_friend(friend1: str, friend2: str, response: Response):
     result = service.add_friend(friend1, friend2)
     response.status_code = result["status"]
     return result["message"]
 
 
-@app.post("/accept-request")
-async def accept_request(friend1: str, friend2: str, response: Response):
-    result = service.accept_request(friend1, friend2)
+@app.post("/remove-friend")
+async def remove_friend(friend1: str, friend2: str, response: Response):
+    result = service.remove_friend(friend1, friend2)
+    response.status_code = result["status"]
+    return result["message"]
+
+@app.get("/friends")
+async def friends(username: str, response: Response):
+    result = service.friends(username)
     response.status_code = result["status"]
     return result["message"]
 

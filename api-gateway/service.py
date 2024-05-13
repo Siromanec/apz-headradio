@@ -25,7 +25,7 @@ def login(user, passw):
     address, port = auth['Address'], auth['Port']
     url = f'http://{address}:{port}/login?user={user}&password={passw}'
     response = requests.post(url)
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
 
@@ -34,7 +34,7 @@ def logout(token):
     address, port = auth['Address'], auth['Port']
     url = f'http://{address}:{port}/logout?{token}'
     response = requests.delete(url)
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
 def show_user(username):
@@ -42,7 +42,7 @@ def show_user(username):
     address, port = user['Address'], user['Port']
     url = f'http://{address}:{port}/get-user-data?user={username}'
     response = requests.get(url)
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
 def register(user, passw, mail):
@@ -50,26 +50,39 @@ def register(user, passw, mail):
     address, port = auth['Address'], auth['Port']
     url = f'http://{address}:{port}/register?user={user}&password={passw}&email={mail}'
     response = requests.post(url)
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message} 
 
-def add_friend(friend1, friend2):
-    friend = get_services('friendzone_service')[0]
+def friends(username):
+    friend = get_services('friendzone')[0]
     address, port = friend['Address'], friend['Port']
-    url = f'http://{address}:{port}/add-friend?{friend1}&{friend2}'
-    response = requests.post(url)
-    code, message = response.status_code, response.text
+    url = f'http://{address}:{port}/get-friends?user={username}'
+    response = requests.get(url)
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
-def accept_request(friend1, friend2):
-    ...
+def add_friend(friend1, friend2):
+    friend = get_services('friendzone')[0]
+    address, port = friend['Address'], friend['Port']
+    url = f'http://{address}:{port}/add-friend?user1={friend1}&user2={friend2}'
+    response = requests.post(url)
+    code, message = response.status_code, response.json()
+    return {"status": code, "message": message}
+
+def remove_friend(friend1, friend2):
+    friend = get_services('friendzone')[0]
+    address, port = friend['Address'], friend['Port']
+    url = f'http://{address}:{port}/remove-friend?user1={friend1}&user2={friend2}'
+    response = requests.post(url)
+    code, message = response.status_code, response.json()
+    return {"status": code, "message": message}
 
 def like_post(username, post_id):
     likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
     url = f'http://{address}:{port}/add-like?user={username}&post={post_id}'
     response = requests.post(url)
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
 def unlike_post(username, post_id):
@@ -77,7 +90,7 @@ def unlike_post(username, post_id):
     address, port = likes[0]['Address'], likes[0]['Port']
     url = f'http://{address}:{port}/remove-like?user={username}&post={post_id}'
     response = requests.post(url)
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
 def show_likes(post_id):
@@ -85,7 +98,7 @@ def show_likes(post_id):
     address, port = likes[0]['Address'], likes[0]['Port']
     url = f'http://{address}:{port}/get-likes?post={post_id}'
     response = requests.get(url)
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
 def has_liked(username, post_id):
@@ -93,7 +106,7 @@ def has_liked(username, post_id):
     address, port = likes[0]['Address'], likes[0]['Port']
     url = f'http://{address}:{port}/has-liked?user={username}&post={post_id}'
     response = requests.get(url)
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
 def main_page(username):
@@ -101,7 +114,7 @@ def main_page(username):
     address, port = feed[0]['Address'], feed[0]['Port']
     url = f'http://{address}:{port}/feed/?user={username}'
     response = requests.get(url)
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
 def modify_music(user, music):
@@ -109,7 +122,7 @@ def modify_music(user, music):
     address, port = profile[0]['Address'], profile[0]['Port']
     url = f'http://{address}:{port}/set-music?user={user}&music={music}'
     response = requests.post(url)
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
 def modify_profile_photo(request):
@@ -117,7 +130,7 @@ def modify_profile_photo(request):
     address, port = profile[0]['Address'], profile[0]['Port']
     url = f'http://{address}:{port}/modify-profile-photo'
     response = requests.post(url, data=json.dumps(request))
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
 
 def new_post(post):
@@ -125,5 +138,5 @@ def new_post(post):
     address, port = feed[0]['Address'], feed[0]['Port']
     url = f'http://{address}:{port}/new-post'
     response = requests.post(url, data=json.dumps(post))
-    code, message = response.status_code, response.text
+    code, message = response.status_code, response.json()
     return {"status": code, "message": message}
