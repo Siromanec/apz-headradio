@@ -1,51 +1,76 @@
 services:
+  hazelcast:
+    image: hazelcast/hazelcast
+    pull_policy: missing
+    depends_on:
+      management-center:
+        condition: service_started
+
+  management-center:
+    image: hazelcast/management-center:5.3.3
+    pull_policy: missing
+    ports:
+      - "8000:8080"
+    environment:
+      - MC_DEFAULT_CLUSTER=dev
+      - MC_DEFAULT_CLUSTER_MEMBERS=hazelcast
+
   consul:
     image: consul:1.15.4 # Consul does not have latest tag :-(
     ports:
       - "8500:8500"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
-      interval: 1s
+      interval: 200ms
       retries: 10
       start_period: 5s
   
   likes:
     build: ./like-service/
     depends_on:
-      - likes_db
-      - consul
+      likes_db:
+        condition: service_started
+      consul:
+        condition: service_healthy
     ports:
       - "8079:8079"
   post:
     build: ./post-service/
     depends_on:
-      - consul
+      consul:
+        condition: service_healthy
     ports:
       - "8080:8080"
   profile:
     build: ./profile-service/
     depends_on:
-      - consul
+      consul:
+        condition: service_healthy
     ports:
       - "8081:8081"
   auth:
     build: ./auth-service/
     depends_on:
-      - consul
-      - auth_db
+      auth_db:
+        condition: service_started
+      consul:
+        condition: service_healthy
     ports:
       - "8082:8082"
   friendzone:
     build: ./friendzone-service/
     depends_on:
-      - consul
-      - friendzone_db
+      friendzone_db:
+        condition: service_started
+      consul:
+        condition: service_healthy
     ports:
       - "8083:8083"
   api-gateway:
     build: ./api-gateway/
     depends_on:
-      - consul
+      consul:
+        condition: service_healthy
     ports:
       - "8084:8084"
   feed:
@@ -69,16 +94,17 @@ services:
     ports:
       - "5432:5432"
   profile_db:
-    image: postgres:latest
+    image: mongo:latest
     pull_policy: missing
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root_pass
-      POSTGRES_DB: profile_db
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root_pass
+      MONGO_INITDB_DATABASE: profile_db
     volumes:
-      - ./profile-service/postgres-db-init:/docker-entrypoint-initdb.d
+      - ./profile-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
     ports:
-      - "5433:5432"
+      - "27018:27018"  
+
   auth_db:
     image: postgres:latest
     pull_policy: missing

@@ -37,7 +37,9 @@ def end_session():
     session.close()
 
 def login(user: str, password: str):
-    return [*session.execute(select(select(Auth).where(Auth.username == user).where(Auth.passwordhash == password).exists()))][0][0]
+    usr = [*session.execute(select(select(Auth).where(Auth.username == user).where(Auth.passwordhash == password).exists()))][0][0]
+    print(usr)
+    return usr
 
 def register(user: str, password: str, email:str):
     auth = Auth(username=user, passwordhash=password, email=email)

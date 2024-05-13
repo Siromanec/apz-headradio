@@ -7,7 +7,7 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 
-@app.post("/login?{user}&{pass}")
+@app.post("/login")
 async def login(user: str, passw: str, response: Response):
     result = service.login(user, passw)
     response.status_code = result["status"]
@@ -39,7 +39,7 @@ async def show_user(username: str, response: Response):
     response.status_code = result["status"]
     return result["message"]
 
-@app.post("/register?{user}&{pass}&{mail}")
+@app.post("/register")
 async def register(user: str, passw: str, mail: str, response: Response):
     result = service.register(user, passw, mail)
     response.status_code = result["status"]
