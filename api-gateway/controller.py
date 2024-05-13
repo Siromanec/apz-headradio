@@ -59,7 +59,6 @@ async def accept_request(friend1: str, friend2: str, response: Response):
     response.status_code = result["status"]
     return result["message"]
 
-
 @app.post("/like-post?{username}&{post_id}")
 async def like_post(username: str, post_id: str, response: Response):
     result = service.like_post(username, post_id)

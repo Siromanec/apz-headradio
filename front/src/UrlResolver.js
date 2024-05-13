@@ -1,7 +1,7 @@
 class UrlResolver {
   constructor() {
     this.baseUrl = "localhost";
-    this.port = 9000;
+    this.port = 8084;
     this.base = `http://${this.baseUrl}:${this.port}`;
   }
   getMainPageUrl(username) {    
