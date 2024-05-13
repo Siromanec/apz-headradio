@@ -66,19 +66,19 @@ async def like_post(username: str, post_id: str, response: Response):
     response.status_code = result["status"]
     return result["message"]
 
-@app.delete("/like-post?{username}&{post_id}")
+@app.delete("/like-post")
 async def unlike_post(username: str, post_id: str, response: Response):
     result = service.unlike_post(username, post_id)
     response.status_code = result["status"]
     return result["message"]
 
-@app.get("/show-likes?{post_id}")
+@app.get("/show-likes")
 async def show_likes(post_id: str, response: Response):
     result = service.show_likes(post_id)
     response.status_code = result["status"]
     return result["message"]
 
-@app.get("/has-liked?{username}&{post_id}")
+@app.get("/has-liked")
 async def has_liked(username: str, post_id: str, response: Response):
     result = service.has_liked(username, post_id)
     response.status_code = result["status"]

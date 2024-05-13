@@ -65,33 +65,33 @@ def accept_request(friend1, friend2):
     ...
 
 def like_post(username, post_id):
-    likes = get_services('like_service')
+    likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/add-like?{username}&{post_id}'
+    url = f'http://{address}:{port}/add-like?user={username}&post={post_id}'
     response = requests.post(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
 
 def unlike_post(username, post_id):
-    likes = get_services('like_service')
+    likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/remove-like?{username}&{post_id}'
+    url = f'http://{address}:{port}/remove-like?user={username}&post={post_id}'
     response = requests.post(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
 
 def show_likes(post_id):
-    likes = get_services('like_service')
+    likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/get-likes?{post_id}'
+    url = f'http://{address}:{port}/get-likes?post={post_id}'
     response = requests.get(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
 
 def has_liked(username, post_id):
-    likes = get_services('like_service')
+    likes = get_services('likes')
     address, port = likes[0]['Address'], likes[0]['Port']
-    url = f'http://{address}:{port}/has-liked?{username}&{post_id}'
+    url = f'http://{address}:{port}/has-liked?user={username}&post={post_id}'
     response = requests.get(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
