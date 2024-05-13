@@ -53,16 +53,29 @@ def register(user, passw, mail):
     code, message = response.status_code, response.text
     return {"status": code, "message": message} 
 
-def add_friend(friend1, friend2):
-    friend = get_services('friendzone_service')[0]
+def friends(username):
+    friend = get_services('friendzone')[0]
     address, port = friend['Address'], friend['Port']
-    url = f'http://{address}:{port}/add-friend?{friend1}&{friend2}'
+    url = f'http://{address}:{port}/get-friends?user={username}'
+    response = requests.get(url)
+    code, message = response.status_code, response.text
+    return {"status": code, "message": message}
+
+def add_friend(friend1, friend2):
+    friend = get_services('friendzone')[0]
+    address, port = friend['Address'], friend['Port']
+    url = f'http://{address}:{port}/add-friend?user1={friend1}&user2={friend2}'
     response = requests.post(url)
     code, message = response.status_code, response.text
     return {"status": code, "message": message}
 
-def accept_request(friend1, friend2):
-    ...
+def remove_friend(friend1, friend2):
+    friend = get_services('friendzone')[0]
+    address, port = friend['Address'], friend['Port']
+    url = f'http://{address}:{port}/remove-friend?user1={friend1}&user2={friend2}'
+    response = requests.post(url)
+    code, message = response.status_code, response.text
+    return {"status": code, "message": message}
 
 def like_post(username, post_id):
     likes = get_services('likes')

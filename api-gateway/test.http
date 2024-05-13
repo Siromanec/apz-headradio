@@ -43,3 +43,8 @@ Content-Type: application/json
     "article": "a"
 }
 
+GET http://localhost:8084/friends/?username=root
+
+POST http://localhost:8084/add-friend/?friend1=root1&friend2=root
+
+POST http://localhost:8084/remove-friend/?friend1=root1&friend2=root
