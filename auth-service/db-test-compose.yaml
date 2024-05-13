@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  likes_db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root_pass
+      POSTGRES_DB: auth_db
+    volumes:
+      - ./postgres-db-init:/docker-entrypoint-initdb.d
+    ports:
+      - "5434:5432"
