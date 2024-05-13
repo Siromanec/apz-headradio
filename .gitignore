@@ -27,3 +27,4 @@ __pycache__/
 .idea/
 front/node_modules/
 
+/data*

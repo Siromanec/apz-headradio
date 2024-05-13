@@ -48,6 +48,12 @@ services:
       - consul
     ports:
       - "8084:8084"
+  feed:
+    build: ./feed-sevice/
+    depends_on:
+      - consul
+    ports:
+      - "8085:8085"
 
   
 
