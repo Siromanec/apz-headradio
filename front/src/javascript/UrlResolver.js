@@ -5,15 +5,15 @@ export default class UrlResolver {
     this.base = `http://${this.baseUrl}:${this.port}`;
   }
   getMainPageUrl(username) {    
-    return `${this.base}/main-page?username=${username}`;
+    return `${this.base}/main-page/?username=${username}`;
   }
 
   getShowUserUrl(username) {
-    return `${this.base}/show-user?username=${username}`;
+    return `${this.base}/show-user/?username=${username}`;
   }
 
   getRegisterUserUrl(user, pass, mail) {
-    return `${this.base}/register?user=${user}&passw=${pass}&mail=${mail}`;
+    return `${this.base}/register/?user=${user}&passw=${pass}&mail=${mail}`;
   }
 
   getModifyProfilePhotoUrl() {
@@ -21,15 +21,15 @@ export default class UrlResolver {
   }
 
   getLikePostUrl(username, post_id) {
-    return `${this.base}/like-post?username=${username}&post_id=${post_id}`;
+    return `${this.base}/like-post/?username=${username}&post_id=${post_id}`;
   }
 
   getIfLikedPostUrl(username, id) {
-    return `${this.base}/has-liked?username=${username}&post_id=${id}`;
+    return `${this.base}/has-liked/?username=${username}&post_id=${id}`;
   }
 
   getLoginUrl(user, pass) {
-    return `${this.base}/login?user=${user}&passw=${pass}`;
+    return `${this.base}/login/?user=${user}&passw=${pass}`;
   }
 
   getNewPostUrl() {
@@ -37,6 +37,6 @@ export default class UrlResolver {
   }
 
   getModifyMusicUrl(user, music) {
-    return `${this.base}/modify-music?user=${user}&music=${music}`;
+    return `${this.base}/modify-music/?user=${user}&music=${music}`;
   }
 }
