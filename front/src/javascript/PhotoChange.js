@@ -22,7 +22,7 @@ const submitHandler = async (event, setPhoto) => {
 
   const response = await fetch(
     // "http://localhost:8000/modify-profile-photo",
-    urlResolver.getModifyProfilePhotoUrl(sessionStorage.getItem("username")),
+    urlResolver.getModifyProfilePhotoUrl(),
     {
       method: "POST",
       headers: {
