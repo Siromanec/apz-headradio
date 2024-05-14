@@ -16,13 +16,13 @@ DELETE http://localhost:8084/like-post/?username=root&post_id=1
 
 GET http://localhost:8084/show-likes/?post_id=1
 
-
+###
 GET http://localhost:8084/has-liked/?username=root&post_id=1
 
-
+###
 GET http://localhost:8084/main-page/?username=root
 
-
+###
 POST http://localhost:8084/modify-profile-photo
 Content-Type: application/json
 
@@ -31,10 +31,10 @@ Content-Type: application/json
     "image": "a"
 }
 
-
+###
 GET http://localhost:8084/show-user/?username=root
 
-
+###
 POST http://localhost:8084/new-post/
 Content-Type: application/json
 
@@ -43,8 +43,11 @@ Content-Type: application/json
     "article": "a"
 }
 
+###
 GET http://localhost:8084/friends/?username=root
 
+###
 POST http://localhost:8084/add-friend/?friend1=root1&friend2=root
 
+###
 POST http://localhost:8084/remove-friend/?friend1=root1&friend2=root
