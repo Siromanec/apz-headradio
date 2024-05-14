@@ -12,3 +12,4 @@ def login(user, password):
 def register(user, password, email):
     hashed_password = hashlib.sha256((user + password).encode("utf-8")).hexdigest()
     repository.register(user, hashed_password, email)
+    return str(uuid.uuid4())

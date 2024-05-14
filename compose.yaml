@@ -80,6 +80,13 @@ services:
         condition: service_healthy
     ports:
       - "8085:8085"
+  logging:
+    build: ./logging-service/
+    depends_on:
+      consul:
+        condition: service_healthy
+    ports:
+      - "8086:8086"
 
   
 

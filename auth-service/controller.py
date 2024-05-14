@@ -34,6 +34,9 @@ app = FastAPI(lifespan=lifespan)
 async def login(user: str, password: str, response: Response):
     token = service.login(user, password)
     response.status_code = status.HTTP_200_OK
+    if token == "No such user":
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return JSONResponse(content=jsonable_encoder({"detail": "No such user"}), status_code=status.HTTP_401_UNAUTHORIZED)
     print(f"auth-service: User {user} is logged in. Token ({token}) is generated.")
     message_queue.put(f"auth-service: User {user} is logged in. Token ({token}) is generated.")
     return {"token": token}
