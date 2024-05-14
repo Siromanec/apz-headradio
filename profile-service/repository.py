@@ -17,6 +17,8 @@ def get_user_data(user):
     return collection.find_one({"username": user})
 
 def modify_profile_photo(user, user_data):
+    if collection.find_one({"username": user}) == None:
+        return "NO SUCH USER"
     collection.update_one({"username": user}, {"$set": {"profile_picture": user_data['profilePicture']}})
 
 def set_music(user, song_name):
