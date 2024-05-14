@@ -13,6 +13,7 @@ def get_pfp(user):
     return collection.find_one({"username": user})['profile_picture']
 
 def get_user_data(user):    
+    print(collection.find_one({"username:": user}))
     return collection.find_one({"username": user})
 
 def modify_profile_photo(user, user_data):

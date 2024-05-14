@@ -49,7 +49,7 @@ async def get_user_data(user: str, response: Response):
     if user_data != None:
         print(f"profile-service: data of {user} - {user_data}")
         message_queue.put(f"profile-service: data of {user} - {user_data}")
-        user_data = list(map(lambda x: {"username": user_data["username"], "profile_picture": user_data["profile_picture"], "selected_music": user_data["selected_music"], "motto": user_data["motto"]}, user_data))
+        user_data = {"username": user_data["username"], "profile_picture": user_data["profile_picture"], "selected_music": user_data["selected_music"], "motto": user_data["motto"]}
         return {"get_user_data": user_data}
     else:
         print("profile-service: User not found.")
