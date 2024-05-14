@@ -1,5 +1,6 @@
 POST http://localhost:8081/create-profile?user=admin2
 
+###
 POST http://localhost:8081/create-profile?user=user1
 
 ###
@@ -10,6 +11,7 @@ GET http://localhost:8081/get-pfp?user=admin
 
 ###
 GET http://localhost:8081/get-user-data?user=user1
+
 
 ###
 POST http://localhost:8081/modify-profile-photo
