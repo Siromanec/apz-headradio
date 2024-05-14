@@ -28,7 +28,7 @@ async def lifespan(app):
 
     global message_queue
     messages_queue_name = "messages_queue"
-    message_queue = client.get_queue(messages_queue_name).blocking()
+    message_queue = client.get_queue(messages_queue_name)
 
     yield
 
