@@ -1,10 +1,19 @@
-from fastapi import FastAPI, Response, Request
+from typing import override
+
+import consul
+from fastapi import FastAPI, Response, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_utils.cbv import cbv
+import requests
+import httpx
+import asyncio
 
 import service
 
 
+
 app = FastAPI()
+router = APIRouter()
 
 origins = [
     "http://localhost:3000",
@@ -17,6 +26,122 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+c = consul.Consul(host = "consul")
+c.agent.service.register(name='api-gateway',
+                         service_id='api-gateway',
+                         address='api-gateway',
+                         port=8084)
+
+class ServiceGetter():
+    def _get_services(self, service_name):
+        list_services = []
+        services = c.health.service(service_name)[1]
+        for service in services:
+            adder = {}
+            adder['Address'] = service['Service']['Address']
+            adder['Port'] = service['Service']['Port']
+            list_services.append(adder)
+        print(list_services)
+        return list_services
+    def get_service_hostport(self, service_name):
+        raise NotImplemented
+
+class FirstServiceGetter(ServiceGetter):
+    def __init__(self):
+        super().__init__()
+
+    @override
+    def get_service_hostport(self, service_name):
+        service = self._get_services(service_name)[0]
+        service_hostport = f"{service['Address']}:{service['Port']}"
+        return service_hostport
+
+service_getter = FirstServiceGetter()
+
+@cbv(router)
+class FriendService():
+    name = 'friendzone'
+
+    @router.get("/get-following/")
+    async def get_following(self, username:str, response: Response):
+        hostport = service_getter.get_service_hostport(self.name)
+        url = f'http://{hostport}/get-following/?user={username}'
+        async with httpx.AsyncClient() as client:
+            redirect_response = await client.get(url)
+            message = redirect_response.json()
+            code = redirect_response.status_code
+            response.status_code = code
+            return message
+
+    @router.get("/get-followers/")
+    async def get_followers(self, username:str, response: Response):
+        hostport = service_getter.get_service_hostport(self.name)
+        url = f'http://{hostport}/get-followers/?username={username}'
+        async with httpx.AsyncClient() as client:
+            redirect_response = await client.get(url)
+            message = redirect_response.json()
+            code = redirect_response.status_code
+            response.status_code = code
+            return message
+
+    @router.get("/get-friends/")
+    async def get_followers(self, username:str, response: Response):
+        hostport = service_getter.get_service_hostport(self.name)
+        url = f'http://{hostport}/get-friends/?username={username}'
+        async with httpx.AsyncClient() as client:
+            redirect_response = await client.get(url)
+            message = redirect_response.json()
+            code = redirect_response.status_code
+            response.status_code = code
+            return message
+
+    @router.post("/add-friend/")
+    async def add_friend(self, username_follows:str, username:str, response: Response):
+        hostport = service_getter.get_service_hostport(self.name)
+        url = f'http://{hostport}/add-friend/?username_follows={username_follows}&username={username}'
+        async with httpx.AsyncClient() as client:
+            redirect_response = await client.post(url)
+            message = redirect_response.json()
+            code = redirect_response.status_code
+            response.status_code = code
+            return message
+
+    @router.post("/remove-friend/")
+    async def remove_friend(self, username_follows:str, username:str, response: Response):
+        hostport = service_getter.get_service_hostport(self.name)
+        url = f'http://{hostport}/remove-friend/?username_follows={username_follows}&username={username}'
+        async with httpx.AsyncClient() as client:
+            redirect_response = await client.post(url)
+            message = redirect_response.json()
+            code = redirect_response.status_code
+            response.status_code = code
+            return message
+
+@app.post("/register")
+async def register(user: str, passw: str, mail: str, response: Response):
+    result = await  service.register(user, passw, mail)
+    response.status_code = result["status"]
+    return result["message"]
+
+# @app.get("/friends")
+# async def friends(username: str, response: Response):
+#     result = service.friends(username)
+#     response.status_code = result["status"]
+#     return result["message"]
+# @app.post("/add-friend")
+# async def add_friend(friend1: str, friend2: str, response: Response):
+#     result = service.add_friend(friend1, friend2)
+#     response.status_code = result["status"]
+#     return result["message"]
+
+
+# @app.post("/remove-friend")
+# async def remove_friend(friend1: str, friend2: str, response: Response):
+#     result = service.remove_friend(friend1, friend2)
+#     response.status_code = result["status"]
+#     return result["message"]
+
 
 @app.get("/")
 async def root():
@@ -42,11 +167,7 @@ async def new_post(content: Request, response: Response):
     return result["message"]
 
 
-@app.delete("/logout")
-async def logout(token: str, response: Response):
-    result = service.logout(token)
-    response.status_code = result["status"]
-    return result["message"]
+
 
 
 @app.get("/show-user")
@@ -55,31 +176,14 @@ async def show_user(username: str, response: Response):
     response.status_code = result["status"]
     return result["message"]
 
-@app.post("/register")
-async def register(user: str, passw: str, mail: str, response: Response):
-    result = service.register(user, passw, mail)
+@app.delete("/logout")
+async def logout(token: str, response: Response):
+    result = await service.logout(token)
     response.status_code = result["status"]
     return result["message"]
 
 
-@app.post("/add-friend")
-async def add_friend(friend1: str, friend2: str, response: Response):
-    result = service.add_friend(friend1, friend2)
-    response.status_code = result["status"]
-    return result["message"]
 
-
-@app.post("/remove-friend")
-async def remove_friend(friend1: str, friend2: str, response: Response):
-    result = service.remove_friend(friend1, friend2)
-    response.status_code = result["status"]
-    return result["message"]
-
-@app.get("/friends")
-async def friends(username: str, response: Response):
-    result = service.friends(username)
-    response.status_code = result["status"]
-    return result["message"]
 
 
 @app.post("/like-post")
@@ -120,3 +224,4 @@ async def modify_music(user: str, music: str, response: Response):
     response.status_code = result["status"]
     return result["message"]
 
+app.include_router(router)

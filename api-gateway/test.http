@@ -44,10 +44,10 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8084/friends/?username=root
+GET http://localhost:8084/get-friends/?username=root
 
 ###
-POST http://localhost:8084/add-friend/?friend1=root1&friend2=root
+POST http://localhost:8084/add-friend/?username_follows=root1&username=root
 
 ###
-POST http://localhost:8084/remove-friend/?friend1=root1&friend2=root
+POST http://localhost:8084/remove-friend/?username_follows=root1&username=root

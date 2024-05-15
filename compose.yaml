@@ -21,10 +21,10 @@ services:
       - "8500:8500"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
-      retries: 10
-      start_period: 5s
-      timeout: 5s
-  
+      start_period: 30s
+      start_interval: 1s
+      timeout: 1s
+
   likes:
     build: ./like-service/
     depends_on:
@@ -66,7 +66,7 @@ services:
         condition: service_healthy
     ports:
       - "8083:8083"
-  api_gateway:
+  api-gateway:
     build: ./api-gateway/
     depends_on:
       consul:

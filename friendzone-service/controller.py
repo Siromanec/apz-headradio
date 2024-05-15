@@ -30,26 +30,44 @@ async def lifespan(app):
 
 app = FastAPI(lifespan=lifespan)
 
-@app.get("/get-friends/")
-async def get_friends(user: str, response: Response):
-    friends = service.get_friends(user)
+
+@app.get("/get-following/")
+def get_following(username: str, response: Response):
+    friends = service.get_following(username)
     response.status_code = status.HTTP_200_OK
-    print(f"friends-service: friends of {user} - {friends}")
-    message_queue.put(f"friends-service: friends of {user} - {friends}")
+    print(f"friends-service: followings of {username} - {friends}")
+    message_queue.put(f"friends-service: followings of {username} - {friends}")
+    return {"following": friends}
+
+@app.get("/get-followers/")
+def get_followers(username: str, response: Response):
+    friends = service.get_followers(username)
+    response.status_code = status.HTTP_200_OK
+    print(f"friends-service: followers of {username} - {friends}")
+    message_queue.put(f"friends-service: followers of {username} - {friends}")
+    return {"followers": friends}
+
+
+@app.get("/get-friends/")
+def get_friends(username: str, response: Response):
+    friends = service.get_friends(username)
+    response.status_code = status.HTTP_200_OK
+    log = f"friends-service: mutual friends of {username} - {friends}"
+    print(log)
+    message_queue.put(log)
     return {"friends": friends}
 
-
 @app.post("/add-friend/")
-async def add_friend(user1: str, user2: str, response: Response):
-    service.add_friend(user1, user2)
+async def add_friend(username_follows: str, username: str, response: Response):
+    service.add_friend(username_follows, username)
     response.status_code = status.HTTP_200_OK
-    print(f"friends-service: {user1} and {user2} are now friends.")
-    message_queue.put(f"friends-service: {user1} and {user2} are now friends.")
+    print(f"friends-service: {username_follows} and {username} are now friends.")
+    message_queue.put(f"friends-service: {username_follows} and {username} are now friends.")
 
 
 @app.post("/remove-friend/")
-async def remove_friend(user1: str, user2: str, response: Response):
-    service.remove_friend(user1, user2)
+async def remove_friend(username_follows: str, username: str, response: Response):
+    service.remove_friend(username_follows, username)
     response.status_code = status.HTTP_200_OK
-    print(f"friends-service: {user1} and {user2} are no longer friends.")
-    message_queue.put(f"friends-service: {user1} and {user2} are no longer friends.")
+    print(f"friends-service: {username_follows} and {username} are no longer friends.")
+    message_queue.put(f"friends-service: {username_follows} and {username} are no longer friends.")

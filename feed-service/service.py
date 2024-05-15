@@ -19,13 +19,10 @@ def get_services(service_name):
 def get_all_friends(username):
     friend = get_services('friendzone')[0]
     address, port = friend['Address'], friend['Port']
-    url = f'http://{address}:{port}/get-friends/?user={username}'
+    url = f'http://{address}:{port}/get-friends/?username={username}'
     response = requests.get(url).json()
     print("friends of user")
-    response = response['friends']
-    friends = []
-    for friend in response:
-        friends.append(friend['username_follows'])
+    friends = response['friends']
     print(friends)
     return friends
 
@@ -54,7 +51,7 @@ def feed(user):
         posts.extend(get_friend_posts(friend)["posts"])
     print(posts)
     posts.sort(key=lambda x: x['time'], reverse=True)
-    num = len(posts) if len(posts) < 50  else 50
+    num = min(len(posts), 50)
     for post in posts:
         post['profile_picture'] = get_friends_pfp(post['username'])['get_pfp']
     return posts[:num]
