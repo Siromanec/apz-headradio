@@ -113,7 +113,7 @@ export default function Register({ setToken, setSavedUserName }) {
             </p>
           </div>
           <button className="exitButton" onClick={exitClick}>
-            <img src={crossButton} />
+            <img src={crossButton}  alt={"exit"}/>
           </button>
         </div>
       </div>
@@ -133,8 +133,8 @@ export default function Register({ setToken, setSavedUserName }) {
             <input
               type="password"
               onChange={(e) => setPassword(e.target.value)}
-              minlength="8"
-              maxlength="64"
+              minLength="8"
+              maxLength="64"
             />
           </label>
           <label>
@@ -142,8 +142,8 @@ export default function Register({ setToken, setSavedUserName }) {
             <input
               type="password"
               onChange={(e) => setPasswordAgain(e.target.value)}
-              minlength="8"
-              maxlength="64"
+              minLength="8"
+              maxLength="64"
             />
           </label>
           {badPassword && badPasswordElement}

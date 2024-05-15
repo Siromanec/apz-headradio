@@ -12,7 +12,7 @@ import hazelcast
 message_queue = None
 
 @asynccontextmanager
-async def lifespan(app):
+async def lifespan(app: FastAPI):
     repository.start_session()
     c = consul.Consul(host="consul")
     c.agent.service.register(name='auth',
