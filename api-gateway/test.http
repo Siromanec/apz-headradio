@@ -1,11 +1,12 @@
-POST http://localhost:8084/login/?user=root&passw=root
+POST http://localhost:8084/login/?user=root&password=root
 
 ###
-
-POST http://localhost:8084/register/?user=root&passw=root&mail=sraka@dupa
+POST http://localhost:8084/register/?user=root&password=root&email=sraka@dupa
 
 ###
+POST http://localhost:8084/register/?user=root2&password=root&email=sraka@dupa
 
+###
 POST http://localhost:8084/like-post/?username=root&post_id=1
 
 ###
@@ -14,16 +15,16 @@ DELETE http://localhost:8084/like-post/?username=root&post_id=1
 
 ###
 
-GET http://localhost:8084/show-likes/?post_id=1
+GET http://localhost:8084/get-likes/?post_id=1
 
 ###
 GET http://localhost:8084/has-liked/?username=root&post_id=1
 
 ###
-GET http://localhost:8084/main-page/?username=root
+GET http://localhost:8084/feed/?username=root1
 
 ###
-POST http://localhost:8084/modify-profile-photo
+POST http://localhost:8084/set-profile-photo
 Content-Type: application/json
 
 {
@@ -32,7 +33,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8084/show-user/?username=root
+GET http://localhost:8084/show-profile/?username=root
 
 ###
 POST http://localhost:8084/new-post/
@@ -43,11 +44,16 @@ Content-Type: application/json
     "article": "a"
 }
 
+
+
 ###
-GET http://localhost:8084/get-friends/?username=root
+GET http://localhost:8084/get-friends/?username=root1
 
 ###
 POST http://localhost:8084/add-friend/?username_follows=root1&username=root
+
+###
+POST http://localhost:8084/add-friend/?username_follows=root&username=root1
 
 ###
 POST http://localhost:8084/remove-friend/?username_follows=root1&username=root

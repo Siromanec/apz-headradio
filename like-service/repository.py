@@ -2,7 +2,7 @@ from sqlalchemy import String, select, insert, delete, exists, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 import sqlalchemy
 from sqlalchemy import exc
-
+import sys
 
 class Base(DeclarativeBase):
     ...
@@ -55,7 +55,6 @@ def add_like(user: str, post: int):
         session.commit()
     except exc.IntegrityError as e:
         session.rollback()
-        import sys
         print(e, file=sys.stderr)
 
 

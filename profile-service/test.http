@@ -1,25 +1,28 @@
 ###
-POST http://localhost:8081/create-profile?user=admin3
+POST http://localhost:8081/create-profile/?user=admin3
 
 ###
-POST http://localhost:8081/create-profile?user=user1
+POST http://localhost:8081/create-profile/?user=user1
 
 ###
-POST http://localhost:8081/set-music/?user=admin2&song_name=chachacha
+POST http://localhost:8081/set-music/?user=admin3&song_name=chachacha
 
 ###
-GET http://localhost:8081/get-pfp?user=admin3
+GET http://localhost:8081/get-pfp/?user=user1
 
 ###
-GET http://localhost:8081/get-user-data?user=admin2
+GET http://localhost:8081/get-user-data/?user=admin3
 
 ###
-POST http://localhost:8081/modify-profile-photo
+GET http://localhost:8081/get-user-data/?user=user1
+
+###
+POST http://localhost:8081/set-profile-photo
 Content-Type: application/json
 
 {
     "username": "admin3",
-    "image": "image"
+    "image": "imasdfdgge"
 }
 
 

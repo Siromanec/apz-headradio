@@ -55,7 +55,7 @@ async def new_post(request: Request, response: Response):
     message_queue.put(f"post-service: User {item['username']} added a new post.")
 
 
-@app.post("/delete-post/")
+@app.delete("/delete-post/")
 async def delete_post(post: int, response: Response):
     service.delete_post(post)
     response.status_code = status.HTTP_200_OK

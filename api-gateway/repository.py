@@ -3,7 +3,7 @@ import hazelcast
 client = hazelcast.HazelcastClient(cluster_name="dev", cluster_members=["hazelcast"])
 session_tokens_map = client.get_map("session-tokens-map").blocking()
 
-def add_token(username: str, active_token: int):
+def add_token(username: str, active_token: str):
     global session_tokens_map
     session_tokens_map.put(username, active_token)
 

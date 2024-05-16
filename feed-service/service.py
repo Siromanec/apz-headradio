@@ -53,5 +53,5 @@ def feed(user):
     posts.sort(key=lambda x: x['time'], reverse=True)
     num = min(len(posts), 50)
     for post in posts:
-        post['profile_picture'] = get_friends_pfp(post['username'])['get_pfp']
+        post['profile_picture'] = get_friends_pfp(post['username'])['profile_picture']
     return posts[:num]

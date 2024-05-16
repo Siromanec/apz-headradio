@@ -48,7 +48,7 @@ async def add_like(user: str, post: int, response: Response):
     message_queue.put(f"like-service: User {user} liked post {post}.")
 
 
-@app.post("/remove-like/")
+@app.delete("/remove-like/")
 async def remove_like(user: str, post: int, response: Response):
     service.remove_like(user, post)
     response.status_code = status.HTTP_200_OK
