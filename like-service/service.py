@@ -8,4 +8,4 @@ def has_liked(user, post):
 def remove_like(user, post):
     repository.remove_like(user, post)
 def get_likes(post):
-    return [like[0] for like in repository.get_likes(post)]
+    return [like[0].username for like in repository.get_likes(post)]

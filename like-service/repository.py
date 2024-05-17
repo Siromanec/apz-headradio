@@ -1,4 +1,6 @@
-from sqlalchemy import String, select, insert, delete, exists, Text
+from typing import Tuple, Sequence, Any
+
+from sqlalchemy import String, select, insert, delete, exists, Text, Row
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 import sqlalchemy
 from sqlalchemy import exc
@@ -48,7 +50,7 @@ def has_liked(user: str, post: int) -> int:
 
 
 # TODO: forward some error response
-def add_like(user: str, post: int):
+def add_like(user: str, post: str):
     like = Likes(username=user, post_id=post)
     try:
         session.add(like)
@@ -58,13 +60,13 @@ def add_like(user: str, post: int):
         print(e, file=sys.stderr)
 
 
-def remove_like(user: str, post: int):
+def remove_like(user: str, post: str):
     session.execute(delete(Likes).where(Likes.post_id == post).where(Likes.username == user))
     session.commit()
 
 
-def get_likes(post: int) -> list:
-    return [*session.execute(select(Likes).where(Likes.post_id == post))]
+def get_likes(post: str) -> Sequence[Row[tuple[Any, ...] | Any]]:
+    return session.execute(select(Likes).where(Likes.post_id == post)).all()
 
 
 def __test_db():

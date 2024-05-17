@@ -71,8 +71,12 @@ async def get_user_data(user: str, response: Response):
     return user_data
 
 @app.post("/set-profile-photo/")
-async def modify_profile_photo(request: Request, response: Response):
-    item = await request.json()
+async def set_profile_photo(request: Request, response: Response):
+    try:
+        item = await request.json()
+    except Exception as e:
+        print(e)
+        response.status_code = status.HTTP_400_BAD_REQUEST
     username = item["username"]
     try:
         service.modify_profile_photo(username, item["image"])

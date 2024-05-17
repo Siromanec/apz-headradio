@@ -18,8 +18,8 @@ class Friends(Base):
 
 db_url = sqlalchemy.engine.URL.create(
     drivername="postgresql+psycopg2",
-    database="friendzone_db",
-    host="friendzone_db",  # TODO dynamic host
+    database="friend_db",
+    host="friend_db",  # TODO dynamic host
     username="root",
     password="root_pass",
     port="5432")

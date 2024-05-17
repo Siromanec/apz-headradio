@@ -17,7 +17,7 @@ router = APIRouter()
 
 @cbv(router)
 class FriendService():
-    name = 'friendzone'
+    name = 'friend'
     @router.get("/get-following/")
     async def get_following(self, username:str, response: Response):
         hostport = service_getter.get_service_hostport(self.name)

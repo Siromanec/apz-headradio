@@ -16,9 +16,9 @@ message_queue = None
 async def lifespan(app):
     repository.start_session()
     c = consul.Consul(host="consul")
-    c.agent.service.register(name='friendzone',
-                            service_id='friendzone',
-                            address='friendzone',
+    c.agent.service.register(name='friend',
+                            service_id='friend',
+                            address='friend',
                             port=8083)
     client = hazelcast.HazelcastClient(cluster_name="dev", cluster_members=["hazelcast"])
 

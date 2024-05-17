@@ -10,7 +10,6 @@ import hazelcast
 import consul
 
 
-id = 0
 
 
 message_queue = None
@@ -34,29 +33,34 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/get-user-posts/")
 async def get_user_posts(user: str, response: Response):
+
     posts = service.get_user_posts(user)
     response.status_code = status.HTTP_200_OK
     print(f"post-service: posts of {user} - {posts}")
     message_queue.put(f"post-service: posts of {user} - {posts}")
-    posts = list(map(lambda x: {"username": x["username"], "post_id": x["post_id"], "article": x["article"], "time": x["time"]}, posts))
+
+    posts = list(map(lambda x: {"username": x["username"], "post_id": str(x["_id"]), "article": x["article"], "time": x["time"]}, posts))
     return {"posts": posts}
 
 
 @app.post("/new-post/")
 async def new_post(request: Request, response: Response):
-    item = await request.json()
-    global id
-    id +=1 # todo have the db handle the ids (on service shutdown the last id is forgotten)
-    items = {"idpost": id, "user": item["username"], "article": item["article"],  "added": datetime.now(
-    ), "modified": datetime.now()}
-    service.new_post(items)
-    response.status_code = status.HTTP_200_OK
-    print(f"post-service: User {item['username']} added a new post.")
-    message_queue.put(f"post-service: User {item['username']} added a new post.")
+    try:
+        item = await request.json()
+    except Exception as e:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return
+    try:
+        service.new_post(item["username"], item["article"], datetime.now())
+        response.status_code = status.HTTP_200_OK
+        print(f"post-service: User {item['username']} added a new post.")
+        message_queue.put(f"post-service: User {item['username']} added a new post.")
+    except KeyError:
+        response.status_code = status.HTTP_400_BAD_REQUEST
 
 
 @app.delete("/delete-post/")
-async def delete_post(post: int, response: Response):
+async def delete_post(post: str, response: Response):
     service.delete_post(post)
     response.status_code = status.HTTP_200_OK
     print(f"post-service: Post {post} deleted.")

@@ -57,10 +57,10 @@ services:
         condition: service_healthy
     ports:
       - "8082:8082"
-  friendzone:
-    build: ./friendzone-service/
+  friend:
+    build: friend-service/
     depends_on:
-      friendzone_db:
+      friend_db:
         condition: service_started
       consul:
         condition: service_healthy
@@ -138,15 +138,15 @@ services:
       - ./auth-service/postgres-db-init:/docker-entrypoint-initdb.d
     ports:
       - "5434:5432"
-  friendzone_db:
+  friend_db:
     image: postgres:latest
     pull_policy: missing
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root_pass
-      POSTGRES_DB: friendzone_db
+      POSTGRES_DB: friend_db
     volumes:
-      - ./friendzone-service/postgres-db-init:/docker-entrypoint-initdb.d
+      - ./friend-service/postgres-db-init:/docker-entrypoint-initdb.d
     ports:
       - "5435:5432"
 

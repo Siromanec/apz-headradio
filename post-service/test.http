@@ -44,10 +44,10 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/get-user-posts?user=admin2
+GET http://localhost:8080/get-user-posts/?user=admin2
 
 ###
-GET http://localhost:8080/get-user-posts?user=admin
+GET http://localhost:8080/get-user-posts/?user=admin
 
 ###
-GET http://localhost:8080/get-user-posts?user=user1
+GET http://localhost:8080/get-user-posts/?user=user1

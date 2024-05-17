@@ -32,7 +32,7 @@ async def lifespan(app):
 app = FastAPI(lifespan=lifespan)
 
 @app.get("/has-liked/")
-async def has_liked(user: str, post: int, response: Response):
+async def has_liked(user: str, post: str, response: Response):
     liked = service.has_liked(user, post)
     response.status_code = status.HTTP_200_OK
     print(f"like-service: User {user} has liked post {post}: {liked}")
@@ -41,7 +41,7 @@ async def has_liked(user: str, post: int, response: Response):
 
 
 @app.post("/add-like/")
-async def add_like(user: str, post: int, response: Response):
+async def add_like(user: str, post: str, response: Response):
     service.add_like(user, post)
     response.status_code = status.HTTP_200_OK
     print(f"like-service: User {user} liked post {post}.")
@@ -49,7 +49,7 @@ async def add_like(user: str, post: int, response: Response):
 
 
 @app.delete("/remove-like/")
-async def remove_like(user: str, post: int, response: Response):
+async def remove_like(user: str, post: str, response: Response):
     service.remove_like(user, post)
     response.status_code = status.HTTP_200_OK
     print(f"like-service: User {user} unliked post {post}.")
@@ -57,9 +57,18 @@ async def remove_like(user: str, post: int, response: Response):
 
 
 @app.get("/get-likes/")
-async def get_likes(post: int, response: Response):
+async def get_likes(post: str, response: Response):
     likes = service.get_likes(post)
     response.status_code = status.HTTP_200_OK
     print(f"like-service: Post {post} has {likes} likes.")
     message_queue.put(f"like-service: Post {post} has {likes} likes.")
     return {"likes": likes}
+
+@app.get("/get-like-count/")
+async def get_nlikes(post: str, response: Response):
+    likes = service.get_likes(post)
+    response.status_code = status.HTTP_200_OK
+    log = f"like-service: Post {post} has {len(likes)} likes."
+    print(log)
+    message_queue.put(log)
+    return {"like_count": len(likes)}

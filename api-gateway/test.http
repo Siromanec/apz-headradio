@@ -1,7 +1,7 @@
 POST http://localhost:8084/login/?user=root&password=root
 
 ###
-POST http://localhost:8084/register/?user=root&password=root&email=sraka@dupa
+POST http://localhost:8084/register/?user=admin3&password=admin3&email=sraka@dupa
 
 ###
 POST http://localhost:8084/register/?user=root2&password=root&email=sraka@dupa
@@ -21,14 +21,14 @@ GET http://localhost:8084/get-likes/?post_id=1
 GET http://localhost:8084/has-liked/?username=root&post_id=1
 
 ###
-GET http://localhost:8084/feed/?username=root1
+GET http://localhost:8084/feed/?username=user
 
 ###
 POST http://localhost:8084/set-profile-photo
 Content-Type: application/json
 
 {
-    "username": "root",
+    "username": "user",
     "image": "a"
 }
 
@@ -40,7 +40,7 @@ POST http://localhost:8084/new-post/
 Content-Type: application/json
 
 {
-    "username": "root",
+    "username": "user",
     "article": "a"
 }
 

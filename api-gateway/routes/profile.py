@@ -33,7 +33,7 @@ class ProfileService():
         hostport = service_getter.get_service_hostport(self.name)
         url = f'http://{hostport}/set-profile-photo/'
         async with httpx.AsyncClient() as client:
-            redirect_response = await client.post(url, data=request)
+            redirect_response = await client.post(url, content=await request.body())
             message = redirect_response.json()
             code = redirect_response.status_code
             response.status_code = code
