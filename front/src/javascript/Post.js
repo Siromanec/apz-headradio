@@ -1,7 +1,8 @@
+import React, { useState } from "react";
+
 import FriendSongElement from "./FriendSongElement.js";
 import PostBase from "./PostBase.js";
 import DefaultPic from "../data/blank-profile-picture.svg"
-import React, { useState } from "react";
 import ProfilePicture from "../data/profile.jpg";
 import PostHeader from "./PostHeader.js";
 import "../css/Post.css";

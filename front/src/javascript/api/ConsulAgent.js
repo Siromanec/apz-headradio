@@ -1,10 +1,10 @@
-const Consul = require("consul")
-
+// const Consul = require("consul");
+import {Consul} from "consul";
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-class ConsulAgent{
+export default class ConsulAgent{
     constructor(){
         this.consul = new Consul({host: "gateway-consul"})
     }
@@ -24,5 +24,3 @@ class ConsulAgent{
 
     }
 }
-
-module.exports = ConsulAgent

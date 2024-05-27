@@ -1,8 +1,8 @@
-const Consul = require("./ConsulAgent")
+import ConsulAgent from "./ConsulAgent";
 
 export default class UrlResolver {
     constructor() {
-        this.consulAgent = new Consul()
+        this.consulAgent = new ConsulAgent()
     }
 
     async resolve() {

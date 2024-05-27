@@ -2,19 +2,19 @@ import DefaultProfile from "../data/blank-profile-picture.svg";
 import spotifyIcon from "../data/spotify_icon.svg";
 import PhotoChange from "./PhotoChange";
 import React, { useState, useEffect } from "react";
+import { Await, useLoaderData, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditorWrapper from "./Editor.js";
 import PostHeader from "./PostHeader.js";
 import Calendar from "react-calendar";
 import "../css/Profile.css";
 import "../css/Calendar.css";
-import { Await, useLoaderData, useParams } from "react-router-dom";
 import Post from "./Post.js";
 import ChangeSong from "./ChangeSong";
 import AddFriend from "./AddFriend";
 import crossButton from "../data/cross.svg";
-import { Link, useNavigate } from "react-router-dom";
-import UrlResolver from "./api/UrlResolver";
 import {spotifyClientID, spotifyClientSecret} from "./api/APIKeys";
+import UrlResolver from "./api/UrlResolver";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
 
 

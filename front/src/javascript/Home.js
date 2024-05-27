@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { Await, useLoaderData, useParams } from "react-router-dom";
+
 import Post from "./Post.js";
 
 import TripleFriendSong from "./TripleFriendSong.js";
-import { Await, useLoaderData, useParams } from "react-router-dom";
+
 
 function Posts({ posts, postOrder, avatars }) {
   const listItems = posts

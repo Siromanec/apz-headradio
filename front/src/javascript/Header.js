@@ -1,11 +1,9 @@
-import logo from "../data/logo.svg";
-import settingsIcon from "../data/cogwheel.svg";
+
 import "../css/Header.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import SearchInputImg from "../data/search_button.svg";
 import SignOutImg from "../data/sign_out.svg";
-import userEvent from "@testing-library/user-event";
 
 import UrlResolver from "./api/UrlResolver.js";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
