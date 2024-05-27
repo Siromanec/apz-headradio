@@ -1,42 +1,43 @@
 export default class UrlResolver {
-  constructor() {
-    this.baseUrl = "localhost";
-    this.port = 8084;
-    this.base = `http://${this.baseUrl}:${this.port}`;
-  }
-  getMainPageUrl(username) {    
-    return `${this.base}/main-page/?username=${username}`;
-  }
+    constructor() {
+        this.baseUrl = "localhost";
+        this.port = 8084;
+        this.base = `http://${this.baseUrl}:${this.port}`;
+    }
 
-  getShowUserUrl(username) {
-    return `${this.base}/show-user/?username=${username}`;
-  }
+    getMainPageUrl(username, token) {
+        return `${this.base}/feed/?username=${username}&token=${token}`;
+    }
 
-  getRegisterUserUrl(user, pass, mail) {
-    return `${this.base}/register/?user=${user}&passw=${pass}&mail=${mail}`;
-  }
+    getShowUserUrl(username, token) {
+        return `${this.base}/show-profile/?username=${username}&token=${token}`;
+    }
 
-  getModifyProfilePhotoUrl() {
-    return `${this.base}/modify-profile-photo`;
-  }
+    getRegisterUserUrl(user, pass, mail) {
+        return `${this.base}/register/?user=${user}&password=${pass}&email=${mail}`;
+    }
 
-  getLikePostUrl(username, post_id) {
-    return `${this.base}/like-post/?username=${username}&post_id=${post_id}`;
-  }
+    getSetProfilePhotoUrl(token) {
+        return `${this.base}/set-profile-photo/?token=${token}`;
+    }
 
-  getIfLikedPostUrl(username, id) {
-    return `${this.base}/has-liked/?username=${username}&post_id=${id}`;
-  }
+    getLikePostUrl(username, post_id, token) {
+        return `${this.base}/like-post/?username=${username}&post_id=${post_id}&token=${token}`;
+    }
 
-  getLoginUrl(user, pass) {
-    return `${this.base}/login/?user=${user}&passw=${pass}`;
-  }
+    getIsLikedPostUrl(username, id, token) {
+        return `${this.base}/has-liked/?username=${username}&post_id=${id}&token=${token}`;
+    }
 
-  getNewPostUrl() {
-    return `${this.base}/new-post`;
-  }
+    getLoginUrl(user, pass) {
+        return `${this.base}/login/?user=${user}&password=${pass}`;
+    }
 
-  getModifyMusicUrl(user, music) {
-    return `${this.base}/modify-music/?user=${user}&music=${music}`;
-  }
+    getNewPostUrl(token) {
+        return `${this.base}/new-post/?token=${token}`;
+    }
+
+    getModifyMusicUrl(user, music) {
+        return `${this.base}/modify-music/?user=${user}&music=${music}&token=${token}`;
+    }
 }

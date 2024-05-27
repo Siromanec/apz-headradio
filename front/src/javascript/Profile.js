@@ -15,6 +15,7 @@ import crossButton from "../data/cross.svg";
 import { Link, useNavigate } from "react-router-dom";
 import UrlResolver from "./UrlResolver";
 import {spotifyClientID, spotifyClientSecret} from "./APIKeys";
+import RequestBodyBuilder from "./RequestBodyBuilder";
 
 
 const urlResolver = new UrlResolver();
@@ -127,13 +128,8 @@ export default function Profile() {
       picture: file,
     };
     // return await fetch("http://localhost:8000/modify-profile-photo", {
-      return await fetch(urlResolver.getModifyProfilePhotoUrl(), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+      return await fetch(urlResolver.getSetProfilePhotoUrl(),
+          RequestBodyBuilder.getSetProfilePhotoRequestBody(sessionStorage.getItem("token"), body));
   };
 
   const [popUpFriendsCLass, setPopUpFriendsClass] = useState("popup-change");

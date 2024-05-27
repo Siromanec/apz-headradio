@@ -16,11 +16,11 @@ services:
       - MC_DEFAULT_CLUSTER_MEMBERS=hazelcast
 
   consul:
-    image: consul:1.15.4 # Consul does not have latest tag :-(
+    build: ./consul
     ports:
       - "8500:8500"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/kv/hazelcast/map-name"]
       start_period: 30s
       start_interval: 1s
       timeout: 1s

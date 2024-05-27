@@ -8,6 +8,7 @@ import SignOutImg from "../data/sign_out.svg";
 import userEvent from "@testing-library/user-event";
 
 import UrlResolver from "./UrlResolver.js";
+import RequestBodyBuilder from "./RequestBodyBuilder";
 const urlResolver = new UrlResolver();
 
 function SearchInput() {
@@ -17,11 +18,12 @@ function SearchInput() {
   const navigate = useNavigate()
   const searchHandler = async ()=>{
     // const data = await (fetch(`http://localhost:8000/show-user/${text}`)).then(data => data.json()).then(data => data).catch(e =>console.log(e));
-    const data = await (fetch(urlResolver.getShowUserUrl(text))).then(data => data.json()).then(data => data).catch(e =>console.log(e));
+    const data = await (fetch(urlResolver.getShowUserUrl(text, sessionStorage.getItem("token")),
+                              RequestBodyBuilder.getShowUserRequestBody())).then(data => data.json()).then(data => data).catch(e =>console.log(e));
     if (Object.keys(data).length!==0){
       setExists(true);
       navigate("/profile/"+text);
-      setMessage(null)
+      setMessage(null);
       return;
     }
     else{

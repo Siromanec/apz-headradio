@@ -7,6 +7,7 @@ import React, {useState} from "react";
 
 import {spotifyClientID, spotifyClientSecret} from "./APIKeys";
 import UrlResolver from "./UrlResolver";
+import RequestBodyBuilder from "./RequestBodyBuilder";
 
 
 const urlResolver = new UrlResolver();
@@ -16,9 +17,8 @@ const urlResolver = new UrlResolver();
  * @param {String} songData.songName
  * */
 async function saveSong(songData) {
-    return fetch(urlResolver.getModifyMusicUrl(songData.profile, songData.songName), {
-        method: "POST",
-    }).then((data) => data.json());
+    return fetch(urlResolver.getModifyMusicUrl(songData.profile, songData.songName, sessionStorage.getItem("token")),
+                 RequestBodyBuilder.getModifyMusicRequestBody()).then((data) => data.json());
 }
 
 

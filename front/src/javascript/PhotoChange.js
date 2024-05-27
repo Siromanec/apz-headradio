@@ -1,5 +1,6 @@
 import React from "react";
 import UrlResolver from "./UrlResolver.js";
+import RequestBodyBuilder from "./RequestBodyBuilder";
 
 const urlResolver = new UrlResolver();
 const toBase64 = (file) =>
@@ -21,15 +22,8 @@ const submitHandler = async (event, setPhoto) => {
   };
 
   const response = await fetch(
-    // "http://localhost:8000/modify-profile-photo",
-    urlResolver.getModifyProfilePhotoUrl(),
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    }
+    urlResolver.getSetProfilePhotoUrl(sessionStorage.getItem("token")),
+    RequestBodyBuilder.getSetProfilePhotoRequestBody(body)
   );
 };
 

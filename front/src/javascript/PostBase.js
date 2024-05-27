@@ -1,11 +1,11 @@
 import "../css/PostBase.css";
-import openFullIcon from "../data/three-dots.svg";
 import likeIconEmpty from "../data/emptyHeart.svg";
 import likeIconFull from "../data/redHeart.svg";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import parse from "html-react-parser";
 
 import UrlResolver from "./UrlResolver";
+import RequestBodyBuilder from "./RequestBodyBuilder";
 
 const urlResolver = new UrlResolver();
 
@@ -21,7 +21,8 @@ export default function PostBase({
     const [nLikes, setNLikes] = useState(nlikes ? nlikes : 0);
     const hasLikedHandler = async (data) => {
         // const like = fetch("http://localhost:8000/has-liked", {
-        const liked = await fetch(urlResolver.getIfLikedPostUrl(username, id))
+        const liked = await fetch(urlResolver.getIsLikedPostUrl(username, id, sessionStorage.getItem("token")),
+            RequestBodyBuilder.getIsLikedPostRequestBody())
             .then((data) => data.json())
             .catch((data) => data.json());
 
@@ -40,10 +41,9 @@ export default function PostBase({
      * @param value.idpost
      * */
     const setLikeHandler = async (value) => {
-        const data = fetch(urlResolver.getLikePostUrl(value.author, value.idpost), {
-            method: "POST",
-        });
-        return data;
+        return fetch(urlResolver.getLikePostUrl(value.author, value.idpost, sessionStorage.getItem("token")),
+            RequestBodyBuilder.getLikePostRequestBody()
+        );
     }
 
     useEffect(() => {

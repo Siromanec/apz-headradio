@@ -2,6 +2,7 @@ import "../css/Register.css";
 import crossButton from "../data/cross.svg";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import RequestBodyBuilder from "./RequestBodyBuilder";
 import {
   Link,
   useLocation,
@@ -19,9 +20,10 @@ const urlResolver = new UrlResolver();
  * @param credentials.email
  * */
 async function signupUser(credentials) {
-  return fetch(urlResolver.getRegisterUserUrl(credentials.username, credentials.password, credentials.email), {
-    method: "POST",
-  });
+  return fetch(
+      urlResolver.getRegisterUserUrl(credentials.username, credentials.password, credentials.email),
+      RequestBodyBuilder.getRegisterUserRequestBody()
+  );
 }
 
 
