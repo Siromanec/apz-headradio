@@ -34,7 +34,7 @@ app = FastAPI(lifespan=lifespan)
 @app.get("/get-user-posts/")
 async def get_user_posts(user: str, response: Response):
 
-    posts = service.get_user_posts(user)
+    posts = await service.get_user_posts(user)
     response.status_code = status.HTTP_200_OK
     print(f"post-service: posts of {user} - {posts}")
     message_queue.put(f"post-service: posts of {user} - {posts}")
@@ -51,7 +51,7 @@ async def new_post(request: Request, response: Response):
         response.status_code = status.HTTP_400_BAD_REQUEST
         return
     try:
-        service.new_post(item["username"], item["article"], datetime.now())
+        await service.new_post(item["username"], item["article"], datetime.now())
         response.status_code = status.HTTP_200_OK
         print(f"post-service: User {item['username']} added a new post.")
         message_queue.put(f"post-service: User {item['username']} added a new post.")
@@ -61,7 +61,7 @@ async def new_post(request: Request, response: Response):
 
 @app.delete("/delete-post/")
 async def delete_post(post: str, response: Response):
-    service.delete_post(post)
+    await service.delete_post(post)
     response.status_code = status.HTTP_200_OK
     print(f"post-service: Post {post} deleted.")
     message_queue.put(f"post-service: Post {post} deleted.")

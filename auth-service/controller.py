@@ -21,6 +21,8 @@ async def lifespan(app: FastAPI):
                              address='auth',
                              port=8082)
 
+    # cluster_name = (c.kv.get("hazelcast/cluster-name")[1]["Value"]).decode()
+    # client = hazelcast.HazelcastClient(cluster_name=cluster_name, cluster_members=["hazelcast"])
     client = hazelcast.HazelcastClient(cluster_name="dev", cluster_members=["hazelcast"])
     global message_queue
     messages_queue_name = "messages_queue"
@@ -34,7 +36,7 @@ app = FastAPI(lifespan=lifespan)
 
 @app.post("/login/")
 async def login(user: str, password: str, response: Response):
-    token = service.login(user, password)
+    token = await service.login(user, password)
     response.status_code = status.HTTP_200_OK
     if token is None:
         response.status_code = status.HTTP_401_UNAUTHORIZED
@@ -50,7 +52,7 @@ async def login(user: str, password: str, response: Response):
 
 @app.post("/register/")
 async def register(user: str, password: str, email: str, response: Response):
-    token = service.register(user, password, email)
+    token = await service.register(user, password, email)
     response.status_code = status.HTTP_200_OK
     if token is None:
         response.status_code = status.HTTP_409_CONFLICT

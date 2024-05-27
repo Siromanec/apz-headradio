@@ -2,14 +2,14 @@
 import repository
 
 
-def get_user_data(user):
-    return repository.get_user_data(user)
+async def get_user_data(user):
+    return await repository.get_user_data(user)
 
-def modify_profile_photo(user, profile_photo):
-    repository.modify_profile_photo(user, profile_photo)
+async def modify_profile_photo(user, profile_photo):
+    await repository.modify_profile_photo(user, profile_photo)
 
-def set_music(user, song_name):
-    repository.set_music(user, song_name)
+async def set_music(user, song_name):
+    await repository.set_music(user, song_name)
 
-def create_profile(user):
-    repository.create_profile(user)
+async def create_profile(user):
+    await repository.create_profile(user)

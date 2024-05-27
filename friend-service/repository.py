@@ -2,6 +2,7 @@ from sqlalchemy import String, select, insert, delete, exists, Text, alias, tabl
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session, aliased
 import sqlalchemy
 from sqlalchemy import exc
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 
 
 class Base(DeclarativeBase):
@@ -17,60 +18,65 @@ class Friends(Base):
 
 
 db_url = sqlalchemy.engine.URL.create(
-    drivername="postgresql+psycopg2",
+    drivername="postgresql+asyncpg",
     database="friend_db",
     host="friend_db",  # TODO dynamic host
     username="root",
     password="root_pass",
     port="5432")
 
-engine = sqlalchemy.engine.create_engine(db_url)
-session: None | Session = None
+engine = create_async_engine(db_url)
+session: None | AsyncSession = None
 
 
-def start_session():
+async def start_session():
     global session
-    session = Session(engine)
+    async with engine.begin() as conn:
+        session = AsyncSession(conn)
 
 
-def end_session():
+async def end_session():
     global session
-    session.close()
+    await session.close()
+    await engine.dispose()
 
 
-def get_followers(username: str):
-    return session.execute(select(Friends.username).where(Friends.username_follows == username)).all()
+async def get_followers(username: str):
+    async with engine.connect() as conn:
+        followers = await conn.execute(select(Friends.username).where(Friends.username_follows == username))
+        return followers.all()
 
 
-def get_following(username: str):
-    return session.execute(select(Friends.username_follows).where(Friends.username == username)).all()
+async def get_following(username: str):
+    async with engine.connect() as conn:
+        following = await conn.execute(select(Friends.username_follows).where(Friends.username == username))
+        return following.all()
 
 
-def get_friends(username: str):
-    f1 = select(Friends).alias("f1")
-    f2 = select(Friends).alias("f2")
-
-    join_stmt = select(join(f1,f2, (f1.c.username == f2.c.username_follows) & (f2.c.username == f1.c.username_follows))).alias("join_stmt")
-    final_stmt = select(join_stmt.c.username, join_stmt.c.username_follows).where(join_stmt.c.username == username)
-    return session.execute(final_stmt).all()
+async def get_friends(username: str):
+    async with engine.connect() as conn:
+        f1 = alias(Friends)
+        f2 = alias(Friends)
+        join_stmt = select(join(f1, f2, (f1.c.username == f2.c.username_follows) & (f2.c.username == f1.c.username_follows))).alias("join_stmt")
+        final_stmt = select(join_stmt.c.username, join_stmt.c.username_follows).where(join_stmt.c.username == username)
+        return await conn.execute(final_stmt)
 
 
 # TODO: forward some error response
-def add_friend(username_follows: str, username: str):
-    friend = Friends(username_follows=username_follows, username=username)
-    try:
-        session.add(friend)
-        session.commit()
-    except exc.IntegrityError as e:
-        session.rollback()
-        import sys
-        print(e, file=sys.stderr)
+async def add_friend(username_follows: str, username: str):
+    async with engine.connect() as conn:
+        try:
+            await conn.execute(insert(Friends).values(username_follows=username_follows, username=username))
+            await conn.commit()
+        except exc.IntegrityError as e:
+            import sys
+            print(e, file=sys.stderr)
 
 
-def remove_friend(username_follows: str, username: str):
-    session.execute(
-        delete(Friends).where(Friends.username_follows == username_follows).where(Friends.username == username))
-    session.commit()
+async def remove_friend(username_follows: str, username: str):
+    async with engine.connect() as conn:
+        await conn.execute(delete(Friends).where(Friends.username_follows == username_follows).where(Friends.username == username))
+        await conn.commit()
 
 
 def __test_repo():

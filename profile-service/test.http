@@ -5,7 +5,7 @@ POST http://localhost:8081/create-profile/?user=admin3
 POST http://localhost:8081/create-profile/?user=user1
 
 ###
-POST http://localhost:8081/set-music/?user=admin3&song_name=chachacha
+POST http://localhost:8081/set-music/?user=user1&song_name=chachacha
 
 ###
 GET http://localhost:8081/get-pfp/?user=user1
@@ -21,7 +21,7 @@ POST http://localhost:8081/set-profile-photo
 Content-Type: application/json
 
 {
-    "username": "admin3",
+    "username": "user1",
     "image": "imasdfdgge"
 }
 
