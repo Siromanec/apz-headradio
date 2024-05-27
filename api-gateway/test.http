@@ -1,6 +1,10 @@
 POST http://localhost:8084/login/?user=root&password=root
 
 ###
+
+POST http://localhost:8084/login/?user=admin3&password=admin3
+
+###
 POST http://localhost:8084/register/?user=admin3&password=admin3&email=sraka@dupa
 
 ###

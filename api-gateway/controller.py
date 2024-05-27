@@ -1,14 +1,9 @@
-from typing import override
-
 import consul
 from fastapi import FastAPI, Response, Request, APIRouter, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi_utils.cbv import cbv
-import requests
 import httpx
-import asyncio
 
-import repository
+from routes import repository
 
 from routes.friend import router as friend_router
 from routes.auth import router as auth_router
@@ -96,6 +91,7 @@ async def register(user: str, password: str, email: str, response: Response):
         code = auth_response.status_code
         response.status_code = code
         if code != status.HTTP_200_OK:
+            await profile_promise # awaiting so the promise doesn't memory leak. todo Maybe there is a way to reject it
             print(f"failed to create account for {user} (auth)")
             return {"token": None}
         token = str(auth_message["token"])

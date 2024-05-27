@@ -11,6 +11,6 @@ ENV PYTHONUNBUFFERED=1
 
 COPY ./main.py /code/
 COPY ./controller.py /code/
-COPY ./repository.py /code/
+COPY routes/repository.py /code/
 ADD ./routes/ /code/routes
 CMD ["python", "main.py"]
