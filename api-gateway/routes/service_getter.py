@@ -1,4 +1,5 @@
 from typing import override
+import random
 
 import consul
 
@@ -15,6 +16,7 @@ class ServiceGetter():
             list_services.append(adder)
         print(list_services)
         return list_services
+    
     def get_service_hostport(self, service_name):
         raise NotImplemented
 
@@ -27,5 +29,16 @@ class FirstServiceGetter(ServiceGetter):
         service = self._get_services(service_name)[0]
         service_hostport = f"{service['Address']}:{service['Port']}"
         return service_hostport
+    
 
-service_getter = FirstServiceGetter()
+class RandomServiceGetter(ServiceGetter):
+    def __init__(self):
+        super().__init__()
+
+    @override
+    def get_service_hostport(self, service_name):
+        service = random.choice(self._get_services(service_name))
+        service_hostport = f"{service['Address']}:{service['Port']}"
+        return service_hostport
+
+service_getter = RandomServiceGetter()
