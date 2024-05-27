@@ -10,8 +10,11 @@ collection = db["posts"]
 def get_user_posts(user):
     return list(collection.find({"username": user}))
 
-def new_post(items):
-    collection.insert_one(items)
+def new_post(username, article, time):
+    post = {"username": username,
+            "time": time,
+            "article": article}
+    collection.insert_one(post)
 
 def delete_post(post):
     collection.delete_one({"post_id": post})

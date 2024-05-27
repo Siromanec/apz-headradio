@@ -1,107 +1,111 @@
-from fastapi import FastAPI, Response, Request
-import service
+from typing import override
+
+import consul
+from fastapi import FastAPI, Response, Request, APIRouter, status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi_utils.cbv import cbv
+import requests
+import httpx
+import asyncio
+
+import repository
+
+from routes.friend import router as friend_router
+from routes.auth import router as auth_router
+from routes.like import router as like_router
+from routes.profile import router as profile_router
+from routes.service_getter import service_getter
 
 app = FastAPI()
+
+app.include_router(friend_router)
+app.include_router(auth_router)
+app.include_router(like_router)
+app.include_router(profile_router)
+
+
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+c = consul.Consul(host = "consul")
+c.agent.service.register(name='api-gateway',
+                         service_id='api-gateway',
+                         address='api-gateway',
+                         port=8084)
+
+
+
+
+router = APIRouter()
+
+
+
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-@app.post("/login")
-async def login(user: str, passw: str, response: Response):
-    result = service.login(user, passw)
-    response.status_code = result["status"]
-    return result["message"]
 
-@app.get("/main-page")
-async def main_page(username : str, response: Response):
-    result = service.main_page(username)
-    response.status_code = result["status"]
-    return result["message"]
+@app.get("/feed")
+async def feed(username : str, response: Response):
+    hostport = service_getter.get_service_hostport('feed')
+    url = f'http://{hostport}/feed/?user={username}'
+    async with httpx.AsyncClient() as client:
+        redirect_response = await client.get(url)
+        message = redirect_response.json()
+        code = redirect_response.status_code
+        response.status_code = code
+        return message
+
+
 
 @app.post("/new-post")
-async def new_post(content: Request, response: Response):
-    item = await content.json()
-    result = service.new_post(item)
-    response.status_code = result["status"]
-    return result["message"]
+async def new_post(request: Request, response: Response):
+    hostport = service_getter.get_service_hostport('post')
+    url = f'http://{hostport}/new-post/'
+    async with httpx.AsyncClient() as client:
+        redirect_response = await client.post(url, content=await request.body())
+        message = redirect_response.json()
+        code = redirect_response.status_code
+        response.status_code = code
+        return message
 
 
-@app.delete("/logout")
-async def logout(token: str, response: Response):
-    result = service.logout(token)
-    response.status_code = result["status"]
-    return result["message"]
+@app.post("/register/")
+async def register(user: str, password: str, email: str, response: Response):
+    auth_hostport = service_getter.get_service_hostport("auth")
+    profile_hostport = service_getter.get_service_hostport("profile")
+    auth_url = f'http://{auth_hostport}/register/?user={user}&password={password}&email={email}'
+    profile_url = f'http://{profile_hostport}/create-profile/?user={user}'
+    async with httpx.AsyncClient() as client:
 
+        auth_promise = client.post(auth_url)
+        profile_promise = client.post(profile_url)
 
-@app.get("/show-user")
-async def show_user(username: str, response: Response):
-    result = service.show_user(username)
-    response.status_code = result["status"]
-    return result["message"]
+        auth_response = await auth_promise
+        auth_message = auth_response.json()
+        code = auth_response.status_code
+        response.status_code = code
+        if code != status.HTTP_200_OK:
+            print(f"failed to create account for {user} (auth)")
+            return {"token": None}
+        token = str(auth_message["token"])
 
-@app.post("/register")
-async def register(user: str, passw: str, mail: str, response: Response):
-    result = service.register(user, passw, mail)
-    response.status_code = result["status"]
-    return result["message"]
+        profile_response = await profile_promise
+        code = profile_response.status_code
+        response.status_code = code
+        if code != status.HTTP_200_OK:
+            print(f"failed to create profile for {user} (profile)")
+            return {"token": None}
 
-
-@app.post("/add-friend")
-async def add_friend(friend1: str, friend2: str, response: Response):
-    result = service.add_friend(friend1, friend2)
-    response.status_code = result["status"]
-    return result["message"]
-
-
-@app.post("/remove-friend")
-async def remove_friend(friend1: str, friend2: str, response: Response):
-    result = service.remove_friend(friend1, friend2)
-    response.status_code = result["status"]
-    return result["message"]
-
-@app.get("/friends")
-async def friends(username: str, response: Response):
-    result = service.friends(username)
-    response.status_code = result["status"]
-    return result["message"]
-
-
-@app.post("/like-post")
-async def like_post(username: str, post_id: str, response: Response):
-    result = service.like_post(username, post_id)
-    response.status_code = result["status"]
-    return result["message"]
-
-@app.delete("/like-post")
-async def unlike_post(username: str, post_id: str, response: Response):
-    result = service.unlike_post(username, post_id)
-    response.status_code = result["status"]
-    return result["message"]
-
-@app.get("/show-likes")
-async def show_likes(post_id: str, response: Response):
-    result = service.show_likes(post_id)
-    response.status_code = result["status"]
-    return result["message"]
-
-@app.get("/has-liked")
-async def has_liked(username: str, post_id: str, response: Response):
-    result = service.has_liked(username, post_id)
-    response.status_code = result["status"]
-    return result["message"]
-
-@app.post("/modify-profile-photo") 
-async def modify_profile_photo(request: Request, response: Response):
-    item = await request.json()
-    result = service.modify_profile_photo(item)
-    response.status_code = result["status"]
-    return result["message"]
-
-
-@app.post("/modify-music") 
-async def modify_music(user: str, music: str, response: Response):
-    result = service.modify_music(user, music)
-    response.status_code = result["status"]
-    return result["message"]
-
+        repository.add_token(user, token)
+        return {"token": token}

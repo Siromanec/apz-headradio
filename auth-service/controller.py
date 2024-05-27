@@ -11,21 +11,23 @@ import hazelcast
 
 message_queue = None
 
+
 @asynccontextmanager
-async def lifespan(app):
+async def lifespan(app: FastAPI):
     repository.start_session()
     c = consul.Consul(host="consul")
     c.agent.service.register(name='auth',
-                            service_id='auth',
-                            address='auth',
-                            port=8082)
-    
+                             service_id='auth',
+                             address='auth',
+                             port=8082)
+
     client = hazelcast.HazelcastClient(cluster_name="dev", cluster_members=["hazelcast"])
     global message_queue
     messages_queue_name = "messages_queue"
     message_queue = client.get_queue(messages_queue_name)
     yield
     repository.end_session()
+
 
 app = FastAPI(lifespan=lifespan)
 
@@ -34,17 +36,32 @@ app = FastAPI(lifespan=lifespan)
 async def login(user: str, password: str, response: Response):
     token = service.login(user, password)
     response.status_code = status.HTTP_200_OK
-    if token == "No such user":
+    if token is None:
         response.status_code = status.HTTP_401_UNAUTHORIZED
-        return JSONResponse(content=jsonable_encoder({"detail": "No such user"}), status_code=status.HTTP_401_UNAUTHORIZED)
-    print(f"auth-service: User {user} is logged in. Token ({token}) is generated.")
-    message_queue.put(f"auth-service: User {user} is logged in. Token ({token}) is generated.")
+        log = f"auth-service: some bruv tryna hack {user}. skibidi is generated."
+        print(log)
+        message_queue.put(log)
+    else:
+        log = f"auth-service: User {user} is logged in. Token ({token}) is generated."
+        print(log)
+        message_queue.put(log)
     return {"token": token}
 
 
 @app.post("/register/")
-async def register(user: str, password: str, email:str, response: Response):
-    service.register(user, password, email)
+async def register(user: str, password: str, email: str, response: Response):
+    token = service.register(user, password, email)
     response.status_code = status.HTTP_200_OK
-    print(f"auth-service: User {user} is registered.")
-    message_queue.put(f"auth-service: User {user} is registered.")
+    if token is None:
+        response.status_code = status.HTTP_409_CONFLICT
+        log = (f"auth-service: sheesh {user} failed the vibe check. iykyk took huge L. "
+               f"the username is taken, big yikes, no cap. skibidi is generated.")
+        print(log)
+        message_queue.put(log)
+    else:
+        log = f"auth-service: User {user} is registered. Token ({token}) is generated."
+        print(log)
+        message_queue.put(log)
+    return {"token": token}
+
+

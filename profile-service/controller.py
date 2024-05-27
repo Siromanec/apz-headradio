@@ -29,68 +29,92 @@ async def lifespan(app):
     global message_queue
     messages_queue_name = "messages_queue"
     message_queue = client.get_queue(messages_queue_name)
-
     yield
 
 app = FastAPI(lifespan=lifespan)
 
 @app.get("/get-pfp/")
 async def get_pfp(user: str, response: Response):
-    profile_picture = service.get_pfp(user)
+    try:
+        profile_picture = service.get_user_data(user)
+    except KeyError:
+        response.status_code = status.HTTP_409_CONFLICT
+        log = f"profile-service: no such user {user}"
+        print(log)
+        message_queue.put(log)
+        return
+
+    try:
+        profile_picture = profile_picture["profile_picture"]
+    except KeyError:
+        profile_picture = None
+
     response.status_code = status.HTTP_200_OK
     print(f"profile-service: profile picture of {user} - {profile_picture}")
     message_queue.put(f"profile-service: profile picture of {user} - {profile_picture}")
-    return {"get_pfp": profile_picture}
+    return {"profile_picture": profile_picture}
 
 @app.get("/get-user-data/")
 async def get_user_data(user: str, response: Response):
-    user_data = service.get_user_data(user)
-    response.status_code = status.HTTP_200_OK
-    if user_data != None:
-        print(f"profile-service: data of {user} - {user_data}")
-        message_queue.put(f"profile-service: data of {user} - {user_data}")
-        user_data = {"username": user_data["username"], "profile_picture": user_data["profile_picture"], "selected_music": user_data["selected_music"], "motto": user_data["motto"]}
-        return {"get_user_data": user_data}
-    else:
-        print("profile-service: User not found.")
-        message_queue.put("profile-service: User not found.")
-        return {"get_user_data": "User not found."}
-
-@app.post("/modify-profile-photo/")
-async def modify_profile_photo(request: Request, response: Response):
-    item = await request.json()
-    filename = str(uuid.uuid4())
     try:
-        while os.path.isfile("./data/" + filename):
-            filename = str(uuid.uuid4())
-        with open("./data/" + filename, "w") as file:
-            file.write(item["image"])
-        username = item["username"]
+        user_data = service.get_user_data(user)
+    except KeyError:
+        response.status_code = status.HTTP_409_CONFLICT
+        log = f"profile-service: no such user {user}"
+        print(log)
+        message_queue.put(log)
+        return
+    response.status_code = status.HTTP_200_OK
+    print(f"profile-service: data of {user} - {user_data}")
+    message_queue.put(f"profile-service: data of {user} - {user_data}")
+    del user_data["_id"]
+    return user_data
 
-        if service.modify_profile_photo(username, {"profilePicture": item["image"], "username": username}) == "NO SUCH USER":
-            response.status_code = status.HTTP_400_BAD_REQUEST
-            print(f"profile-service: User {username} failed to modify profile photo.")
-            message_queue.put(f"profile-service: User {username} failed to modify profile photo.")
-            return
-        response.status_code = status.HTTP_200_OK
-        print(f"profile-service: User {username} modified profile photo.")
-        message_queue.put(f"profile-service: User {username} modified profile photo.")
-    except FileNotFoundError:
+@app.post("/set-profile-photo/")
+async def set_profile_photo(request: Request, response: Response):
+    try:
+        item = await request.json()
+    except Exception as e:
+        print(e)
         response.status_code = status.HTTP_400_BAD_REQUEST
-        print(f"profile-service: User failed to modify profile photo. There is no such file.")
-        message_queue.put(f"profile-service: User failed to modify profile photo. There is no such file.")
+    username = item["username"]
+    try:
+        service.modify_profile_photo(username, item["image"])
+    except KeyError:
+        response.status_code = status.HTTP_409_CONFLICT
+        log = f"profile-service: no such user {username}"
+        print(log)
+        message_queue.put(log)
+        return
+    response.status_code = status.HTTP_200_OK
+    print(f"profile-service: User {username} modified profile photo.")
+    message_queue.put(f"profile-service: User {username} modified profile photo.")
 
 
 @app.post("/set-music/")
 async def set_music(user: str, song_name: str, response: Response):
-    service.set_music(user, song_name)
+    try:
+        service.set_music(user, song_name)
+    except KeyError:
+        response.status_code = status.HTTP_409_CONFLICT
+        log = f"profile-service: no such user {user}"
+        print(log)
+        message_queue.put(log)
+        return
     response.status_code = status.HTTP_200_OK
     print(f"profile-service: User {user} set music to {song_name}.")
     message_queue.put(f"profile-service: User {user} set music to {song_name}.")
 
 @app.post("/create-profile/")
 async def create_profile(user: str, response: Response):
-    service.create_profile(user)
+    try:
+        service.create_profile(user)
+    except KeyError:
+        response.status_code = status.HTTP_409_CONFLICT
+        log = f"profile-service: user {user} already exists"
+        print(log)
+        message_queue.put(log)
+        return
     response.status_code = status.HTTP_200_OK
     print(f"profile-service: User {user} created profile.")
     message_queue.put(f"profile-service: User {user} created profile.")

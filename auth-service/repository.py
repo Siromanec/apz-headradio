@@ -2,6 +2,7 @@ from sqlalchemy import String, select, insert, delete, exists, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 import sqlalchemy
 from sqlalchemy import exc
+import sys
 
 
 class Base(DeclarativeBase):
@@ -46,10 +47,11 @@ def register(user: str, password: str, email:str):
     try:
         session.add(auth)
         session.commit()
+        return True
     except exc.IntegrityError as e:
         session.rollback()
-        import sys
         print(e, file=sys.stderr)
+        return False
 
 def __test_repo():
     start_session()

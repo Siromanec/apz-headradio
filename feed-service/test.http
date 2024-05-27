@@ -1,1 +1,38 @@
+
 GET http://localhost:8085/feed?user=user
+
+
+###
+
+###
+POST http://localhost:8083/add-friend?username_follows=user&username=admin1
+
+###
+POST http://localhost:8083/add-friend?username_follows=admin1&username=user
+
+###
+POST http://localhost:8083/add-friend?username_follows=user&username=admin2
+
+###
+POST http://localhost:8083/add-friend?username_follows=admin2&username=user
+
+###
+
+POST http://localhost:8080/new-post/
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "article": "cha cha cha"
+}
+
+
+###
+
+POST http://localhost:8080/new-post/
+Content-Type: application/json
+
+{
+  "username": "admin2",
+  "article": "sha sha sha"
+}

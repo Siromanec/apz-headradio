@@ -1,0 +1,31 @@
+GET http://localhost:8083/get-following/?username=user
+
+###
+GET http://localhost:8083/get-followers/?username=user
+
+###
+GET http://localhost:8083/get-friends/?username=user
+
+###
+POST http://localhost:8083/add-friend?username_follows=admin&username=user
+
+###
+POST http://localhost:8083/add-friend?username_follows=user&username=admin
+
+###
+POST http://localhost:8083/add-friend?username_follows=admin1&username=user
+
+###
+POST http://localhost:8083/add-friend?username_follows=user&username=admin1
+
+###
+POST http://localhost:8083/add-friend?username_follows=admin2&username=user
+
+###
+POST http://localhost:8083/add-friend?username_follows=user1&username=user
+
+###
+POST http://localhost:8083/remove-friend?username_follows=admin&username=user
+
+###
+POST http://localhost:8083/add-friend?username_follows=user&username=admin
