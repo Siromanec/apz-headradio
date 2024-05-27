@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import UrlResolver from "./UrlResolver";
-import RequestBodyBuilder from "./RequestBodyBuilder";
+import UrlResolver from "./api/UrlResolver";
+import RequestBodyBuilder from "./api/RequestBodyBuilder";
 
 const urlResolver = new UrlResolver();
 
@@ -36,7 +36,10 @@ export default function Login({ setToken, setSavedUserName }) {
     const token = await loginUser({
       username,
       password,
-    });
+    })
+        .then((data) => data.json())
+        .then((data) => data.token);
+
     if (!token) {
       setBadInput(true);
       return;

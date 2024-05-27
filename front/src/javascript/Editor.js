@@ -3,9 +3,9 @@ import PictureIcon from "../data/picture-icon.svg";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef } from "react";
 import "../css/Editor.css";
-import { tinymceAPIKey } from "./APIKeys";
-import UrlResolver from "./UrlResolver";
-import RequestBodyBuilder from "./RequestBodyBuilder";
+import { tinymceAPIKey } from "./api/APIKeys";
+import UrlResolver from "./api/UrlResolver";
+import RequestBodyBuilder from "./api/RequestBodyBuilder";
 
 // import { Global } from "@emotion/core";
 function getSavedUserName() {

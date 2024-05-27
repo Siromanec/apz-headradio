@@ -53,4 +53,19 @@ export default class RequestBodyBuilder {
             method: "POST",
         };
     }
+    static getGetFriendsRequestBody() {
+        return {
+            method: "GET",
+        };
+    }
+    static getAddFriendRequestBody() {
+        return {
+            method: "POST",
+        };
+    }
+    static getRemoveFriendRequestBody() {
+        return {
+            method: "POST",
+        };
+    }
 }

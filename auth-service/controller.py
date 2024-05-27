@@ -14,7 +14,7 @@ message_queue = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    repository.start_session()
+    await repository.start_session()
     c = consul.Consul(host="consul")
     c.agent.service.register(name='auth',
                              service_id='auth',
@@ -26,7 +26,7 @@ async def lifespan(app: FastAPI):
     messages_queue_name = "messages_queue"
     message_queue = client.get_queue(messages_queue_name)
     yield
-    repository.end_session()
+    await repository.end_session()
 
 
 app = FastAPI(lifespan=lifespan)

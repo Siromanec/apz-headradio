@@ -2,7 +2,7 @@ import "../css/Register.css";
 import crossButton from "../data/cross.svg";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import RequestBodyBuilder from "./RequestBodyBuilder";
+import RequestBodyBuilder from "./api/RequestBodyBuilder";
 import {
   Link,
   useLocation,
@@ -10,7 +10,8 @@ import {
   useResolvedPath,
 } from "react-router-dom";
 
-import UrlResolver from "./UrlResolver";
+import UrlResolver from "./api/UrlResolver";
+import {response} from "express";
 
 const urlResolver = new UrlResolver();
 
@@ -20,6 +21,7 @@ const urlResolver = new UrlResolver();
  * @param credentials.email
  * */
 async function signupUser(credentials) {
+
   return fetch(
       urlResolver.getRegisterUserUrl(credentials.username, credentials.password, credentials.email),
       RequestBodyBuilder.getRegisterUserRequestBody()
@@ -32,6 +34,8 @@ export default function Register({ setToken, setSavedUserName }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [passwordAgain, setPasswordAgain] = useState();
+  const [conflict, setConflict] = useState(false);
+  const [unknownError, setUnknownError] = useState(false);
   const [badPassword, setBadPassword] = useState(false);
   const [badEmail, setBadEmail] = useState(false);
   const [badUsername, setBadUsername] = useState(false);
@@ -54,12 +58,36 @@ export default function Register({ setToken, setSavedUserName }) {
     if (!isChecked) {
       return;
     }
-    setBadPassword(false);
-    const result = await signupUser({
+    const token = await signupUser({
       username: username,
       email: email,
       password: password,
-    }).then((data) => data.json());
+    })
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+
+          switch (response.status) {
+            case 409:
+              setConflict(true);
+              break;
+            default:
+              setUnknowError(true);
+              break;
+          }
+          throw new Error(response.statusText);
+        })
+        .then(json => json.token)
+        .then(token => {
+          setToken(token);
+          setSavedUserName(username);
+          navigate("/home");
+        })
+        .catch(err => {
+          console.error(err)
+        });
+
     if (result["token"] === "403") {
       setBadEmail(true);
     } else if (result["token"] === "400") {
@@ -67,10 +95,7 @@ export default function Register({ setToken, setSavedUserName }) {
     } else if (result["token"] === "500") {
       setNoValue(true);
     } else {
-      setToken(result);
-      setSavedUserName(username);
 
-      navigate("/home");
     }
   };
 
@@ -86,14 +111,14 @@ export default function Register({ setToken, setSavedUserName }) {
     setCheckedBox(!isChecked);
   }
 
-  const badPasswordElement = (
-    <div className="error">*Passwords do not match!</div>
-  );
-  const badEmailElement = <div className="error">*Email already in use!</div>;
-  const badUserElement = <div className="error">*Username already exists!</div>;
+  // const badPasswordElement = (
+  //   <div className="error">*Passwords do not match!</div>
+  // );
+  const conflictElement = <div className="error">*User already exists!</div>;
+  const badPasswordElement = <div className="error">*User already exists!</div>;
   const badInputElement = <div className="error">*Insert every value!</div>;
   const notCheckedError = (
-    <div className="error">*Not accepted terms and services!</div>
+    <div className="error">*Not accepted terms of service!</div>
   );
   return (
     <section className="register">
@@ -148,9 +173,8 @@ export default function Register({ setToken, setSavedUserName }) {
               maxLength="64"
             />
           </label>
+          {conflict && conflictElement}
           {badPassword && badPasswordElement}
-          {badEmail && badEmailElement}
-          {badUsername && badUserElement}
           {noValue && badInputElement}
           <div className="t-of-s">
             <input type="checkbox" className="t-of-s" onChange={handleCheck} />

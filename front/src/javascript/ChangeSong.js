@@ -5,9 +5,9 @@ import crossButton from "../data/cross.svg";
 
 import React, {useState} from "react";
 
-import {spotifyClientID, spotifyClientSecret} from "./APIKeys";
-import UrlResolver from "./UrlResolver";
-import RequestBodyBuilder from "./RequestBodyBuilder";
+import {spotifyClientID, spotifyClientSecret} from "./api/APIKeys";
+import UrlResolver from "./api/UrlResolver";
+import RequestBodyBuilder from "./api/RequestBodyBuilder";
 
 
 const urlResolver = new UrlResolver();

@@ -40,4 +40,14 @@ export default class UrlResolver {
     getModifyMusicUrl(user, music, token) {
         return `${this.base}/modify-music/?user=${user}&music=${music}&token=${token}`;
     }
+
+    getAddFriendUrl(usernameFollows, username, token) {
+        return `${this.base}/add-friend/?username_follows=${usernameFollows}&username=${username}&token=${token}`;
+    }
+    getRemoveFriendUrl(usernameFollows, username, token) {
+        return `${this.base}/remove-friend/?username_follows=${usernameFollows}&username=${username}&token=${token}`;
+    }
+    getGetFriendsUrl(username, token) {
+        return `${this.base}/get-friends/?username={username}&token=${token}`;
+    }
 }
