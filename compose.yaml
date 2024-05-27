@@ -30,7 +30,7 @@ services:
     ports:
       - "8501:8500"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8501/v1/status/leader"]
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
       start_period: 30s
       start_interval: 1s
       timeout: 1s
