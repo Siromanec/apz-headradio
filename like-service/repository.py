@@ -67,12 +67,12 @@ async def remove_like(user: str, post: str):
         await conn.execute(delete(Likes).where(Likes.post_id == int(post)).where(Likes.username == user))
         await conn.commit()
 
-
-async def get_likes(post: str) -> Sequence[Row[tuple[Any, ...] | Any]]:
-    print(post)
+async def get_likes(post: str) -> list[dict]:
     async with engine.connect() as conn:
         result = await conn.execute(select(Likes).where(Likes.post_id == post))
-        return result.fetchall()
+        likes = result.fetchall()
+        return [{"username": like.username, "post_id": like.post_id} for like in likes]
+
 
 
 def __test_db():
