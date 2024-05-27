@@ -7,8 +7,8 @@ from fastapi_utils.cbv import cbv
 import requests
 import httpx
 import asyncio
-
 import repository
+from routes.lifespan import lifespan
 
 from routes.friend import router as friend_router
 from routes.auth import router as auth_router
@@ -16,7 +16,7 @@ from routes.like import router as like_router
 from routes.profile import router as profile_router
 from routes.service_getter import service_getter
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 app.include_router(friend_router)
 app.include_router(auth_router)
