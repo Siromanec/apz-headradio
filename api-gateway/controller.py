@@ -3,7 +3,6 @@ from fastapi import FastAPI, Response, Request, APIRouter, status
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 import asyncio
-import repository
 from routes.lifespan import lifespan
 from routes import repository
 
