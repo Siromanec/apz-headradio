@@ -36,7 +36,7 @@ app = FastAPI(lifespan=lifespan)
 @app.get("/get-pfp/")
 async def get_pfp(user: str, response: Response):
     try:
-        profile_picture = service.get_user_data(user)
+        profile_picture = await service.get_user_data(user)
     except KeyError:
         response.status_code = status.HTTP_409_CONFLICT
         log = f"profile-service: no such user {user}"
@@ -57,7 +57,7 @@ async def get_pfp(user: str, response: Response):
 @app.get("/get-user-data/")
 async def get_user_data(user: str, response: Response):
     try:
-        user_data = service.get_user_data(user)
+        user_data = await service.get_user_data(user)
     except KeyError:
         response.status_code = status.HTTP_409_CONFLICT
         log = f"profile-service: no such user {user}"
@@ -79,7 +79,7 @@ async def set_profile_photo(request: Request, response: Response):
         response.status_code = status.HTTP_400_BAD_REQUEST
     username = item["username"]
     try:
-        service.modify_profile_photo(username, item["image"])
+        await service.modify_profile_photo(username, item["image"])
     except KeyError:
         response.status_code = status.HTTP_409_CONFLICT
         log = f"profile-service: no such user {username}"
@@ -94,7 +94,7 @@ async def set_profile_photo(request: Request, response: Response):
 @app.post("/set-music/")
 async def set_music(user: str, song_name: str, response: Response):
     try:
-        service.set_music(user, song_name)
+        await service.set_music(user, song_name)
     except KeyError:
         response.status_code = status.HTTP_409_CONFLICT
         log = f"profile-service: no such user {user}"
@@ -108,7 +108,7 @@ async def set_music(user: str, song_name: str, response: Response):
 @app.post("/create-profile/")
 async def create_profile(user: str, response: Response):
     try:
-        service.create_profile(user)
+        await service.create_profile(user)
     except KeyError:
         response.status_code = status.HTTP_409_CONFLICT
         log = f"profile-service: user {user} already exists"
