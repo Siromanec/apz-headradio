@@ -21,10 +21,12 @@ async def lifespan(app):
                          service_id='post',
                          address='post',
                          port=8080)
-    client = hazelcast.HazelcastClient(cluster_name="dev", cluster_members=["hazelcast"])
+    
+    cluster_name = (c.kv.get("hazelcast/cluster-name")[1]["Value"]).decode()
+    client = hazelcast.HazelcastClient(cluster_name=cluster_name, cluster_members=["hazelcast"])
 
     global message_queue
-    messages_queue_name = "messages_queue"
+    messages_queue_name = (c.kv.get("hazelcast/queue-name")[1]["Value"]).decode()
     message_queue = client.get_queue(messages_queue_name)
 
     yield
