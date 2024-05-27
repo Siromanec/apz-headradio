@@ -2,7 +2,6 @@ import "../css/Register.css";
 import crossButton from "../data/cross.svg";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import RequestBodyBuilder from "./api/RequestBodyBuilder";
 import {
   Link,
   useLocation,
@@ -11,7 +10,7 @@ import {
 } from "react-router-dom";
 
 import UrlResolver from "./api/UrlResolver";
-import {response} from "express";
+import RequestBodyBuilder from "./api/RequestBodyBuilder";
 
 const urlResolver = new UrlResolver();
 
@@ -35,10 +34,8 @@ export default function Register({ setToken, setSavedUserName }) {
   const [password, setPassword] = useState();
   const [passwordAgain, setPasswordAgain] = useState();
   const [conflict, setConflict] = useState(false);
-  const [unknownError, setUnknownError] = useState(false);
   const [badPassword, setBadPassword] = useState(false);
-  const [badEmail, setBadEmail] = useState(false);
-  const [badUsername, setBadUsername] = useState(false);
+  const [unknownError, setUnknownError] = useState(false);
   const [noValue, setNoValue] = useState(false);
   const [popUpClass, setPopUpClass] = useState("popup");
   const [isChecked, setCheckedBox] = useState(false);
@@ -50,6 +47,11 @@ export default function Register({ setToken, setSavedUserName }) {
   //pipeline
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setBadPassword(false);
+    setUnknownError(false);
+    setNoValue(false);
+    setConflict(false);
+
     setTriedToClick(true);
     if (password !== passwordAgain) {
       setBadPassword(true);
@@ -58,7 +60,11 @@ export default function Register({ setToken, setSavedUserName }) {
     if (!isChecked) {
       return;
     }
-    const token = await signupUser({
+    if ( !(username && email && password)) {
+      setNoValue(true);
+      return
+    }
+    await signupUser({
       username: username,
       email: email,
       password: password,
@@ -73,7 +79,7 @@ export default function Register({ setToken, setSavedUserName }) {
               setConflict(true);
               break;
             default:
-              setUnknowError(true);
+              setUnknownError(true);
               break;
           }
           throw new Error(response.statusText);
@@ -88,15 +94,6 @@ export default function Register({ setToken, setSavedUserName }) {
           console.error(err)
         });
 
-    if (result["token"] === "403") {
-      setBadEmail(true);
-    } else if (result["token"] === "400") {
-      setBadUsername(true);
-    } else if (result["token"] === "500") {
-      setNoValue(true);
-    } else {
-
-    }
   };
 
   function handleClick() {
@@ -115,7 +112,8 @@ export default function Register({ setToken, setSavedUserName }) {
   //   <div className="error">*Passwords do not match!</div>
   // );
   const conflictElement = <div className="error">*User already exists!</div>;
-  const badPasswordElement = <div className="error">*User already exists!</div>;
+  const unknownErrorElement = <div className="error">*Unknown error!</div>;
+  const badPasswordElement = <div className="error">*Passwords must match!</div>;
   const badInputElement = <div className="error">*Insert every value!</div>;
   const notCheckedError = (
     <div className="error">*Not accepted terms of service!</div>
@@ -175,6 +173,7 @@ export default function Register({ setToken, setSavedUserName }) {
           </label>
           {conflict && conflictElement}
           {badPassword && badPasswordElement}
+          {unknownError && unknownErrorElement}
           {noValue && badInputElement}
           <div className="t-of-s">
             <input type="checkbox" className="t-of-s" onChange={handleCheck} />
