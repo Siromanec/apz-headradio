@@ -25,6 +25,16 @@ services:
       start_interval: 1s
       timeout: 1s
 
+  gateway-consul:
+    image: consul:1.15.4
+    ports:
+      - "8501:8500"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/v1/status/leader"]
+      start_period: 30s
+      start_interval: 1s
+      timeout: 1s
+
   likes:
     build: ./like-service/
     depends_on:
@@ -70,6 +80,8 @@ services:
     build: ./api-gateway/
     depends_on:
       consul:
+        condition: service_healthy
+      gateway-consul:
         condition: service_healthy
     ports:
       - "8084:8084"

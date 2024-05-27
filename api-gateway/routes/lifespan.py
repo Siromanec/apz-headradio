@@ -7,11 +7,11 @@ queue = None
 
 @asynccontextmanager
 async def lifespan(app):
-    c = consul.Consul(host="consul")
-    c.agent.service.register(name='profile',
-                         service_id='profile',
-                         address='profile',
-                         port=8081)
+    c = consul.Consul(host="gateway-consul")
+    c.agent.service.register(name='api-gateway',
+                         service_id='api-gateway',
+                         address='api-gateway',
+                         port=8084)
     
     client = hazelcast.HazelcastClient(cluster_name="dev", cluster_members=["hazelcast"])
 
