@@ -10,10 +10,10 @@ class ConsulAgent{
     }
 
     async getService(serviceName){
-        return this.consul.health.service(this.serviceName)
+        return this.consul.health.service(serviceName)
         .then(services => {
             if(services.length === 0) {
-                throw new Error(`Service ${this.serviceName} not available`)
+                throw new Error(`Service ${serviceName} not available`)
             }
             console.log("Services:", services)
             return services[getRandomInt(services.length)].Service
