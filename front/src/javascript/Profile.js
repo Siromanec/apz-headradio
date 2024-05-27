@@ -13,9 +13,9 @@ import ChangeSong from "./ChangeSong";
 import AddFriend from "./AddFriend";
 import crossButton from "../data/cross.svg";
 import { Link, useNavigate } from "react-router-dom";
-import UrlResolver from "./UrlResolver";
-import {spotifyClientID, spotifyClientSecret} from "./APIKeys";
-import RequestBodyBuilder from "./RequestBodyBuilder";
+import UrlResolver from "./api/UrlResolver";
+import {spotifyClientID, spotifyClientSecret} from "./api/APIKeys";
+import RequestBodyBuilder from "./api/RequestBodyBuilder";
 
 
 const urlResolver = new UrlResolver();
@@ -83,10 +83,14 @@ export function Posts({ posts, postOrder }) {
 const formatShortWeekday = (locale, date) => {
   return date.toLocaleDateString(locale, { weekday: "short" }).slice(0, 1);
 };
-
+/**
+ * shows user profile, their posts and friends*/
 export default function Profile() {
-  const { username, avatar, posts, friends, song } = useLoaderData();
+  const { profile, friends} = useLoaderData();
 
+  console.log(profile)
+  console.log(friends)
+ /*
   const [isCurrentUser, setIsCurrentUser] = useState(
     username === sessionStorage.getItem("username")
   );
@@ -96,28 +100,28 @@ export default function Profile() {
 
   const [photo, setPhoto] = useState(avatar);
   const [userSong, setUserSong] = useState();
-  const songChange = async () => {
+  const changeSong = async () => {
     const token = await APIController.getToken()
     const songs =  new URL(song).pathname.split("/").pop();
     const result = await APIController.getTrack(token, songs);
     console.log(result);
     setUserSong(result)
   }
-  useEffect(()=>{songChange()}, [])
+  useEffect(()=>{changeSong()}, [])
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
-  const [friendsCount, setFriendsCount] = useState(friends.length);
+  // const [friendsCount, setFriendsCount] = useState(friends.length);
 
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a);
   const [currentPost, setCurrentPost] = useState(posts.data[postOrder[0]]);
 
   useEffect(()=>{currentPost ?
     setCurrentPost({
-    id: currentPost.idpost,
+    id: currentPost.postId,
     username: currentPost.username,
     text: currentPost.article,
     added: currentPost.added,
-    numberLikes: currentPost.nlikes,
+    numberLikes: currentPost.likeCount,
   }): setCurrentPost(null);}, []);
 
   const submitHandler = async (event) => {
@@ -127,7 +131,6 @@ export default function Profile() {
       username: sessionStorage.getItem("username"),
       picture: file,
     };
-    // return await fetch("http://localhost:8000/modify-profile-photo", {
       return await fetch(urlResolver.getSetProfilePhotoUrl(),
           RequestBodyBuilder.getSetProfilePhotoRequestBody(sessionStorage.getItem("token"), body));
   };
@@ -254,7 +257,7 @@ export default function Profile() {
       {isCurrentUser && <EditorWrapper></EditorWrapper>}
       {currentPost?<Post
         post={currentPost ?? false ? currentPost : {}}
-        /*images={currentPost}*/ headerType="lastPostElement"
+        /!*images={currentPost}*!/ headerType="lastPostElement"
       ></Post>: null}
       <div className="calendar-container">
         <Calendar
@@ -284,5 +287,5 @@ export default function Profile() {
         postOrder={postOrder.slice(1, postOrder.length)}
       ></Posts>
     </main>
-  );
+  );*/
 }

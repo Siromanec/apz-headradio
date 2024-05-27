@@ -1,6 +1,6 @@
 import React from "react";
-import UrlResolver from "./UrlResolver.js";
-import RequestBodyBuilder from "./RequestBodyBuilder";
+import UrlResolver from "./api/UrlResolver.js";
+import RequestBodyBuilder from "./api/RequestBodyBuilder";
 
 const urlResolver = new UrlResolver();
 const toBase64 = (file) =>

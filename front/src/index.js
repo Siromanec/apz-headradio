@@ -1,13 +1,8 @@
 import React from "react";
-import { AuthProvider, RequireAuth } from "react-auth-kit";
 import ReactDOM from "react-dom/client";
-import UrlResolver from "./javascript/UrlResolver";
-import RequestBodyBuilder from "./javascript/RequestBodyBuilder";
-import {
-  BrowserRouter,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import UrlResolver from "./javascript/api/UrlResolver";
+import RequestBodyBuilder from "./javascript/api/RequestBodyBuilder";
+import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 
 import About from "./javascript/About";
 import App from "./javascript/App";
@@ -45,7 +40,7 @@ const router = createBrowserRouter([
               )
               .then((data) => data.json());
           const posts = data.posts;
-          const avatars = data.avatars;
+          const avatars = data.profilePictures;
 
           return { posts, avatars };
         },
@@ -55,13 +50,22 @@ const router = createBrowserRouter([
         index: true,
         element: <Profile />,
         loader: async ({ params }) => {
-          // const apiUrl = `http://localhost:8000/show-user/${params.username}`;
-          const apiUrl = urlResolver.getShowUserUrl(params.username,
-                                                           sessionStorage.getItem("token"));
-          const data = await (
-              await fetch(apiUrl,
-                          RequestBodyBuilder.getShowUserRequestBody())).json();
-          return data;
+          // TODO query for user friend, user posts, and user data
+          const profilePromise = fetch(
+              urlResolver.getShowUserUrl(params.username,
+                                         sessionStorage.getItem("token")),
+              RequestBodyBuilder.getShowUserRequestBody());
+          const friendsPromise = fetch(
+                                                            urlResolver.getGetFriendsUrl(params.username,
+                                                                                         sessionStorage.getItem("token")),
+                                                            RequestBodyBuilder.getGetFriendsRequestBody());
+           // const posts_promise
+
+          return await Promise.all([profilePromise, friendsPromise])
+              .then(([profileRaw, friendsRaw]) => {
+                return { profile: profileRaw.json(), friends: friendsRaw.json() };
+              });
+
         },
       },
       {

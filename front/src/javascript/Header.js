@@ -7,8 +7,8 @@ import SearchInputImg from "../data/search_button.svg";
 import SignOutImg from "../data/sign_out.svg";
 import userEvent from "@testing-library/user-event";
 
-import UrlResolver from "./UrlResolver.js";
-import RequestBodyBuilder from "./RequestBodyBuilder";
+import UrlResolver from "./api/UrlResolver.js";
+import RequestBodyBuilder from "./api/RequestBodyBuilder";
 const urlResolver = new UrlResolver();
 
 function SearchInput() {

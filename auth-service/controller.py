@@ -27,7 +27,7 @@ async def lifespan(app: FastAPI):
     messages_queue_name = (c.kv.get("hazelcast/queue-name")[1]["Value"]).decode()
     message_queue = client.get_queue(messages_queue_name)
     yield
-    repository.end_session()
+    await repository.end_session()
 
 
 app = FastAPI(lifespan=lifespan)

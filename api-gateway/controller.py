@@ -33,15 +33,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-c = consul.Consul(host = "consul")
-c.agent.service.register(name='api-gateway',
-                         service_id='api-gateway',
-                         address='api-gateway',
-                         port=8084)
-
-
-
-
 router = APIRouter()
 
 

@@ -11,11 +11,11 @@ function Posts({ posts, postOrder, avatars }) {
         const post = posts[num];
         if (post) {
           const postWrap = {
-            id: post["idpost"],
+            id: post["postId"],
             username: post["username"],
             text: post["article"],
-            added: post["added"],
-            numberLikes: post["nlikes"],
+            added: post["time"],
+            numberLikes: post["likeCount"],
             avatar: avatars[post["username"]],
           };
           return (
