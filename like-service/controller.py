@@ -14,7 +14,7 @@ message_queue = None
 
 @asynccontextmanager
 async def lifespan(app):
-    repository.start_session()
+    await repository.start_session()
     c = consul.Consul(host="consul")
     c.agent.service.register(name='likes',
                          service_id='likes',
@@ -27,13 +27,13 @@ async def lifespan(app):
     message_queue = client.get_queue(messages_queue_name)
 
     yield
-    repository.end_session()
+    await repository.end_session()
 
 app = FastAPI(lifespan=lifespan)
 
 @app.get("/has-liked/")
 async def has_liked(user: str, post: str, response: Response):
-    liked = service.has_liked(user, post)
+    liked = await service.has_liked(user, post)
     response.status_code = status.HTTP_200_OK
     print(f"like-service: User {user} has liked post {post}: {liked}")
     message_queue.put(f"like-service: User {user} has liked post {post}: {liked}")
@@ -42,7 +42,7 @@ async def has_liked(user: str, post: str, response: Response):
 
 @app.post("/add-like/")
 async def add_like(user: str, post: str, response: Response):
-    service.add_like(user, post)
+    await service.add_like(user, post)
     response.status_code = status.HTTP_200_OK
     print(f"like-service: User {user} liked post {post}.")
     message_queue.put(f"like-service: User {user} liked post {post}.")
@@ -50,7 +50,7 @@ async def add_like(user: str, post: str, response: Response):
 
 @app.delete("/remove-like/")
 async def remove_like(user: str, post: str, response: Response):
-    service.remove_like(user, post)
+    await service.remove_like(user, post)
     response.status_code = status.HTTP_200_OK
     print(f"like-service: User {user} unliked post {post}.")
     message_queue.put(f"like-service: User {user} unliked post {post}.")
@@ -58,15 +58,16 @@ async def remove_like(user: str, post: str, response: Response):
 
 @app.get("/get-likes/")
 async def get_likes(post: str, response: Response):
-    likes = service.get_likes(post)
+    likes = await service.get_likes(post)
     response.status_code = status.HTTP_200_OK
     print(f"like-service: Post {post} has {likes} likes.")
     message_queue.put(f"like-service: Post {post} has {likes} likes.")
+    print(type(likes))
     return {"likes": likes}
 
 @app.get("/get-like-count/")
 async def get_nlikes(post: str, response: Response):
-    likes = service.get_likes(post)
+    likes = await service.get_likes(post)
     response.status_code = status.HTTP_200_OK
     log = f"like-service: Post {post} has {len(likes)} likes."
     print(log)

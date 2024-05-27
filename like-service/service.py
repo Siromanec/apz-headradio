@@ -1,11 +1,14 @@
 # logic
 import repository
+import asyncio
 
-def add_like(user, post):
-    repository.add_like(user, post)
-def has_liked(user, post):
-    return repository.has_liked(user, post)
-def remove_like(user, post):
-    repository.remove_like(user, post)
-def get_likes(post):
-    return [like[0].username for like in repository.get_likes(post)]
+
+async def add_like(user, post):
+    await repository.add_like(user, post)
+async def has_liked(user, post):
+    return await repository.has_liked(user, post)
+async def remove_like(user, post):
+    await repository.remove_like(user, post)
+async def get_likes(post):
+    return await repository.get_likes(post)
+    # return likes

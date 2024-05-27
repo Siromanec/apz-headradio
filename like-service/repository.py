@@ -5,6 +5,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 import sqlalchemy
 from sqlalchemy import exc
 import sys
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 
 class Base(DeclarativeBase):
     ...
@@ -21,52 +22,57 @@ class Likes(Base):
 
 
 db_url = sqlalchemy.engine.URL.create(
-    drivername="postgresql+psycopg2",
+    drivername="postgresql+asyncpg",
     database="likes_db",
     host="likes_db", # TODO dynamic host
     username="root",
     password="root_pass",
     port="5432")
 
-engine = sqlalchemy.engine.create_engine(db_url)
-session: None | Session = None
+engine = create_async_engine(db_url)
+session: None | AsyncSession = None
 
 
-def start_session():
+async def start_session():
     global session
-    session = Session(engine)
+    async with engine.begin() as conn:
+        session = AsyncSession(conn)
 
 
-def end_session():
+async def end_session():
     global session
-    session.close()
+    await session.close()
+    await engine.dispose()
 
 
-def has_liked(user: str, post: int) -> int:
-    hasliked = \
-        [*session.execute(select(select(Likes).where(Likes.post_id == post).where(Likes.username == user).exists()))][
-            0][0]
-    return hasliked
+async def has_liked(user: str, post: int) -> int:
+    async with engine.connect() as conn:
+        hasliked = [*await conn.execute(select(select(Likes).where(Likes.post_id == post).where(Likes.username == user).exists()))][0][0]
+        return hasliked
 
 
 # TODO: forward some error response
-def add_like(user: str, post: str):
-    like = Likes(username=user, post_id=post)
-    try:
-        session.add(like)
-        session.commit()
-    except exc.IntegrityError as e:
-        session.rollback()
-        print(e, file=sys.stderr)
+async def add_like(user: str, post: str):
+    async with engine.connect() as conn:
+        try:
+            print("Adding like", user, post)
+            await conn.execute(insert(Likes).values(username=user, post_id=int(post)))
+            await conn.commit()
+        except exc.IntegrityError as e:
+            print(e, file=sys.stderr)
 
 
-def remove_like(user: str, post: str):
-    session.execute(delete(Likes).where(Likes.post_id == post).where(Likes.username == user))
-    session.commit()
+async def remove_like(user: str, post: str):
+    async with engine.connect() as conn:
+        await conn.execute(delete(Likes).where(Likes.post_id == int(post)).where(Likes.username == user))
+        await conn.commit()
 
 
-def get_likes(post: str) -> Sequence[Row[tuple[Any, ...] | Any]]:
-    return session.execute(select(Likes).where(Likes.post_id == post)).all()
+async def get_likes(post: str) -> Sequence[Row[tuple[Any, ...] | Any]]:
+    print(post)
+    async with engine.connect() as conn:
+        result = await conn.execute(select(Likes).where(Likes.post_id == post))
+        return result.fetchall()
 
 
 def __test_db():
