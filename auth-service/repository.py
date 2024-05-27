@@ -3,7 +3,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 import sqlalchemy
 from sqlalchemy import exc
 import sys
-
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 
 class Base(DeclarativeBase):
     ...
@@ -19,40 +19,41 @@ class Auth(Base):
         return f"Auth(username={self.username!r}, email={self.email!r}, passwordhash={self.passwordhash!r})"
     
 db_url = sqlalchemy.engine.URL.create(
-    drivername="postgresql+psycopg2",
+    drivername="postgresql+asyncpg",
     database="auth_db",
     host="auth_db", # TODO dynamic host
     username="root",
     password="root_pass",
     port="5432")
 
-engine = sqlalchemy.engine.create_engine(db_url)
-session: None | Session = None
+engine = create_async_engine(db_url)
+session: None | AsyncSession = None
 
-def start_session():
+async def start_session():
     global session
-    session = Session(engine)  
+    async with engine.begin() as conn:
+        session = AsyncSession(conn)
 
-def end_session():
+async def end_session():
     global session
-    session.close()
+    await session.close()
+    await engine.dispose()  
 
-def login(user: str, password: str):
-    usr = [*session.execute(select(select(Auth).where(Auth.username == user).where(Auth.passwordhash == password).exists()))][0][0]
-    print(usr)
-    return usr
+async def login(user: str, password: str):
+    async with engine.connect() as conn:
+        usr = [*await conn.execute(select(select(Auth).where(Auth.username == user).where(Auth.passwordhash == password).exists()))][0][0]
+        return usr
 
-def register(user: str, password: str, email:str):
-    auth = Auth(username=user, passwordhash=password, email=email)
-    try:
-        session.add(auth)
-        session.commit()
-        return True
-    except exc.IntegrityError as e:
-        session.rollback()
-        print(e, file=sys.stderr)
-        return False
-
+async def register(user: str, password: str, email:str):
+    async with engine.connect() as conn:
+        # auth = Auth(username=user, passwordhash=password, email=email)
+        try:
+            await conn.execute(insert(Auth).values(username=user, passwordhash=password, email=email))
+            return True
+        except exc.IntegrityError as e:
+            print(e, file=sys.stderr)
+            return False
+        
 def __test_repo():
     start_session()
     register("user", "1234", "1234@gmail.com")

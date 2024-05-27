@@ -1,11 +1,12 @@
-import requests
 import consul
 from fastapi import status
-
+import asyncio
+import httpx
+import random
 c = consul.Consul(host = "consul")
 
 
-def get_services(service_name):
+async def get_services(service_name):
     list_services = []
     services = c.health.service(service_name)[1]
     for service in services:
@@ -13,79 +14,83 @@ def get_services(service_name):
         adder['Address'] = service['Service']['Address']
         adder['Port'] = service['Service']['Port']
         list_services.append(adder)
-    print(list_services)
     return list_services
 
 
-def get_all_friends(username):
-    friend = get_services('friend')[0]
+async def get_all_friends(username):
+    friend = random.choice(await get_services('friend'))
     address, port = friend['Address'], friend['Port']
     url = f'http://{address}:{port}/get-friends/?username={username}'
-    response = requests.get(url).json()
-    print("friends of user")
-    friends = response['friends']
-    print(friends)
-    return friends
 
-def get_friend_posts(username):
-    post = get_services('post')[0]
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        if response.status_code != status.HTTP_200_OK:
+            return []
+        response = response.json()
+        friends = response['friends']
+        return friends
+
+async def get_friend_posts(username, client):
+    post = random.choice(await get_services('post'))
     address, port = post['Address'], post['Port']
     url = f'http://{address}:{port}/get-user-posts/?user={username}'
-    response = requests.get(url).json()
-    print("posts from friends")
-    print(response)
-    return response
+    return await client.get(url)
 
-def get_friends_pfp(username):
-    profile = get_services('profile')[0]
+
+async def get_friends_pfp(username, client):
+    profile =  random.choice(await get_services('profile'))
     address, port = profile['Address'], profile['Port']
     url = f'http://{address}:{port}/get-pfp/?user={username}'
-    response = requests.get(url)
-    data = response.json()
-    print("pfp of friends")
-    print(data)
-    print(response.status_code)
-    if response.status_code == status.HTTP_409_CONFLICT:
-        print(f"no user {username}")
-        raise KeyError
-    return data
+    return await client.get(url)
 
-def get_like_count(post_id) -> int:
-    profile = get_services('likes')[0]
+async def get_like_count(post_id, client) -> int:
+    profile = random.choice(await get_services('likes'))
     address, port = profile['Address'], profile['Port']
     url = f'http://{address}:{port}/get-like-count/?post={post_id}'
-    response = requests.get(url)
-    data = response.json()
-    print(data)
-    print(response.status_code)
-    return data["like_count"]
+    return await client.get(url)
+
+async def feed(user):
+    async with httpx.AsyncClient() as client:
+        friends = await get_all_friends(user)
+        posts_tasks = [get_friend_posts(friend, client) for friend in friends]
+        posts_responses = await asyncio.gather(*posts_tasks)
+        all_posts = []
+        for response in posts_responses:
+            if response.status_code != status.HTTP_200_OK:
+                continue
+            posts = response.json()
+            posts = posts['posts']
+            all_posts.extend(posts)
+
+        all_posts.sort(key=lambda x: x['time'], reverse=True)
+        num = min(len(all_posts), 50)
+        all_posts = all_posts[:num]
 
 
-def feed(user):
-    friends = get_all_friends(user)
-    posts: list[dict] = []
-    for friend in friends:
-        posts.extend(get_friend_posts(friend)["posts"])
-    print(posts)
-    posts.sort(key=lambda x: x['time'], reverse=True)
-    num = min(len(posts), 50)
-    posts = posts[:num]
+        selected_friends = set()
+        like_tasks = [get_like_count(post['post_id'], client) for post in all_posts]
+        like_counts = await asyncio.gather(*like_tasks)
 
-    selected_friends = set()
-    for post in posts:
-        post["likeCount"] = get_like_count(post['post_id'])
-        post["postID"] = post.pop('post_id')
+        likes = []
+        for response in like_counts:
+            if response.status_code != status.HTTP_200_OK:
+                continue
+            likes.append(response.json()["like_count"])
 
-        selected_friends.add(post['username'])
-
-    profile_pictures = dict()
-    for friend in selected_friends:
-        try:
-            profile_pictures[friend] = get_friends_pfp(friend)['profile_picture']
-        except KeyError:
-            # ignore imaginary friends
-            profile_pictures[friend] = None
-            ...
+        for i, post in enumerate(all_posts):
+            post["likeCount"] = likes[i]
+            post["postID"] = post.pop('post_id')
+            selected_friends.add(post['username'])
 
 
-    return {"posts": posts, "profilePictures": profile_pictures}
+        profile_picture_tasks = [get_friends_pfp(friend, client) for friend in selected_friends]
+        profile_picture_responses = await asyncio.gather(*profile_picture_tasks)
+    
+        profile_pictures = {}
+        for response in profile_picture_responses:
+            if response.status_code != status.HTTP_200_OK:
+                continue
+            profile_pictures[response.json()["username"]] = response.json()["profile_picture"]
+        
+
+    return {"posts": all_posts, "profilePictures": profile_pictures}
