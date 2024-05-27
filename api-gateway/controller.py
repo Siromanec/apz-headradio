@@ -1,14 +1,12 @@
-from typing import override
-
 import consul
 from fastapi import FastAPI, Response, Request, APIRouter, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi_utils.cbv import cbv
-import requests
 import httpx
 import asyncio
 import repository
 from routes.lifespan import lifespan
+from routes import repository
+
 
 from routes.friend import router as friend_router
 from routes.auth import router as auth_router
@@ -60,7 +58,14 @@ async def feed(username : str, response: Response):
     hostport = service_getter.get_service_hostport('feed')
     url = f'http://{hostport}/feed/?user={username}'
     async with httpx.AsyncClient() as client:
-        redirect_response = await client.get(url)
+        try:
+            redirect_response = await client.get(url)
+        except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+            response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+            return {
+                    "posts": [],
+                    "profilePictures": {}
+                }
         message = redirect_response.json()
         code = redirect_response.status_code
         response.status_code = code
@@ -73,7 +78,11 @@ async def new_post(request: Request, response: Response):
     hostport = service_getter.get_service_hostport('post')
     url = f'http://{hostport}/new-post/'
     async with httpx.AsyncClient() as client:
-        redirect_response = await client.post(url, content=await request.body())
+        try:
+            redirect_response = await client.post(url, content=await request.body())
+        except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+            response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+            return None
         message = redirect_response.json()
         code = redirect_response.status_code
         response.status_code = code
@@ -90,22 +99,32 @@ async def register(user: str, password: str, email: str, response: Response):
 
         auth_promise = client.post(auth_url)
         profile_promise = client.post(profile_url)
-
-        auth_response = await auth_promise
-        auth_message = auth_response.json()
-        code = auth_response.status_code
-        response.status_code = code
-        if code != status.HTTP_200_OK:
-            print(f"failed to create account for {user} (auth)")
-            return {"token": None}
-        token = str(auth_message["token"])
-
-        profile_response = await profile_promise
-        code = profile_response.status_code
-        response.status_code = code
-        if code != status.HTTP_200_OK:
-            print(f"failed to create profile for {user} (profile)")
+        
+        try:
+            auth_response = await auth_promise
+            auth_message = auth_response.json()
+            code = auth_response.status_code
+            response.status_code = code
+            if code != status.HTTP_200_OK:
+                await profile_promise # awaiting so the promise doesn't memory leak. todo Maybe there is a way to reject it
+                print(f"failed to create account for {user} (auth)")
+                return {"token": None}
+            token = str(auth_message["token"])
+        except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+            response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
             return {"token": None}
 
-        repository.add_token(user, token)
-        return {"token": token}
+
+        try:
+            profile_response = await profile_promise
+            code = profile_response.status_code
+            response.status_code = code
+            if code != status.HTTP_200_OK:
+                print(f"failed to create profile for {user} (profile)")
+                return {"token": None}
+
+            repository.add_token(user, token)
+            return {"token": token}
+        except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+            response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+            return {"token": None}

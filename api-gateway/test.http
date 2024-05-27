@@ -2,8 +2,8 @@ POST http://localhost:8084/login/?user=root&password=root
 > {% client.global.set("token", response.body.token); %}
 
 ###
-
 POST http://localhost:8084/logout/?user=root&token={{token}}
+
 
 POST http://localhost:8084/register/?user=admin3&password=admin3&email=sraka@dupa
 

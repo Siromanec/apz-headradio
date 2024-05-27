@@ -8,6 +8,7 @@ import requests
 import httpx
 import asyncio
 from .pechyvo import unauthorized
+import repository
 
 from .service_getter import service_getter
 
@@ -26,7 +27,11 @@ class LikeService():
         hostport = service_getter.get_service_hostport(self.name)
         url = f'http://{hostport}/add-like/?user={username}&post={post_id}'
         async with httpx.AsyncClient() as client:
-            redirect_response = await client.post(url)
+            try:
+                redirect_response = await client.post(url)
+            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+                response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+                return None
             message = redirect_response.json()
             code = redirect_response.status_code
             response.status_code = code
@@ -41,7 +46,11 @@ class LikeService():
         hostport = service_getter.get_service_hostport(self.name)
         url = f'http://{hostport}/remove-like/?user={username}&post={post_id}'
         async with httpx.AsyncClient() as client:
-            redirect_response = await client.delete(url)
+            try:
+                redirect_response = await client.delete(url)
+            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+                response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+                return None
             message = redirect_response.json()
             code = redirect_response.status_code
             response.status_code = code
@@ -53,12 +62,18 @@ class LikeService():
         hostport = service_getter.get_service_hostport(self.name)
         url = f'http://{hostport}/get-likes/?post={post_id}'
         async with httpx.AsyncClient() as client:
-            redirect_response = await client.get(url)
+            try:
+                redirect_response = await client.get(url)
+            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+                response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+                return {"likes": []}
             message = redirect_response.json()
             code = redirect_response.status_code
             response.status_code = code
             repository.put_message(f"like-service: get-likes of {post_id} with code {code}")
-            return message
+            if code == status.HTTP_200_OK:
+                return message
+            return {"likes": []}
 
     @router.get("/has-liked")
     async def has_liked(self, username: str, post_id: str, response: Response, token: str ):
@@ -68,10 +83,16 @@ class LikeService():
         hostport = service_getter.get_service_hostport(self.name)
         url = f'http://{hostport}/has-liked/?user={username}&post={post_id}'
         async with httpx.AsyncClient() as client:
-            redirect_response = await client.get(url)
+            try:
+                redirect_response = await client.get(url)
+            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+                response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+                return {"has_liked": None}
             message = redirect_response.json()
             code = redirect_response.status_code
             response.status_code = code
             repository.put_message(f"like-service: has-liked of {username} with code {code}")
-            return message
+            if code == status.HTTP_200_OK:
+                return message
+            return {"has_liked": None}
 
