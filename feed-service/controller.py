@@ -35,8 +35,8 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/feed/")
 async def feed(user: str, response: Response):
-    posts = service.feed(user)
-    response.status_code = status.HTTP_200_OK
+    posts =  await service.feed(user)
+    response.status_code = status.HTTP_200_OK   
     print(f"feed-service: feed for {user}")
     message_queue.put(f"feed-service: feed for {user}")
     return posts
