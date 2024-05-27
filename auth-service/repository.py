@@ -49,6 +49,7 @@ async def register(user: str, password: str, email:str):
         # auth = Auth(username=user, passwordhash=password, email=email)
         try:
             await conn.execute(insert(Auth).values(username=user, passwordhash=password, email=email))
+            await conn.commit()
             return True
         except exc.IntegrityError as e:
             print(e, file=sys.stderr)
