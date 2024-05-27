@@ -2,6 +2,7 @@ import React from "react";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
 import ReactDOM from "react-dom/client";
 import UrlResolver from "./javascript/UrlResolver";
+import RequestBodyBuilder from "./javascript/RequestBodyBuilder";
 import {
   BrowserRouter,
   createBrowserRouter,
@@ -38,7 +39,10 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
         loader: async () => {
-          const data = await fetch(urlResolver.getMainPageUrl(sessionStorage.getItem("username")))
+          const data = await fetch(
+              urlResolver.getMainPageUrl(sessionStorage.getItem("username"), sessionStorage.getItem("token")),
+              RequestBodyBuilder.getMainPageRequestBody()
+              )
               .then((data) => data.json());
           const posts = data.posts;
           const avatars = data.avatars;
@@ -52,8 +56,11 @@ const router = createBrowserRouter([
         element: <Profile />,
         loader: async ({ params }) => {
           // const apiUrl = `http://localhost:8000/show-user/${params.username}`;
-          const apiUrl = urlResolver.getShowUserUrl(params.username);
-          const data = await (await fetch(apiUrl)).json();
+          const apiUrl = urlResolver.getShowUserUrl(params.username,
+                                                           sessionStorage.getItem("token"));
+          const data = await (
+              await fetch(apiUrl,
+                          RequestBodyBuilder.getShowUserRequestBody())).json();
           return data;
         },
       },

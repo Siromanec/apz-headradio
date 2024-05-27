@@ -34,73 +34,58 @@ async def get_friend_posts(username, client):
     post = random.choice(await get_services('post'))
     address, port = post['Address'], post['Port']
     url = f'http://{address}:{port}/get-user-posts/?user={username}'
-    # with httpx.AsyncClient() as client:
-    #     response = client.get(url)
-    #     return response
-    return client.get(url)
+    return await client.get(url)
 
 
 async def get_friends_pfp(username, client):
     profile =  random.choice(await get_services('profile'))
     address, port = profile['Address'], profile['Port']
     url = f'http://{address}:{port}/get-pfp/?user={username}'
-    # with httpx.AsyncClient() as client:
-    #     response = client.get(url)
-    #     return response
-    return client.get(url)
+    return await client.get(url)
 
 async def get_like_count(post_id, client) -> int:
     profile = random.choice(await get_services('likes'))
     address, port = profile['Address'], profile['Port']
     url = f'http://{address}:{port}/get-like-count/?post={post_id}'
-    # with httpx.AsyncClient() as client:
-    #     response = client.get(url) #return data["like_count"]
-    #     return response
-    return client.get(url)
+    return await client.get(url)
 
 async def feed(user):
     async with httpx.AsyncClient() as client:
         friends = await get_all_friends(user)
         posts_tasks = [get_friend_posts(friend, client) for friend in friends]
-        print(posts_tasks)
         posts_responses = await asyncio.gather(*posts_tasks)
-        posts_responses = await asyncio.gather(*posts_responses)
-        print(posts_responses)
-        posts = []
+        all_posts = []
         for response in posts_responses:
             if response.status_code != status.HTTP_200_OK:
                 continue
             posts = response.json()
             posts = posts['posts']
-            posts.extend(posts)
+            all_posts.extend(posts)
 
-        print(posts)
-        posts.sort(key=lambda x: x['time'], reverse=True)
-        num = min(len(posts), 50)
-        posts = posts[:num]
+        all_posts.sort(key=lambda x: x['time'], reverse=True)
+        num = min(len(all_posts), 50)
+        all_posts = all_posts[:num]
 
 
         selected_friends = set()
-        like_tasks = [get_like_count(post['post_id'], client) for post in posts]
+        like_tasks = [get_like_count(post['post_id'], client) for post in all_posts]
         like_counts = await asyncio.gather(*like_tasks)
-        like_counts = await asyncio.gather(*like_counts)
+
         likes = []
         for response in like_counts:
             if response.status_code != status.HTTP_200_OK:
-                # likes.append(0)
                 continue
             likes.append(response.json()["like_count"])
-        print(posts)
-        for i, post in enumerate(posts[::2]):
+
+        for i, post in enumerate(all_posts):
             post["likeCount"] = likes[i]
-            print(post.keys())
             post["postID"] = post.pop('post_id')
             selected_friends.add(post['username'])
 
 
         profile_picture_tasks = [get_friends_pfp(friend, client) for friend in selected_friends]
         profile_picture_responses = await asyncio.gather(*profile_picture_tasks)
-        profile_picture_responses = await asyncio.gather(*profile_picture_responses)
+    
         profile_pictures = {}
         for response in profile_picture_responses:
             if response.status_code != status.HTTP_200_OK:
@@ -108,4 +93,4 @@ async def feed(user):
             profile_pictures[response.json()["username"]] = response.json()["profile_picture"]
         
 
-    return {"posts": posts, "profilePictures": profile_pictures}
+    return {"posts": all_posts, "profilePictures": profile_pictures}

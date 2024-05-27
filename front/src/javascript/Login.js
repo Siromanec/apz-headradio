@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import UrlResolver from "./UrlResolver";
+import RequestBodyBuilder from "./RequestBodyBuilder";
 
 const urlResolver = new UrlResolver();
 
@@ -12,9 +13,8 @@ const urlResolver = new UrlResolver();
  * @param {String} credentials.password
  * */
 async function loginUser(credentials) {
-  return fetch(urlResolver.getLoginUrl(credentials.username, credentials.password), {
-    method: "POST",
-  }).then((data) => data.json());
+  return fetch(urlResolver.getLoginUrl(credentials.username, credentials.password),
+      RequestBodyBuilder.getLoginRequestBody()).then((data) => data.json());
 }
 
 export default function Login({ setToken, setSavedUserName }) {
