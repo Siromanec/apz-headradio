@@ -37,7 +37,7 @@ export default class UrlResolver {
         return `${this.base}/new-post/?token=${token}`;
     }
 
-    getModifyMusicUrl(user, music) {
+    getModifyMusicUrl(user, music, token) {
         return `${this.base}/modify-music/?user=${user}&music=${music}&token=${token}`;
     }
 }

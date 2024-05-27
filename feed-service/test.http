@@ -36,6 +36,7 @@ Content-Type: application/json
   "username": "admin2",
   "article": "post1"
 }
+###
 
 POST http://localhost:8080/new-post/
 Content-Type: application/json

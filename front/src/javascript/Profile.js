@@ -85,14 +85,14 @@ const formatShortWeekday = (locale, date) => {
 };
 
 export default function Profile() {
-  const { username, avatar, posts, friends, song } = useLoaderData();
+  const { username, profile_picture, selected_music, motto} = useLoaderData();
 
   const [isCurrentUser, setIsCurrentUser] = useState(
     username === sessionStorage.getItem("username")
   );
-  const [isFriend, setIsFriend] = useState(
-    !isCurrentUser && friends.includes(sessionStorage.getItem("username"))
-  );
+  // const [isFriend, setIsFriend] = useState(
+  //   !isCurrentUser && friends.includes(sessionStorage.getItem("username"))
+  // );
 
   const [photo, setPhoto] = useState(avatar);
   const [userSong, setUserSong] = useState();
@@ -106,7 +106,7 @@ export default function Profile() {
   useEffect(()=>{songChange()}, [])
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
-  const [friendsCount, setFriendsCount] = useState(friends.length);
+  // const [friendsCount, setFriendsCount] = useState(friends.length);
 
   const postOrder = Object.keys(posts.data).sort((a, b) => b - a);
   const [currentPost, setCurrentPost] = useState(posts.data[postOrder[0]]);
@@ -117,7 +117,7 @@ export default function Profile() {
     username: currentPost.username,
     text: currentPost.article,
     added: currentPost.added,
-    numberLikes: currentPost.nlikes,
+    numberLikes: currentPost.likeCount,
   }): setCurrentPost(null);}, []);
 
   const submitHandler = async (event) => {
