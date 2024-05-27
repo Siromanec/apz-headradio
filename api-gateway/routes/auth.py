@@ -24,7 +24,11 @@ class AuthService():
         hostport = service_getter.get_service_hostport(self.name)
         url = f'http://{hostport}/login/?user={user}&password={password}'
         async with httpx.AsyncClient() as client:
-            redirect_response = await client.post(url)
+            try:
+                redirect_response = await client.post(url)
+            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+                response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+                return {"token": None}
             message = redirect_response.json()
             code = redirect_response.status_code
             response.status_code = code

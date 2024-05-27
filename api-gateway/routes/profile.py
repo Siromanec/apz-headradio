@@ -22,7 +22,11 @@ class ProfileService():
         hostport = service_getter.get_service_hostport(self.name)
         url = f'http://{hostport}/get-user-data/?user={username}'
         async with httpx.AsyncClient() as client:
-            redirect_response = await client.get(url)
+            try:
+                redirect_response = await client.get(url)
+            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+                response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+                return None
             message = redirect_response.json()
             code = redirect_response.status_code
             response.status_code = code
@@ -33,7 +37,11 @@ class ProfileService():
         hostport = service_getter.get_service_hostport(self.name)
         url = f'http://{hostport}/set-profile-photo/'
         async with httpx.AsyncClient() as client:
-            redirect_response = await client.post(url, content=await request.body())
+            try:
+                redirect_response = await client.post(url, content=await request.body())
+            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+                response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+                return None
             message = redirect_response.json()
             code = redirect_response.status_code
             response.status_code = code
@@ -44,7 +52,11 @@ class ProfileService():
         hostport = service_getter.get_service_hostport(self.name)
         url = f'http://{hostport}/set-music/?user={user}&music={music}'
         async with httpx.AsyncClient() as client:
-            redirect_response = await client.post(url)
+            try:
+                redirect_response = await client.post(url)
+            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+                response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+                return None
             message = redirect_response.json()
             code = redirect_response.status_code
             response.status_code = code
