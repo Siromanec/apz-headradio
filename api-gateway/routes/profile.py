@@ -18,6 +18,7 @@ router = APIRouter()
 @cbv(router)
 class ProfileService():
     name = "profile"
+    posts = "post"
 
     @router.get("/show-profile/")
     async def show_profile(self, username: str, response: Response, token: str):
@@ -74,4 +75,20 @@ class ProfileService():
             code = redirect_response.status_code
             response.status_code = code
             repository.put_message(f"profile-service: set-music of {user} with code {code}")
+            return message
+    
+    @router.post("/get-posts/")
+    async def get_posts(self, user: str, response: Response):
+        hostport = service_getter.get_service_hostport(self.post)
+        url = f'http://{hostport}/get-user-posts/?user={user}'
+        async with httpx.AsyncClient() as client:
+            try:
+                redirect_response = await client.post(url)
+            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+                response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+                return None
+            message = redirect_response.json()
+            code = redirect_response.status_code
+            response.status_code = code
+            repository.put_message(f"profile-service: get-posts of {user} with code {code}")
             return message
