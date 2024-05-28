@@ -10,17 +10,18 @@ import uuid
 import os
 import repository
 import consul
-
+import socket
 import hazelcast
 
 message_queue = None
 
 @asynccontextmanager
 async def lifespan(app):
-
+    hostname = socket.gethostname()
+    ip_addr = socket.gethostbyname(hostname)
     c = consul.Consul(host="consul")
     c.agent.service.register(name='profile',
-                         service_id='profile',
+                         service_id=f'{ip_addr}-8081',
                          address='profile',
                          port=8081)
     

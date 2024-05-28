@@ -8,7 +8,7 @@ import service
 from datetime import datetime
 import hazelcast
 import consul
-
+import socket
 
 
 
@@ -16,9 +16,11 @@ message_queue = None
 
 @asynccontextmanager
 async def lifespan(app):
+    hostname = socket.gethostname()
+    ip_addr = socket.gethostbyname(hostname)
     c = consul.Consul(host="consul")
     c.agent.service.register(name='post',
-                         service_id='post',
+                         service_id=f'{ip_addr}-8080',
                          address='post',
                          port=8080)
     

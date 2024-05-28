@@ -8,6 +8,7 @@ import service
 import repository
 import consul
 import hazelcast
+import socket
 
 message_queue = None
 
@@ -15,9 +16,11 @@ message_queue = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await repository.start_session()
+    hostname = socket.gethostname()
+    ip_addr = socket.gethostbyname(hostname)
     c = consul.Consul(host="consul")
     c.agent.service.register(name='auth',
-                             service_id='auth',
+                             service_id=f'{ip_addr}-8082',
                              address='auth',
                              port=8082)
 
