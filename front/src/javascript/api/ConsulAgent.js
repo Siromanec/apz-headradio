@@ -6,7 +6,7 @@ function getRandomInt(max) {
 
 export default class ConsulAgent{
     constructor(){
-        this.consul = new Consul({host: "gateway-consul"})
+        this.consul = new Consul({host: "localhost", port:8501})
     }
 
     async getService(serviceName){

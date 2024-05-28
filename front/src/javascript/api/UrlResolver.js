@@ -9,7 +9,6 @@ export default class UrlResolver {
         // return `http://localhost:8005`;
         return this.consulAgent.getService("api-gateway")
         .then(service => {
-            console.log("Service:", service)
             return `http://${service.host}:${service.port}`
         })
     }

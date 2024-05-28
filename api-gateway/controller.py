@@ -23,6 +23,7 @@ app.include_router(profile_router)
 
 origins = [
     "http://localhost:3000",
+    "http://front:3000"
 ]
 
 app.add_middleware(

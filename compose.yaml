@@ -3,6 +3,7 @@ services:
     build: ./front/
     ports:
       - "3000:3000"
+    
     # depends_on:
     #   - consul
     #   - api-gateway
@@ -42,7 +43,7 @@ services:
       timeout: 1s
 
   gateway-consul:
-    image: consul:1.15.4
+    build: ./gateway-consul
     ports:
       - "8501:8500"
     healthcheck:
