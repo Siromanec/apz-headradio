@@ -150,8 +150,8 @@ services:
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     pull_policy: missing
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root_pass
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: root_pass
       MONGO_INITDB_DATABASE: post_db
     volumes:
       - ./post-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
@@ -164,8 +164,8 @@ services:
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     pull_policy: missing
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root_pass
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: root_pass
       MONGO_INITDB_DATABASE: post_db
     volumes:
       - ./post-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
@@ -178,8 +178,8 @@ services:
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     pull_policy: missing
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root_pass
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: root_pass
       MONGO_INITDB_DATABASE: post_db
     volumes:
       - ./post-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
