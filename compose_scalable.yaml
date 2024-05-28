@@ -89,6 +89,8 @@ services:
         condition: service_healthy
       gateway-consul:
         condition: service_healthy
+    ports:
+      - "8084:8084"
   feed:
     build: ./feed-service/
     depends_on:
