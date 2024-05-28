@@ -12,6 +12,7 @@ from routes.auth import router as auth_router
 from routes.like import router as like_router
 from routes.profile import router as profile_router
 from routes.service_getter import service_getter
+from routes.pechyvo import unauthorized
 
 app = FastAPI(lifespan=lifespan)
 
@@ -65,7 +66,9 @@ async def feed(username : str, response: Response):
 
 
 @app.post("/new-post")
-async def new_post(request: Request, response: Response):
+async def new_post(request: Request, response: Response, token: str):
+    if not (res := unauthorized(request["username"], response, token)):
+        return res
     hostport = service_getter.get_service_hostport('post')
     url = f'http://{hostport}/new-post/'
     async with httpx.AsyncClient() as client:
