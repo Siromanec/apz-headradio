@@ -43,6 +43,17 @@ Content-Type: application/json
 ###
 GET http://localhost:8084/get-posts/?user=anastasiia
 ###
-POST http://localhost:8084/logout/?user=anastasiia&token={{token}}
+GET http://localhost:8084/get-friends/?username=anastasiia&token={{token}}
 ###
-    
+POST http://localhost:8084/register/?user=olesiao&password=1234&email=olesia.omelchuk@ucu.edu.ua
+###
+POST http://localhost:8084/login/?user=olesiao&password=1234
+> {% client.global.set("token_olesiao", response.body.token); %}
+###
+POST http://localhost:8084/add-friend/?username_follows=anastasiia&username=olesiao&token={{token}}
+###
+POST http://localhost:8084/add-friend/?username_follows=olesiao&username=anastasiia&token={{token_olesiao}}
+###
+GET http://localhost:8084/get-friends/?username=anastasiia&token={{token}}
+###
+POST http://localhost:8084/logout/?user=anastasiia&token={{token}}
