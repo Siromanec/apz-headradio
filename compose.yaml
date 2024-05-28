@@ -1,4 +1,20 @@
 services:
+  front:
+    build: ./front/
+    ports:
+      - "3000:3000"
+    # depends_on:
+    #   - consul
+    #   - api-gateway
+    #   - likes
+    #   - post
+    #   - profile
+    #   - auth
+    #   - friend
+    #   - feed
+    #   - logging
+    
+
   hazelcast:
     image: hazelcast/hazelcast
     pull_policy: missing

@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build`",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "webpack-cli": "^5.1.4"
   }
 }
