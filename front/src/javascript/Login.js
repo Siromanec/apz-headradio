@@ -12,60 +12,85 @@ const urlResolver = new UrlResolver();
  * @param {String} credentials.username
  * @param {String} credentials.password
  * */
-async function loginUser(credentials) {
-  return fetch(urlResolver.getLoginUrl(credentials.username, credentials.password),
-      RequestBodyBuilder.getLoginRequestBody()).then((data) => data.json());
+async function loginUser({username, password}) {
+  return fetch(urlResolver.getLoginUrl(username, password),
+      RequestBodyBuilder.getLoginRequestBody());
 }
 
 export default function Login({ setToken, setSavedUserName }) {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
-  const [badInput, setBadInput] = useState(false);
+  const [badUsername, setBadUsername] = useState(false);
+  const [badPassword, setBadPassword] = useState(false);
+  const [unauthorized, setUnauthorized] = useState(false);
+  const [unknownError, setUnknownError] = useState(false);
 
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setUnauthorized(false);
+    setUnknownError(false);
+    setBadUsername(false);
+    setBadPassword(false);
+
     if (!username) {
-      setUserName("");
-      return;
+      setBadUsername(true)
     }
     if (!password) {
-      setPassword("");
+      setBadPassword(true)
+    }
+    if (!(username && password)) {
       return;
     }
-    const token = await loginUser({
-      username,
-      password,
+    await loginUser({
+      username:username,
+      password:password,
     })
-        .then((data) => data.json())
-        .then((data) => data.token);
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
 
-    if (!token) {
-      setBadInput(true);
-      return;
-    }
-
-    setBadInput(false);
-    setToken(token);
-    setSavedUserName(username);
-    navigate("/home");
+          switch (response.status) {
+            case 401:
+              setUnauthorized(true);
+              break;
+            default:
+              setUnknownError(true);
+              break;
+          }
+          console.log(response)
+          throw new Error(response.statusText);
+        })
+        .then(json => json.token)
+        .then(token => {
+          setToken(token);
+          setSavedUserName(username);
+          navigate("/home");
+        })
+        .catch(err => {
+          console.error(err)
+        });
   };
   const badInputElement = (
     <div className="error">*Incorrect username or password</div>
   );
-  const noUsernameElement = <div className="error">*please enter username</div>;
-  const noPasswordElement = <div className="error">*please enter password</div>;
+  const unknownErrorElement = <div className="error">*Unknown error!</div>;
+  const noUsernameElement = <div className="error">*Please enter username</div>;
+  const noPasswordElement = <div className="error">*Please enter password</div>;
 
   return (
     <div className="login-wrapper">
       <h1>Please Log In</h1>
       <form onSubmit={handleSubmit}>
-        {badInput && badInputElement}
+        {unauthorized && badInputElement}
+        {unknownError && unknownErrorElement}
         <label>
           <p>Username</p>
           <input type="text" onChange={(e) => setUserName(e.target.value)} />
         </label>
-        {username === "" && noUsernameElement}
+        {badUsername && noUsernameElement}
         <label>
           <p>Password</p>
           <input
@@ -73,7 +98,7 @@ export default function Login({ setToken, setSavedUserName }) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        {password === "" && noPasswordElement}
+        {badPassword && noPasswordElement}
         <div>
           <button type="submit">Sign In</button>
         </div>

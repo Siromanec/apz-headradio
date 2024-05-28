@@ -29,3 +29,6 @@ __pycache__/
 front/node_modules/
 
 /data*
+
+
+./front/package-lock.json
