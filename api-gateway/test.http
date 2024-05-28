@@ -3,7 +3,7 @@ POST http://localhost:8084/login/?user=root&password=root
 
 ###
 POST http://localhost:8084/logout/?user=root&token={{token}}
-
+###
     
 POST http://localhost:8084/register/?user=admin3&password=admin3&email=sraka@dupa
 
@@ -51,7 +51,7 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:8084/get-friends/?username=root1
+GET http://localhost:8084/get-friends/?username=root&token={{token}}
 
 ###
 POST http://localhost:8084/add-friend/?username_follows=root1&username=root

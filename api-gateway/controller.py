@@ -65,12 +65,16 @@ async def feed(username : str, response: Response):
 
 
 
-@app.post("/new-post")
+@app.post("/new-post/")
 async def new_post(request: Request, response: Response, token: str):
-    if not (res := unauthorized(request["username"], response, token)):
+    req = await request.json()
+
+    if (res := unauthorized(req["username"], response, token)):
         return res
+    print("new-post are there")
     hostport = service_getter.get_service_hostport('post')
     url = f'http://{hostport}/new-post/'
+    print(f"url: {url}")
     async with httpx.AsyncClient() as client:
         try:
             redirect_response = await client.post(url, content=await request.body())
