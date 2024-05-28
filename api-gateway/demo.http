@@ -1,0 +1,59 @@
+POST http://localhost:8084/register/?user=anastasiia&password=admin&email=anastasiia.beheni@ucu.edu.ua
+###
+POST http://localhost:8084/login/?user=anastasiia&password=admin
+> {% client.global.set("token", response.body.token); %}
+###
+POST http://localhost:8084/set-profile-photo/?token={{token}}
+Content-Type: application/json
+{
+    "username": "anastasiia",
+    "image": "a"
+}
+###
+POST http://localhost:8084/set-music/?user=anastasiia&music=https://open.spotify.com/track/5wbq4pLNL5uEiANEkEw14a?si=4327a1c87dde4853&token={{token}}
+###
+GET http://localhost:8084/show-profile/?username=anastasiia&token={{token}}
+###
+
+POST http://localhost:8084/new-post/?token={{token}}
+Content-Type: application/json
+{
+    "username": "anastasiia",
+    "article": "Hello, world!"
+}
+
+###
+
+POST http://localhost:8084/new-post/?token={{token}}
+Content-Type: application/json
+{
+    "username": "anastasiia",
+    "article": "This is my second post!"
+}
+
+###
+
+POST http://localhost:8084/new-post/?token={{token}}
+Content-Type: application/json
+{
+    "username": "anastasiia",
+    "article": "This is my third post!"
+}
+
+###
+GET http://localhost:8084/get-posts/?user=anastasiia
+###
+GET http://localhost:8084/get-friends/?username=anastasiia&token={{token}}
+###
+POST http://localhost:8084/register/?user=olesiao&password=1234&email=olesia.omelchuk@ucu.edu.ua
+###
+POST http://localhost:8084/login/?user=olesiao&password=1234
+> {% client.global.set("token_olesiao", response.body.token); %}
+###
+POST http://localhost:8084/add-friend/?username_follows=anastasiia&username=olesiao&token={{token}}
+###
+POST http://localhost:8084/add-friend/?username_follows=olesiao&username=anastasiia&token={{token_olesiao}}
+###
+GET http://localhost:8084/get-friends/?username=anastasiia&token={{token}}
+###
+POST http://localhost:8084/logout/?user=anastasiia&token={{token}}

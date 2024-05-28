@@ -94,9 +94,9 @@ async def set_profile_photo(request: Request, response: Response):
 
 
 @app.post("/set-music/")
-async def set_music(user: str, song_name: str, response: Response):
+async def set_music(user: str, music: str, response: Response):
     try:
-        await service.set_music(user, song_name)
+        await service.set_music(user, music)
     except KeyError:
         response.status_code = status.HTTP_409_CONFLICT
         log = f"profile-service: no such user {user}"
@@ -104,8 +104,8 @@ async def set_music(user: str, song_name: str, response: Response):
         message_queue.put(log)
         return
     response.status_code = status.HTTP_200_OK
-    print(f"profile-service: User {user} set music to {song_name}.")
-    message_queue.put(f"profile-service: User {user} set music to {song_name}.")
+    print(f"profile-service: User {user} set music to {music}.")
+    message_queue.put(f"profile-service: User {user} set music to {music}.")
 
 @app.post("/create-profile/")
 async def create_profile(user: str, response: Response):

@@ -41,8 +41,9 @@ class ProfileService():
 
     @router.post("/set-profile-photo/")
     async def set_profile_photo(self, request: Request, response: Response, token: str):
-        if (res := unauthorized(request["username"], response, token)):
-            repository.put_message(f"profile-service: set-profile-photo of {request["username"]} with code {response.status_code}")
+        req = await request.json()
+        if (res := unauthorized(req["username"], response, token)):
+            repository.put_message(f"profile-service: set-profile-photo of {req["username"]} with code {response.status_code}")
             return res
         hostport = service_getter.get_service_hostport(self.name)
         url = f'http://{hostport}/set-profile-photo/'
@@ -55,7 +56,7 @@ class ProfileService():
             message = redirect_response.json()
             code = redirect_response.status_code
             response.status_code = code
-            repository.put_message(f"profile-service: set-profile-photo of {request["username"]} with code {code}")
+            repository.put_message(f"profile-service: set-profile-photo of {req["username"]} with code {code}")
             return message
 
     @router.post("/set-music/")
@@ -77,13 +78,13 @@ class ProfileService():
             repository.put_message(f"profile-service: set-music of {user} with code {code}")
             return message
     
-    @router.post("/get-posts/")
+    @router.get("/get-posts/")
     async def get_posts(self, user: str, response: Response):
-        hostport = service_getter.get_service_hostport(self.post)
+        hostport = service_getter.get_service_hostport(self.posts)
         url = f'http://{hostport}/get-user-posts/?user={user}'
         async with httpx.AsyncClient() as client:
             try:
-                redirect_response = await client.post(url)
+                redirect_response = await client.get(url)
             except (httpx.ConnectError, httpx.ConnectTimeout) as e:
                 response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
                 return None
