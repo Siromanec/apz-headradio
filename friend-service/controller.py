@@ -13,11 +13,12 @@ import socket
 
 message_queue = None
 
+hostname = socket.gethostname()
+ip_addr = socket.gethostbyname(hostname)
+
 @asynccontextmanager
 async def lifespan(app):
     await repository.start_session()
-    hostname = socket.gethostname()
-    ip_addr = socket.gethostbyname(hostname)
     c = consul.Consul(host="consul")
     c.agent.service.register(name='friend',
                             service_id=f'{ip_addr}-8083',
@@ -39,16 +40,18 @@ app = FastAPI(lifespan=lifespan)
 async def get_following(username: str, response: Response):
     friends = await service.get_following(username)
     response.status_code = status.HTTP_200_OK
-    print(f"friends-service: followings of {username} - {friends}")
-    message_queue.put(f"friends-service: followings of {username} - {friends}")
+    log = f"{ip_addr}:friends-service: followings of {username} - {friends}"
+    print(log)
+    message_queue.put(log)
     return {"following": friends}
 
 @app.get("/get-followers/")
 async def get_followers(username: str, response: Response):
     friends = await service.get_followers(username)
     response.status_code = status.HTTP_200_OK
-    print(f"friends-service: followers of {username} - {friends}")
-    message_queue.put(f"friends-service: followers of {username} - {friends}")
+    log = f"{ip_addr}:friends-service: followers of {username} - {friends}"
+    print(log)
+    message_queue.put(log)
     return {"followers": friends}
 
 
@@ -56,7 +59,7 @@ async def get_followers(username: str, response: Response):
 async def get_friends(username: str, response: Response):
     friends = await service.get_friends(username)
     response.status_code = status.HTTP_200_OK
-    log = f"friends-service: mutual friends of {username} - {friends}"
+    log = f"{ip_addr}:friends-service: mutual friends of {username} - {friends}"
     print(log)
     message_queue.put(log)
     return {"friends": friends}
@@ -65,13 +68,15 @@ async def get_friends(username: str, response: Response):
 async def add_friend(username_follows: str, username: str, response: Response):
     await service.add_friend(username_follows, username)
     response.status_code = status.HTTP_200_OK
-    print(f"friends-service: {username_follows} and {username} are now friends.")
-    message_queue.put(f"friends-service: {username_follows} and {username} are now friends.")
+    log = f"{ip_addr}:friends-service: {username_follows} started following {username}"
+    print(log)
+    message_queue.put(log)
 
 
 @app.post("/remove-friend/")
 async def remove_friend(username_follows: str, username: str, response: Response):
     await service.remove_friend(username_follows, username)
     response.status_code = status.HTTP_200_OK
-    print(f"friends-service: {username_follows} and {username} are no longer friends.")
-    message_queue.put(f"friends-service: {username_follows} and {username} are no longer friends.")
+    log = f"{ip_addr}:friends-service: {username_follows} stopped following {username}"
+    print(log)
+    message_queue.put(log)
