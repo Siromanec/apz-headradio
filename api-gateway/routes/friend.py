@@ -64,8 +64,8 @@ class FriendService():
             return {"followers": []}
 
     @router.get("/get-friends/")
-    async def get_followers(self, username:str, response: Response):
-        if (res := unauthorized(username, response)):
+    async def get_followers(self, username:str, response: Response, token: str):
+        if (res := unauthorized(username, response, token)):
             repository.put_message(f"friend-service: get-friends of {username} with code {response.status_code}")
             return res
         hostport = service_getter.get_service_hostport(self.name)
