@@ -144,47 +144,18 @@ services:
     ports:
       - "27018:27017"
 
-  post_db_1:
+  post_db:
     image: mongo:latest
-    hostname: post_db_1
-    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    hostname: post_db
     pull_policy: missing
     environment:
-#      MONGO_INITDB_ROOT_USERNAME: root
-#      MONGO_INITDB_ROOT_PASSWORD: root_pass
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root_pass
       MONGO_INITDB_DATABASE: post_db
     volumes:
       - ./post-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
     ports:
-      - "27017:27017"    
-
-  post_db_2:
-    image: mongo:latest
-    hostname: post_db_2
-    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
-    pull_policy: missing
-    environment:
-#      MONGO_INITDB_ROOT_USERNAME: root
-#      MONGO_INITDB_ROOT_PASSWORD: root_pass
-      MONGO_INITDB_DATABASE: post_db
-    volumes:
-      - ./post-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
-    ports:
-      - "27019:27017"   
-
-  post_db_3:
-    image: mongo:latest
-    hostname: post_db_3
-    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
-    pull_policy: missing
-    environment:
-#      MONGO_INITDB_ROOT_USERNAME: root
-#      MONGO_INITDB_ROOT_PASSWORD: root_pass
-      MONGO_INITDB_DATABASE: post_db
-    volumes:
-      - ./post-service/mongo-db-init.js:/docker-entrypoint-initdb.d/mongo-db-init.js:ro
-    ports:
-      - "27020:27017"   
+      - "27017:27017"      
 
   auth_db:
     image: postgres:latest
@@ -208,8 +179,4 @@ services:
       - ./friend-service/postgres-db-init:/docker-entrypoint-initdb.d
     ports:
       - "5435:5432"
-
-networks:
-  default:
-    name: mongo-cluster
 
