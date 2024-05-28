@@ -6,12 +6,9 @@ import "../css/Editor.css";
 import { tinymceAPIKey } from "./api/APIKeys";
 import UrlResolver from "./api/UrlResolver";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
-import {getToken} from "./api/Token";
+import {getToken, getUsername} from "./api/SessionStorage";
 
 // import { Global } from "@emotion/core";
-function getSavedUserName() {
-  return sessionStorage.getItem("username");
-}
 
 const urlResolver = new UrlResolver();
 
@@ -30,7 +27,7 @@ export default function EditorWrapper() {
     editorRef.current.setContent("");
     const response = await sendPostContents({
       article: content,
-      username: getSavedUserName(),
+      username: getUsername(),
     });
   };
   return (

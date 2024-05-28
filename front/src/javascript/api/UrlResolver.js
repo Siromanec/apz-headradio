@@ -18,6 +18,7 @@ export default class UrlResolver {
     }
 
     getShowUserUrl(username, token) {
+        console.log(username, token);
         return `${this.resolve()}/show-profile/?username=${username}&token=${token}`;
     }
 
@@ -56,6 +57,6 @@ export default class UrlResolver {
         return `${this.resolve()}/remove-friend/?username_follows=${usernameFollows}&username=${username}&token=${token}`;
     }
     getGetFriendsUrl(username, token) {
-        return `${this.resolve()}/get-friends/?username={username}&token=${token}`;
+        return `${this.resolve()}/get-friends/?username=${username}&token=${token}`;
     }
 }

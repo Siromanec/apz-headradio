@@ -15,12 +15,8 @@ import Register from "./javascript/Register";
 import reportWebVitals from "./javascript/reportWebVitals";
 
 import "./index.css";
-import {getToken, resetToken, setToken} from "./javascript/api/Token";
+import {getToken, getUsername, resetToken, setToken, setUsername} from "./javascript/api/SessionStorage";
 
-
-function setSavedUserName(username) {
-  sessionStorage.setItem("username", username);
-}
 
 const urlResolver = new UrlResolver();
 
@@ -35,7 +31,7 @@ const router = createBrowserRouter([
         element: <Home />,
         loader: async () => {
           const data = await fetch(
-              urlResolver.getMainPageUrl(sessionStorage.getItem("username"), getToken()),
+              urlResolver.getMainPageUrl(getUsername(), getToken()),
               RequestBodyBuilder.getMainPageRequestBody()
               )
               .then((data) => data.json());
@@ -50,7 +46,9 @@ const router = createBrowserRouter([
         index: true,
         element: <Profile />,
         loader: async ({ params }) => {
-          // TODO query for user friend, user posts, and user data
+          // TODO query for user friends, user posts, and user data
+          console.log(params)
+          console.log(params.username)
           const profilePromise = fetch(
               urlResolver.getShowUserUrl(params.username,
                                          getToken()),
@@ -77,14 +75,14 @@ const router = createBrowserRouter([
         path: "/login",
         index: true,
         element: (
-          <Login setToken={setToken} setSavedUserName={setSavedUserName} />
+          <Login setToken={setToken} setSavedUserName={setUsername} />
         ),
       },
       {
         path: "/signup",
         index: true,
         element: (
-          <Register setToken={setToken} setSavedUserName={setSavedUserName} />
+          <Register setToken={setToken} setSavedUserName={setUsername} />
         ),
       },
     ],

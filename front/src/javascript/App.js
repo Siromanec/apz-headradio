@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { RequireAuth } from "react-auth-kit";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import {getToken, setToken, resetToken} from "./api/Token";
+import {getToken, setToken, resetToken} from "./api/SessionStorage";
 
 import logo from "../data/logo.svg";
 import Footer from "./Footer.js";

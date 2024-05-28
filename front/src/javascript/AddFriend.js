@@ -3,7 +3,7 @@ import "../css/AddChangeButton.css";
 
 import UrlResolver from "./api/UrlResolver.js";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
-import {getToken, setToken, resetToken} from "./api/Token";
+import {getToken, setToken, resetToken, getUsername} from "./api/SessionStorage";
 
 const urlResolver = new UrlResolver();
 
@@ -11,7 +11,7 @@ export default function AddFriend({profile, isFriend, setIsFriend}) {
     const addHandler = async () => {
         await fetch(
             urlResolver.getAddFriendUrl(
-                sessionStorage.getItem("username"),
+                getUsername(),
                 profile,
                 getToken(),
             ),
@@ -22,7 +22,7 @@ export default function AddFriend({profile, isFriend, setIsFriend}) {
     const removeHandler = async () => {
         await fetch(
             urlResolver.getRemoveFriendUrl(
-                sessionStorage.getItem("username"),
+                getUsername(),
                 profile,
                 getToken(),
             ),
