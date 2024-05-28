@@ -56,4 +56,14 @@ POST http://localhost:8084/add-friend/?username_follows=olesiao&username=anastas
 ###
 GET http://localhost:8084/get-friends/?username=anastasiia&token={{token}}
 ###
+GET http://localhost:8084/feed/?username=olesiao&token={{token_olesiao}}
+###
+POST http://localhost:8084/like-post/?username=olesiao&post_id=1&token={{token_olesiao}}
+###
+GET http://localhost:8084/get-likes/?post_id=1
+###
+DELETE http://localhost:8084/like-post/?username=olesiao&post_id=1&token={{token_olesiao}}
+###
+GET http://localhost:8084/get-likes/?post_id=1
+###
 POST http://localhost:8084/logout/?user=anastasiia&token={{token}}
