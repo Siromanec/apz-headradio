@@ -8,7 +8,7 @@ import React, {useState} from "react";
 import {spotifyClientID, spotifyClientSecret} from "./api/APIKeys";
 import UrlResolver from "./api/UrlResolver";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
-import {getToken} from "./api/Token";
+import {getToken} from "./api/SessionStorage";
 
 
 const urlResolver = new UrlResolver();

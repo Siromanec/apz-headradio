@@ -6,7 +6,7 @@ import parse from "html-react-parser";
 
 import UrlResolver from "./api/UrlResolver";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
-import {getToken} from "./api/Token";
+import {getToken, getUsername} from "./api/SessionStorage";
 
 const urlResolver = new UrlResolver();
 
@@ -48,12 +48,12 @@ export default function PostBase({
     }
 
     useEffect(() => {
-        hasLikedHandler({ post: id, username: username, author: sessionStorage.getItem("username") });
+        hasLikedHandler({ post: id, username: username, author: getUsername()});
     }, []);
     const likeHandler = async () => {
         const like = await setLikeHandler({
             idpost: id,
-            username: sessionStorage.getItem("username"),
+            username: getUsername(),
             author: username,
         })
             .then((data) => data.json())

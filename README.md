@@ -4,7 +4,8 @@
 HeadRadio was designed to be a small version of a social network that combines features from existing social networks like Spotify and Instagram along with general ideas of blog and journaling. You can use your page as a journal, follow other people, like their posts, share the music you are listening to the most right now, and much more. Our microservices-based architecture ensures scalability and reliability by incorporating Hazelcast, Consul, Docker Compose, SQL, and NoSQL databases to deliver a robust and immersive user experience.
 
 ## Architecture
-![image](https://github.com/Siromanec/apz-headradio/assets/91982071/63aefc18-28a5-4fdc-9a78-d8004eb7a2fa)
+![image](https://github.com/Siromanec/apz-headradio/assets/91982071/1148f4f3-3ee2-420e-9885-c6ff1441591a)
+
 There are **6** main microservices:
 1) **auth-service**: responsible for user authentication, storage of usernames, emails, and passwords (PostgreSQL database, sqlalchemy)
 2) **post-service**: stores the information about all posts (noSQL database, MongoDB), provides API for post creation and deletion
@@ -28,7 +29,9 @@ Communication with the clients is executed via an API gateway, and all clients' 
 - add/remove like on a post
 
 ### Examples
-*would be great to add scenarios with different number of microservice instances and their behavior in different situations*
+2 instances of *friend-service* and its behavior after shutting down one of them (output of logging service):
+![image](https://github.com/Siromanec/apz-headradio/assets/91982071/2bcbc891-c4b9-4ee5-9e31-d22c45b8bb27)
+
 
 ## Links
 - architecture [diagram](https://drive.google.com/file/d/1--v8JdgGvQnYgnzEhLhxxedfaLRa2m69/view?usp=sharing)

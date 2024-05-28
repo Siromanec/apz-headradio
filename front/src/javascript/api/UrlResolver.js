@@ -18,6 +18,7 @@ export default class UrlResolver {
     }
 
     getShowUserUrl(username, token) {
+        console.log(username, token);
         return `${this.resolve()}/show-profile/?username=${username}&token=${token}`;
     }
 

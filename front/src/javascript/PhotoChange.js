@@ -1,7 +1,7 @@
 import React from "react";
 import UrlResolver from "./api/UrlResolver.js";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
-import {getToken, setToken, resetToken} from "./api/Token";
+import {getToken, setToken, resetToken, getUsername} from "./api/SessionStorage";
 
 const urlResolver = new UrlResolver();
 const toBase64 = (file) =>
@@ -15,14 +15,14 @@ const toBase64 = (file) =>
 const submitHandler = async (event, setPhoto) => {
   // const file = URL.createObjectURL(event.target.files[0]);
   const file = await toBase64(event.target.files[0]);
-  const username = sessionStorage.getItem("username");
+  const username = getUsername();
   setPhoto(file);
   const body = {
     username: username,
     image: file,
   };
 
-  const response = await fetch(
+  await fetch(
     urlResolver.getSetProfilePhotoUrl(getToken()),
     RequestBodyBuilder.getSetProfilePhotoRequestBody(body)
   );

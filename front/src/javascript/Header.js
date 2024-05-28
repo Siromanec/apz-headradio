@@ -7,7 +7,7 @@ import SignOutImg from "../data/sign_out.svg";
 
 import UrlResolver from "./api/UrlResolver.js";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
-import {getToken} from "./api/Token";
+import {getToken, getUsername} from "./api/SessionStorage";
 const urlResolver = new UrlResolver();
 
 function SearchInput() {
@@ -58,7 +58,7 @@ export default function Header({ onSignOut, isSignedOut }) {
       <Link to="/home" className="headerLink">
         Home
       </Link>
-      <Link to={`/profile/${sessionStorage.getItem("username")}`}  className="headerLink">
+      <Link to={`/profile/${getUsername()})}`}  className="headerLink">
         Profile
       </Link>
       <Link to="/about" className="headerLink">
