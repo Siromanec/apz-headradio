@@ -64,7 +64,7 @@ async def add_like(user: str, post: str):
 
 async def remove_like(user: str, post: str):
     async with engine.connect() as conn:
-        await conn.execute(delete(Likes).where(Likes.post_id == int(post)).where(Likes.username == user))
+        await conn.execute(delete(Likes).where(Likes.post_id == post).where(Likes.username == user))
         await conn.commit()
 
 async def get_likes(post: str) -> list[dict]:
