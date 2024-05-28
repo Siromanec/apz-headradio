@@ -1,15 +1,16 @@
-import ConsulAgent from "./ConsulAgent";
+// import ConsulAgent from "./ConsulAgent";
 
 export default class UrlResolver {
-    constructor() {
-        this.consulAgent = new ConsulAgent()
-    }
+    // constructor() {
+        // this.consulAgent = new ConsulAgent()
+    // }
 
-    async resolve() {
-        return this.consulAgent.getService("api-gateway")
-        .then(service => {
-            return `http://${service.host}:${service.port}`
-        })
+    resolve() {
+        return `http://localhost:8000`;
+        // return this.consulAgent.getService("api-gateway")
+        // .then(service => {
+        //     return `http://${service.host}:${service.port}`
+        // })
     }
 
     getMainPageUrl(username, token) {
