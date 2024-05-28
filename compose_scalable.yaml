@@ -58,22 +58,16 @@ services:
         condition: service_started
       consul:
         condition: service_healthy
-    ports:
-      - "8079:8079"
   post:
     build: ./post-service/
     depends_on:
       consul:
         condition: service_healthy
-    ports:
-      - "8080:8080"
   profile:
     build: ./profile-service/
     depends_on:
       consul:
         condition: service_healthy
-    ports:
-      - "8081:8081"
   auth:
     build: ./auth-service/
     depends_on:
@@ -81,8 +75,6 @@ services:
         condition: service_started
       consul:
         condition: service_healthy
-    ports:
-      - "8082:8082"
   friend:
     build: friend-service/
     depends_on:
@@ -90,8 +82,6 @@ services:
         condition: service_started
       consul:
         condition: service_healthy
-    ports:
-      - "8083:8083"
   api-gateway:
     build: ./api-gateway/
     depends_on:
@@ -99,22 +89,16 @@ services:
         condition: service_healthy
       gateway-consul:
         condition: service_healthy
-    ports:
-      - "8084:8084"
   feed:
     build: ./feed-service/
     depends_on:
       consul:
         condition: service_healthy
-    ports:
-      - "8085:8085"
   logging:
     build: ./logging-service/
     depends_on:
       consul:
         condition: service_healthy
-    ports:
-      - "8086:8086"
 
   
 
