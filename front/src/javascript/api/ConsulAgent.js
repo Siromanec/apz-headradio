@@ -1,5 +1,5 @@
-// const Consul = require("consul");
-import {Consul} from "consul";
+const Consul = require("consul");
+// import {Consul} from "consul";
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
