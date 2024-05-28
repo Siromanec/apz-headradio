@@ -15,5 +15,5 @@ RUN npm install
 
 RUN python react-fix.py
 
-CMD ["npm", "start"]
+CMD ["npm", "start", "--host", "0.0.0.0:3000"]
 

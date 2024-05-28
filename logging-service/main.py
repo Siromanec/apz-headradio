@@ -1,8 +1,11 @@
 import hazelcast
 import consul
+import socket
 
+hostname = socket.gethostname()
+ip_addr = socket.gethostbyname(hostname)
 consul_service = consul.Consul(host="consul")
-consul_service.agent.service.register(name="logging", service_id="logging", address="logging", port=8082)
+consul_service.agent.service.register(name="logging", service_id=f"{ip_addr}-8082", address="logging", port=8082)
 
 cluster_name = (consul_service.kv.get("hazelcast/cluster-name")[1]["Value"]).decode()
 client = hazelcast.HazelcastClient(cluster_name=cluster_name, cluster_members=["hazelcast"])
