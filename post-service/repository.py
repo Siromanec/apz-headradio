@@ -3,7 +3,7 @@
 from pymongo import MongoClient
 from motor.motor_asyncio import AsyncIOMotorClient
 
-client = AsyncIOMotorClient("mongodb://root:root_pass@post_db_1:27017,post_db_2:27018,post_db_3:27019/?replicaSet=rs0")
+client = AsyncIOMotorClient("mongodb://root:root_pass@post_db:27017/")
 
 db = client["post_db"]
 collection = db["posts"]
@@ -21,5 +21,3 @@ async def new_post(username, article, time):
 
 async def delete_post(post):
     await collection.delete_one({"post_id": post})
-
-
