@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { RequireAuth } from "react-auth-kit";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import {getToken, setToken, resetToken} from "./api/Token";
 
 import logo from "../data/logo.svg";
 import Footer from "./Footer.js";
@@ -9,16 +10,7 @@ import Login from "./Login.js";
 
 import "../css/App.css";
 
-function resetToken() {
-  sessionStorage.setItem("token", JSON.stringify(null));
-}
 
-function getToken() {
-  const tokenString = sessionStorage.getItem("token");
-  if (!tokenString) return undefined;
-  const userToken = JSON.parse(tokenString);
-  return userToken?.token;
-}
 
 export default function App() {
   const navigate = useNavigate();

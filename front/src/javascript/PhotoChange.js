@@ -1,6 +1,7 @@
 import React from "react";
 import UrlResolver from "./api/UrlResolver.js";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
+import {getToken, setToken, resetToken} from "./api/Token";
 
 const urlResolver = new UrlResolver();
 const toBase64 = (file) =>
@@ -22,7 +23,7 @@ const submitHandler = async (event, setPhoto) => {
   };
 
   const response = await fetch(
-    urlResolver.getSetProfilePhotoUrl(sessionStorage.getItem("token")),
+    urlResolver.getSetProfilePhotoUrl(getToken()),
     RequestBodyBuilder.getSetProfilePhotoRequestBody(body)
   );
 };

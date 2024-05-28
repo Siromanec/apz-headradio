@@ -6,6 +6,7 @@ import parse from "html-react-parser";
 
 import UrlResolver from "./api/UrlResolver";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
+import {getToken} from "./api/Token";
 
 const urlResolver = new UrlResolver();
 
@@ -21,7 +22,7 @@ export default function PostBase({
     const [nLikes, setNLikes] = useState(nlikes ? nlikes : 0);
     const hasLikedHandler = async (data) => {
         // const like = fetch("http://localhost:8000/has-liked", {
-        const liked = await fetch(urlResolver.getIsLikedPostUrl(username, id, sessionStorage.getItem("token")),
+        const liked = await fetch(urlResolver.getIsLikedPostUrl(username, id, getToken()),
             RequestBodyBuilder.getIsLikedPostRequestBody())
             .then((data) => data.json())
             .catch((data) => data.json());
@@ -41,7 +42,7 @@ export default function PostBase({
      * @param value.idpost
      * */
     const setLikeHandler = async (value) => {
-        return fetch(urlResolver.getLikePostUrl(value.author, value.idpost, sessionStorage.getItem("token")),
+        return fetch(urlResolver.getLikePostUrl(value.author, value.idpost, getToken()),
             RequestBodyBuilder.getLikePostRequestBody()
         );
     }

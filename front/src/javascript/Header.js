@@ -7,6 +7,7 @@ import SignOutImg from "../data/sign_out.svg";
 
 import UrlResolver from "./api/UrlResolver.js";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
+import {getToken} from "./api/Token";
 const urlResolver = new UrlResolver();
 
 function SearchInput() {
@@ -16,7 +17,7 @@ function SearchInput() {
   const navigate = useNavigate()
   const searchHandler = async ()=>{
     // const data = await (fetch(`http://localhost:8000/show-user/${text}`)).then(data => data.json()).then(data => data).catch(e =>console.log(e));
-    const data = await (fetch(urlResolver.getShowUserUrl(text, sessionStorage.getItem("token")),
+    const data = await (fetch(urlResolver.getShowUserUrl(text, getToken()),
                               RequestBodyBuilder.getShowUserRequestBody())).then(data => data.json()).then(data => data).catch(e =>console.log(e));
     if (Object.keys(data).length!==0){
       setExists(true);

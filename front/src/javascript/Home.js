@@ -30,7 +30,7 @@ function Posts({ posts, postOrder, avatars }) {
 }
 
 export default function Home() {
-  const { posts, avatars } = useLoaderData();
+  const { posts, profilePictures } = useLoaderData();
   const postOrder = posts ? Object.keys(posts).sort((a, b) => b - a) : [];
 
   return (
@@ -39,7 +39,7 @@ export default function Home() {
       <Posts
         headerType="postHeader"
         posts={posts}
-        avatars={avatars}
+        avatars={profilePictures}
         postOrder={postOrder ? postOrder.slice(0, postOrder.length) : []}
       />
     </div>

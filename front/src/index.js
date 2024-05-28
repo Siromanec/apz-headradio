@@ -15,10 +15,8 @@ import Register from "./javascript/Register";
 import reportWebVitals from "./javascript/reportWebVitals";
 
 import "./index.css";
+import {getToken, resetToken, setToken} from "./javascript/api/Token";
 
-function setToken(userToken) {
-  sessionStorage.setItem("token", JSON.stringify(userToken));
-}
 
 function setSavedUserName(username) {
   sessionStorage.setItem("username", username);
@@ -37,14 +35,14 @@ const router = createBrowserRouter([
         element: <Home />,
         loader: async () => {
           const data = await fetch(
-              urlResolver.getMainPageUrl(sessionStorage.getItem("username"), sessionStorage.getItem("token")),
+              urlResolver.getMainPageUrl(sessionStorage.getItem("username"), getToken()),
               RequestBodyBuilder.getMainPageRequestBody()
               )
               .then((data) => data.json());
           const posts = data.posts;
-          const avatars = data.profilePictures;
+          const profilePictures = data.profilePictures;
 
-          return { posts, avatars };
+          return { posts:posts, profilePictures:profilePictures };
         },
       },
       {
@@ -55,11 +53,11 @@ const router = createBrowserRouter([
           // TODO query for user friend, user posts, and user data
           const profilePromise = fetch(
               urlResolver.getShowUserUrl(params.username,
-                                         sessionStorage.getItem("token")),
+                                         getToken()),
               RequestBodyBuilder.getShowUserRequestBody());
           const friendsPromise = fetch(
                                                             urlResolver.getGetFriendsUrl(params.username,
-                                                                                         sessionStorage.getItem("token")),
+                                                                                         getToken()),
                                                             RequestBodyBuilder.getGetFriendsRequestBody());
            // const posts_promise
 

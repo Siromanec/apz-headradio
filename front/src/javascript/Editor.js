@@ -6,6 +6,7 @@ import "../css/Editor.css";
 import { tinymceAPIKey } from "./api/APIKeys";
 import UrlResolver from "./api/UrlResolver";
 import RequestBodyBuilder from "./api/RequestBodyBuilder";
+import {getToken} from "./api/Token";
 
 // import { Global } from "@emotion/core";
 function getSavedUserName() {
@@ -19,7 +20,7 @@ const urlResolver = new UrlResolver();
  * @param {String} articleData.profile
  * */
 async function sendPostContents(articleData) {
-    return fetch(urlResolver.getNewPostUrl(sessionStorage.getItem("token")), RequestBodyBuilder.getNewPostRequestBody(articleData)).then((data) => data.json());
+    return fetch(urlResolver.getNewPostUrl(getToken()), RequestBodyBuilder.getNewPostRequestBody(articleData)).then((data) => data.json());
 }
 
 export default function EditorWrapper() {
