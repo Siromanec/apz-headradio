@@ -82,15 +82,16 @@ async def feed(user):
             post["postID"] = post.pop('post_id')
             selected_friends.add(post['username'])
 
-
+        selected_friends = list(selected_friends)
         profile_picture_tasks = [get_friends_pfp(friend, client) for friend in selected_friends]
         profile_picture_responses = await asyncio.gather(*profile_picture_tasks)
     
         profile_pictures = {}
-        for response in profile_picture_responses:
+        for i, response in enumerate(profile_picture_responses):
             if response.status_code != status.HTTP_200_OK:
-                continue
-            profile_pictures[response.json()["username"]] = response.json()["profile_picture"]
+                profile_pictures[selected_friends[i]] = ""
+            print(response.json())
+            profile_pictures[selected_friends[i]] = response.json()["profile_picture"]
         
 
     return {"posts": all_posts, "profilePictures": profile_pictures}
